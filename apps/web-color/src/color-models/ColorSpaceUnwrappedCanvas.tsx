@@ -69,7 +69,7 @@ export function ColorSpaceUnwrappedCanvas({
       width={CANVAS_WIDTH}
       height={CANVAS_HEIGHT}
       className={cn(
-        "aspect-[36/23] w-full rounded-md border border-border bg-background shadow-sm",
+        "aspect-[36/23] w-full rounded-md border border-border bg-background-primary shadow-sm",
         className
       )}
       aria-label={`${UNWRAPPED_COLOR_MODEL_BY_ID[modelId].label} unwrapped color space`}

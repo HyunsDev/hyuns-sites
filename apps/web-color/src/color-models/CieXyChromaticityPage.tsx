@@ -105,7 +105,7 @@ export function CieXyChromaticityPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <div className="mb-2 flex items-center gap-2 font-mono text-xs font-semibold">
             <PaletteIcon className="size-4" />
             CIE 1931 xy
@@ -113,7 +113,7 @@ export function CieXyChromaticityPage() {
           <h1 className="text-xl leading-tight font-semibold tracking-normal sm:text-2xl">
             정규화된 색도 말발굽
           </h1>
-          <p className="mt-2 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-2 hidden text-xs leading-5 text-text-muted sm:block">
             X, Y, Z의 크기를 합으로 나눈 x/y 좌표입니다. 밝기 크기는 버리고,
             파장 방향과 디스플레이 primary 삼각형을 한 평면에서 비교합니다.
           </p>
@@ -131,7 +131,7 @@ export function CieXyChromaticityPage() {
       }
       topEnd={<CiePageLinks current="xy" />}
       bottomStart={
-        <div className="grid gap-2 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur sm:grid-cols-3">
+        <div className="grid gap-2 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur sm:grid-cols-3">
           {CIE_XYZ_GAMUTS.map((gamut) => (
             <GamutToggleButton
               key={gamut.id}
@@ -143,7 +143,7 @@ export function CieXyChromaticityPage() {
         </div>
       }
       bottomCenter={
-        <div className="grid gap-2 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur sm:grid-cols-[auto_auto_auto]">
+        <div className="grid gap-2 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur sm:grid-cols-[auto_auto_auto]">
           <ViewModeButton
             currentViewMode={viewMode}
             targetViewMode="xy"
@@ -154,7 +154,7 @@ export function CieXyChromaticityPage() {
             targetViewMode="3d"
             onSelect={setViewMode}
           />
-          <label className="flex h-9 items-center justify-between gap-3 rounded-md border border-border bg-background/75 px-3 text-xs">
+          <label className="flex h-9 items-center justify-between gap-3 rounded-md border border-border bg-background-primary/75 px-3 text-xs">
             <span className="font-medium">Wire</span>
             <Switch
               size="sm"
@@ -175,7 +175,7 @@ export function CieXyChromaticityPage() {
         showWireframe={showWireframe}
         viewMode={viewMode}
         visibleGamuts={visibleGamuts}
-        className="size-full bg-background/70"
+        className="size-full bg-background-primary/70"
       />
     </PlaygroundStage>
   )

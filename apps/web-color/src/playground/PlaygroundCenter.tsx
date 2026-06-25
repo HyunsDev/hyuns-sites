@@ -19,14 +19,14 @@ export function PlaygroundCenter({
   return (
     <div
       className={cn(
-        "bg-dot-grid flex min-h-svh flex-col items-center bg-muted/40 text-foreground",
+        "bg-dot-grid flex min-h-svh flex-col items-center bg-background-secondary/40 text-text-normal",
         className
       )}
     >
       <header className="flex min-h-18 shrink-0 flex-col items-center justify-center gap-1 px-4 py-3 text-center">
         {title && <code className="text-sm font-bold">{title}</code>}
         {description && (
-          <p className="max-w-xl text-xs text-muted-foreground">
+          <p className="max-w-xl text-xs text-text-muted">
             {description}
           </p>
         )}

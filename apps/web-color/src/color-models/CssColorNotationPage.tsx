@@ -48,12 +48,12 @@ export function CssColorNotationPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="flex items-center gap-2 text-sm font-bold">
             <FlaskConicalIcon className="size-4" />
             CSS 색상 표기 실험실
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             하나의 색을 hex, rgb, hsl, lab, lch, oklab, oklch, display-p3
             문법으로 나란히 변환합니다.
           </p>
@@ -75,7 +75,7 @@ export function CssColorNotationPage() {
         </div>
       }
       topEnd={
-        <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur">
+        <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
           <label className="grid gap-1.5 text-xs">
             <span className="font-medium">CSS color input</span>
             <span className="grid grid-cols-[2.75rem_1fr] gap-2">
@@ -89,9 +89,9 @@ export function CssColorNotationPage() {
               <input
                 value={inputValue}
                 className={cn(
-                  "h-10 min-w-0 rounded-md border border-input bg-background px-3 font-mono text-xs ring-offset-background transition outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  "h-10 min-w-0 rounded-md border border-field-border bg-background-primary px-3 font-mono text-xs ring-offset-background-primary transition outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2",
                   parsed.status === "invalid" &&
-                    "border-destructive text-destructive"
+                    "border-border-error text-text-error"
                 )}
                 aria-label="CSS color text input"
                 onChange={(event) => setInputValue(event.currentTarget.value)}
@@ -171,12 +171,12 @@ function NotationRow({ copied, onCopy, row }: NotationRowProps) {
   const CopyStateIcon = copied ? CheckIcon : CopyIcon
 
   return (
-    <section className="grid gap-2 rounded-md border border-border bg-background/92 p-3 shadow-sm backdrop-blur sm:grid-cols-[8rem_1fr_auto] sm:items-center">
+    <section className="grid gap-2 rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur sm:grid-cols-[8rem_1fr_auto] sm:items-center">
       <code className="flex items-center gap-2 text-sm font-bold">
         <Code2Icon className="size-4" />
         {row.label}
       </code>
-      <code className="min-w-0 rounded-md bg-muted/60 px-3 py-2 text-xs leading-5 break-all whitespace-pre-wrap">
+      <code className="min-w-0 rounded-md bg-background-secondary/60 px-3 py-2 text-xs leading-5 break-all whitespace-pre-wrap">
         {row.value}
       </code>
       <Button
@@ -195,12 +195,12 @@ function NotationRow({ copied, onCopy, row }: NotationRowProps) {
 
 function InvalidColorPanel() {
   return (
-    <div className="rounded-md border border-destructive/40 bg-background/92 p-4 text-sm shadow-sm backdrop-blur">
-      <code className="flex items-center gap-2 font-bold text-destructive">
+    <div className="rounded-md border border-border-error/40 bg-background-primary/92 p-4 text-sm shadow-sm backdrop-blur">
+      <code className="flex items-center gap-2 font-bold text-text-error">
         <TriangleAlertIcon className="size-4" />
         파싱할 수 없는 CSS 색상입니다.
       </code>
-      <p className="mt-2 text-xs leading-5 text-muted-foreground">
+      <p className="mt-2 text-xs leading-5 text-text-muted">
         예: <code>#ff5a3d</code>, <code>rgb(255 90 61)</code>,{" "}
         <code>oklch(70% 0.18 32)</code>,{" "}
         <code>color(display-p3 1 0.45 0.12)</code>

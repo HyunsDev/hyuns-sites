@@ -46,7 +46,7 @@ export function PlaygroundStage({
   return (
     <div
       className={cn(
-        "bg-dot-grid relative min-h-svh overflow-hidden bg-muted/40 text-foreground",
+        "bg-dot-grid relative min-h-svh overflow-hidden bg-background-secondary/40 text-text-normal",
         className
       )}
     >

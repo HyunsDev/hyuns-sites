@@ -29,7 +29,7 @@ function getStatusBadgeClass(
   isSelected: boolean
 ) {
   if (isSelected) {
-    return "border-primary-foreground/25 bg-primary-foreground/15 text-primary-foreground"
+    return "border-text-on-accent/25 bg-white/15 text-text-on-accent"
   }
 
   switch (status) {
@@ -78,8 +78,8 @@ function GamutModeButton({
           className={cn(
             "truncate text-[0.65rem] leading-none font-normal",
             isSelected
-              ? "text-primary-foreground/75"
-              : "text-muted-foreground"
+              ? "text-text-on-accent/75"
+              : "text-text-muted"
           )}
         >
           {isSupported ? `via ${rendering.actualOutput.label}` : "XYZ / xyY only"}
@@ -116,13 +116,13 @@ export function ColorGamutControls({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 gap-3 rounded-md border border-border bg-background/85 p-4 shadow-sm backdrop-blur",
+        "grid grid-cols-1 gap-3 rounded-md border border-border bg-background-primary/85 p-4 shadow-sm backdrop-blur",
         className
       )}
     >
       {COLOR_GAMUT_MODE_GROUPS.map((group) => (
         <div key={group.id} className="grid gap-2">
-          <div className="font-mono text-[0.62rem] font-semibold tracking-normal text-muted-foreground uppercase">
+          <div className="font-mono text-[0.62rem] font-semibold tracking-normal text-text-muted uppercase">
             {group.label}
           </div>
           <div

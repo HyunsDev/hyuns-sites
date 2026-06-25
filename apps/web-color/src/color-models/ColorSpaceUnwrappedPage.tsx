@@ -44,12 +44,12 @@ export function ColorSpaceUnwrappedPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="flex items-center gap-2 text-sm font-bold">
             <PanelTopIcon className="size-4" />
             원통형 색 공간 펼쳐 보기
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             Hue 원형 좌표를 가로로 펼치면 0deg와 360deg가 양끝 seam으로
             갈라지고, radius 0에서는 hue가 모두 같은 회색축으로 겹칩니다.
           </p>
@@ -69,7 +69,7 @@ export function ColorSpaceUnwrappedPage() {
         </div>
       }
       topEnd={
-        <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur">
+        <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {UNWRAPPED_COLOR_MODELS.map((model) => {
               const ModelIcon = MODEL_ICONS[model.id]
@@ -142,16 +142,16 @@ export function ColorSpaceUnwrappedPage() {
         </div>
       }
       bottomCenter={
-        <div className="grid w-full max-w-[min(100%,46rem)] gap-2 rounded-md border border-border bg-background/90 p-3 text-xs shadow-sm backdrop-blur sm:grid-cols-3">
+        <div className="grid w-full max-w-[min(100%,46rem)] gap-2 rounded-md border border-border bg-background-primary/90 p-3 text-xs shadow-sm backdrop-blur sm:grid-cols-3">
           <div>
             <code>{viewMode === "flat" ? "0deg" : "0deg / 360deg"}</code>
-            <p className="mt-1 text-muted-foreground">
+            <p className="mt-1 text-text-muted">
               {viewMode === "flat" ? "left seam" : "joined seam"}
             </p>
           </div>
           <div>
             <code>radius 0</code>
-            <p className="mt-1 text-muted-foreground">
+            <p className="mt-1 text-text-muted">
               {viewMode === "flat" ? "duplicated gray axis" : "central axis"}
             </p>
           </div>
@@ -159,7 +159,7 @@ export function ColorSpaceUnwrappedPage() {
             <code>
               {viewMode === "flat" ? "360deg" : selectedModel.fixedAxisLabel}
             </code>
-            <p className="mt-1 text-muted-foreground">
+            <p className="mt-1 text-text-muted">
               {viewMode === "flat"
                 ? "right seam"
                 : formatUnwrappedValue(fixedValue, selectedModel.fixedUnit)}

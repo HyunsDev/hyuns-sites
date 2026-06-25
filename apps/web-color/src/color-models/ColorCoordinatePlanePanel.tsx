@@ -23,13 +23,13 @@ export function ColorCoordinatePlanePanel({
   const fixedValue = readColorCoordinateAxis(coordinate, fixedAxis.id)
 
   return (
-    <section className="grid min-w-0 gap-3 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur">
+    <section className="grid min-w-0 gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
       <div className="flex min-w-0 items-start justify-between gap-3">
         <div className="min-w-0">
           <code className="block truncate text-xs font-bold">
             {plane.label}
           </code>
-          <p className="mt-1 text-[0.68rem] leading-4 text-muted-foreground">
+          <p className="mt-1 text-[0.68rem] leading-4 text-text-muted">
             {xAxis.label} x {yAxis.label}
           </p>
         </div>

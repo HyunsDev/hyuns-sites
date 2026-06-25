@@ -55,11 +55,11 @@ export function ColorCoordinatePlanesPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="flex items-center gap-2 text-sm font-bold">
             <CrosshairIcon className="size-4" />색 좌표 2D 단면 조절기
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             세 개의 2D 단면을 함께 보고, 각 단면 아래 bar로 빠진 축을 움직여 색
             좌표의 깊이를 비교합니다.
           </p>
@@ -73,7 +73,7 @@ export function ColorCoordinatePlanesPage() {
         </div>
       }
       topEnd={
-        <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur">
+        <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
             {COLOR_COORDINATE_MODELS.map((model) => {
               const ModelIcon = MODEL_ICONS[model.id]
@@ -99,7 +99,7 @@ export function ColorCoordinatePlanesPage() {
         </div>
       }
       bottomCenter={
-        <div className="hidden w-full max-w-[min(100%,44rem)] gap-2 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur sm:grid sm:grid-cols-2">
+        <div className="hidden w-full max-w-[min(100%,44rem)] gap-2 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur sm:grid sm:grid-cols-2">
           <div
             className="min-h-16 rounded-md border border-border"
             style={{ backgroundColor: cssFormats.hex }}

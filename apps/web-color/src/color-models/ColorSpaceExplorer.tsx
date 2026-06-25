@@ -55,12 +55,12 @@ const MODEL_ICONS = {
 
 function AxisLegendItem({ axis }: { readonly axis: ColorSpaceAxis }) {
   return (
-    <li className="grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md border border-border bg-background/75 px-2.5 py-2">
+    <li className="grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md border border-border bg-background-primary/75 px-2.5 py-2">
       <span
         className="row-span-2 size-2 rounded-full"
         style={{ backgroundColor: axis.color }}
       />
-      <span className="font-mono text-[0.62rem] leading-none text-muted-foreground">
+      <span className="font-mono text-[0.62rem] leading-none text-text-muted">
         {axis.label}
       </span>
       <span className="mt-1 text-xs leading-none font-medium">
@@ -76,7 +76,7 @@ function CoordinateLegendDock({
   readonly axes: readonly ColorSpaceAxis[]
 }) {
   return (
-    <div className="rounded-md border border-border bg-background/90 p-2.5 shadow-sm backdrop-blur">
+    <div className="rounded-md border border-border bg-background-primary/90 p-2.5 shadow-sm backdrop-blur">
       <ul className="grid min-w-32 gap-1.5">
         {axes.map((axis) => (
           <AxisLegendItem key={`${axis.label}-${axis.value}`} axis={axis} />
@@ -127,11 +127,11 @@ export function ColorSpaceExplorer() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="text-sm font-bold">
             색 좌표계를 3D 모델로 비교하기
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             RGB, HSL, HSV, HWB, XYZ, Lab, LCH, OKLab, OKLCH와 펼친 Cube 모델을
             같은 무대에서 점군과 좌표축으로 비교합니다.
           </p>
@@ -160,7 +160,7 @@ export function ColorSpaceExplorer() {
       }
       bottomStart={<CoordinateLegendDock axes={selectedModel.axes} />}
       bottomCenter={
-        <div className="grid w-full max-w-[min(100%,62rem)] grid-cols-2 gap-2 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur sm:grid-cols-4 xl:grid-cols-7">
+        <div className="grid w-full max-w-[min(100%,62rem)] grid-cols-2 gap-2 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur sm:grid-cols-4 xl:grid-cols-7">
           {modelTabs}
         </div>
       }
@@ -170,7 +170,7 @@ export function ColorSpaceExplorer() {
         gamutRendering={gamutRendering}
         model={selectedModel}
         showHud={false}
-        className="size-full min-h-0 rounded-none border-0 bg-background/70 shadow-none md:min-h-0"
+        className="size-full min-h-0 rounded-none border-0 bg-background-primary/70 shadow-none md:min-h-0"
       />
     </PlaygroundStage>
   )

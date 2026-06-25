@@ -23,12 +23,12 @@ export function PerceptualColorStepsPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="flex items-center gap-2 text-sm font-bold">
             <EyeIcon className="size-4" />
             같은 숫자, 다른 체감
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             같은 개수의 수치 step도 RGB/HSL과 OKLCH에서는 밝기, 채도, 인접
             색차가 다르게 느껴집니다.
           </p>
@@ -39,7 +39,7 @@ export function PerceptualColorStepsPage() {
         </div>
       }
       topEnd={
-        <div className="grid w-full max-w-[min(100%,34rem)] gap-2 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur">
+        <div className="grid w-full max-w-[min(100%,34rem)] gap-2 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
           <div className="flex items-center justify-between gap-3 text-xs">
             <span className="font-medium">Step count</span>
             <code>{stepCount}</code>
@@ -91,7 +91,7 @@ type RampGroupProps = {
 
 function RampGroup({ icon: Icon, rows, title }: RampGroupProps) {
   return (
-    <section className="rounded-md border border-border bg-background/92 p-3 shadow-sm backdrop-blur">
+    <section className="rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur">
       <code className="flex items-center gap-2 text-sm font-bold">
         <Icon className="size-4" />
         {title}
@@ -114,7 +114,7 @@ function RampRow({ row }: RampRowProps) {
     <div className="grid gap-2 rounded-md border border-border/70 p-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <code className="text-xs font-bold">{row.label}</code>
-        <span className="text-xs text-muted-foreground">{row.description}</span>
+        <span className="text-xs text-text-muted">{row.description}</span>
       </div>
       <div className="grid gap-1.5" style={createStepGrid(row.steps.length)}>
         {row.steps.map((step) => (
@@ -123,10 +123,10 @@ function RampRow({ row }: RampRowProps) {
               className="h-12 rounded-md border border-border"
               style={{ backgroundColor: step.hex }}
             />
-            <code className="truncate text-center text-[10px] text-muted-foreground">
+            <code className="truncate text-center text-[10px] text-text-muted">
               {step.label}
             </code>
-            <code className="text-center text-[10px] text-muted-foreground">
+            <code className="text-center text-[10px] text-text-muted">
               {step.deltaFromPrevious === null
                 ? "start"
                 : `ΔE ${formatDeltaE(step.deltaFromPrevious)}`}

@@ -27,22 +27,22 @@ export function ColorInterpolationPathView({
         width="718"
         height="178"
         rx="8"
-        className="fill-background/75 stroke-border"
+        className="fill-background-primary/75 stroke-border"
       />
       <line x1="48" x2="672" y1="134" y2="134" className="stroke-border" />
       <line x1="48" x2="48" y1="30" y2="134" className="stroke-border" />
-      <text x="48" y="160" className="fill-muted-foreground text-[13px]">
+      <text x="48" y="160" className="fill-text-muted text-[13px]">
         0%
       </text>
       <text
         x="672"
         y="160"
         textAnchor="end"
-        className="fill-muted-foreground text-[13px]"
+        className="fill-text-muted text-[13px]"
       >
         100%
       </text>
-      <text x="18" y="30" className="fill-muted-foreground text-[13px]">
+      <text x="18" y="30" className="fill-text-muted text-[13px]">
         L
       </text>
       {rows.map((row, index) => {
@@ -68,7 +68,7 @@ export function ColorInterpolationPathView({
                   cy={point.y}
                   r="5"
                   fill={step.hex}
-                  className="stroke-background"
+                  className="stroke-background-primary"
                   strokeWidth="2"
                 />
               )

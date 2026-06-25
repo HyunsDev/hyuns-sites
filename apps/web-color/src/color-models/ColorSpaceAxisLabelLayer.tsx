@@ -21,10 +21,10 @@ export function ColorSpaceAxisLabelLayer({
           key={`${label.kind}-${label.text}`}
           data-axis-label-index={index}
           className={cn(
-            "absolute top-0 left-0 rounded-md border border-border/70 bg-background/80 px-1.5 py-0.5 font-mono text-[0.62rem] leading-none font-semibold whitespace-nowrap shadow-sm backdrop-blur transition-opacity",
+            "absolute top-0 left-0 rounded-md border border-border/70 bg-background-primary/80 px-1.5 py-0.5 font-mono text-[0.62rem] leading-none font-semibold whitespace-nowrap shadow-sm backdrop-blur transition-opacity",
             label.kind === "axis"
-              ? "text-foreground"
-              : "hidden text-muted-foreground sm:block"
+              ? "text-text-normal"
+              : "hidden text-text-muted sm:block"
           )}
           style={{
             color: label.kind === "axis" ? label.color : undefined,

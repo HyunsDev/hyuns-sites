@@ -64,7 +64,7 @@ export function ColorAxisBarCanvas({
   return (
     <div
       className={cn(
-        "relative h-8 overflow-hidden rounded-md border border-border bg-background shadow-sm",
+        "relative h-8 overflow-hidden rounded-md border border-border bg-background-primary shadow-sm",
         className
       )}
     >

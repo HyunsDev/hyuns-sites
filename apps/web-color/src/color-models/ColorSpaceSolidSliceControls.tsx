@@ -33,7 +33,7 @@ export function ColorSpaceSolidSliceToggle({
   return (
     <label
       className={cn(
-        "flex items-center justify-between gap-3 rounded-md border border-border bg-background/75 px-2.5 py-2 text-xs",
+        "flex items-center justify-between gap-3 rounded-md border border-border bg-background-primary/75 px-2.5 py-2 text-xs",
         className
       )}
     >
@@ -43,7 +43,7 @@ export function ColorSpaceSolidSliceToggle({
           Slice
         </span>
         {!isSupported && (
-          <span className="text-[0.68rem] leading-none text-muted-foreground">
+          <span className="text-[0.68rem] leading-none text-text-muted">
             RGB, HSL, HSV, LCH, OKLCH only
           </span>
         )}
@@ -78,7 +78,7 @@ export function ColorSpaceSolidSliceControls({
     return (
       <div
         className={cn(
-          "rounded-md border border-dashed border-border bg-background/55 px-3 py-2 text-xs leading-5 text-muted-foreground",
+          "rounded-md border border-dashed border-border bg-background-primary/55 px-3 py-2 text-xs leading-5 text-text-muted",
           className
         )}
       >
@@ -115,15 +115,15 @@ function AxisSliceSlider({
       className={cn(
         "grid gap-1.5 rounded-md border px-2.5 py-2 transition-colors",
         isActive
-          ? "border-primary/60 bg-primary/10"
-          : "border-border bg-background/70"
+          ? "border-interactive-accent/60 bg-interactive-accent/10"
+          : "border-border bg-background-primary/70"
       )}
     >
       <div className="flex items-center justify-between gap-3 text-xs">
         <span
           className={cn(
             "font-medium",
-            isActive ? "text-foreground" : "text-muted-foreground"
+            isActive ? "text-text-normal" : "text-text-muted"
           )}
         >
           Fixed {axis.label}
@@ -175,7 +175,7 @@ function SupportedSliceControls({
   return (
     <div
       className={cn(
-        "grid gap-2 rounded-md border border-border bg-background/75 p-2.5",
+        "grid gap-2 rounded-md border border-border bg-background-primary/75 p-2.5",
         !sliceEnabled && "opacity-65",
         className
       )}

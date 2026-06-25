@@ -42,11 +42,11 @@ export function ColorInterpolationPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="flex items-center gap-2 text-sm font-bold">
             <BlendIcon className="size-4" />색 보간 경로 비교
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             같은 시작색과 끝색도 RGB, HSL, Lab, LCH, OKLCH 중 어디에서 섞는지에
             따라 중간색과 경로가 달라집니다.
           </p>
@@ -59,14 +59,14 @@ export function ColorInterpolationPage() {
         </div>
       }
       topEnd={
-        <div className="grid w-full max-w-[min(100%,46rem)] gap-3 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur">
+        <div className="grid w-full max-w-[min(100%,46rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
           <div className="grid gap-2 sm:grid-cols-[1fr_auto_1fr]">
             <ColorInput
               label="Start"
               value={startInput}
               onChange={setStartInput}
             />
-            <MoveRightIcon className="mx-auto hidden size-5 self-end text-muted-foreground sm:block" />
+            <MoveRightIcon className="mx-auto hidden size-5 self-end text-text-muted sm:block" />
             <ColorInput label="End" value={endInput} onChange={setEndInput} />
           </div>
           <div className="grid gap-2">
@@ -125,7 +125,7 @@ export function ColorInterpolationPage() {
     >
       <div className="flex size-full items-start justify-center px-4 pt-[26rem] pb-80 sm:px-8 sm:pt-80 lg:pt-64">
         <div className="grid w-full max-w-5xl gap-3">
-          <div className="rounded-md border border-border bg-background/92 p-3 shadow-sm backdrop-blur">
+          <div className="rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur">
             <code className="flex items-center gap-2 text-xs font-bold">
               <RouteIcon className="size-4" />
               OKLCH lightness path
@@ -166,8 +166,8 @@ function ColorInput({ label, onChange, value }: ColorInputProps) {
           type="text"
           value={value}
           className={cn(
-            "h-10 min-w-0 rounded-md border border-input bg-background px-3 font-mono text-xs ring-offset-background transition outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            !parsedColor && "border-destructive text-destructive"
+            "h-10 min-w-0 rounded-md border border-field-border bg-background-primary px-3 font-mono text-xs ring-offset-background-primary transition outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2",
+            !parsedColor && "border-border-error text-text-error"
           )}
           aria-label={`${label} CSS color`}
           onChange={(event) => onChange(event.currentTarget.value)}

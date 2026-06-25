@@ -66,7 +66,7 @@ export function GamutRamp({ hue, lightness, result }: GamutRampProps) {
   )
 
   return (
-    <section className="rounded-md border border-border bg-background/92 p-3 shadow-sm backdrop-blur">
+    <section className="rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur">
       <code className="flex items-center gap-2 text-sm font-bold">
         <ScanLineIcon className="size-4" />
         OKLCH chroma ramp
@@ -89,7 +89,7 @@ export function GamutRamp({ hue, lightness, result }: GamutRampProps) {
           />
         ))}
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">
+      <p className="mt-2 text-xs text-text-muted">
         사선 패턴은 선택한 target gamut 밖의 OKLCH 좌표입니다.
       </p>
     </section>
@@ -110,7 +110,7 @@ export function ColorResultCard({
   title,
 }: ColorResultCardProps) {
   return (
-    <section className="grid gap-3 rounded-md border border-border bg-background/92 p-3 shadow-sm backdrop-blur">
+    <section className="grid gap-3 rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur">
       <div
         className="h-24 rounded-md border border-border"
         style={{ backgroundColor: color }}
@@ -120,11 +120,11 @@ export function ColorResultCard({
           <GaugeIcon className="size-4" />
           {title}
         </code>
-        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+        <p className="mt-1 text-xs leading-5 text-text-muted">
           {subtitle}
         </p>
       </div>
-      <code className="min-w-0 rounded-md bg-muted/60 px-3 py-2 text-xs leading-5 break-all">
+      <code className="min-w-0 rounded-md bg-background-secondary/60 px-3 py-2 text-xs leading-5 break-all">
         {css}
       </code>
     </section>

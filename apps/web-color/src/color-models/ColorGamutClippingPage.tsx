@@ -29,12 +29,12 @@ export function ColorGamutClippingPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="flex items-center gap-2 text-sm font-bold">
             <ScissorsIcon className="size-4" />
             색역과 Clipping
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             OKLCH chroma를 올리면 같은 색도 sRGB, Display P3, Rec.2020 경계에서
             다르게 잘리거나 gamut mapping됩니다.
           </p>
@@ -47,7 +47,7 @@ export function ColorGamutClippingPage() {
         </div>
       }
       topEnd={
-        <div className="grid w-full max-w-[min(100%,44rem)] gap-3 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur">
+        <div className="grid w-full max-w-[min(100%,44rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
           <div className="grid grid-cols-3 gap-2">
             {GAMUT_CLIPPING_TARGETS.map((target) => (
               <Button

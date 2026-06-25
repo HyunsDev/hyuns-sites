@@ -125,12 +125,12 @@ function isSolidGamutModeSupported(
 
 function AxisLegendItem({ axis }: { readonly axis: ColorSpaceAxis }) {
   return (
-    <li className="grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md border border-border bg-background/75 px-2.5 py-2">
+    <li className="grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md border border-border bg-background-primary/75 px-2.5 py-2">
       <span
         className="row-span-2 size-2 rounded-full"
         style={{ backgroundColor: axis.color }}
       />
-      <span className="font-mono text-[0.62rem] leading-none text-muted-foreground">
+      <span className="font-mono text-[0.62rem] leading-none text-text-muted">
         {axis.label}
       </span>
       <span className="mt-1 text-xs leading-none font-medium">
@@ -150,7 +150,7 @@ function CoordinateLegendDock({
   return (
     <div
       className={cn(
-        "rounded-md border border-border bg-background/90 p-2.5 shadow-sm backdrop-blur",
+        "rounded-md border border-border bg-background-primary/90 p-2.5 shadow-sm backdrop-blur",
         className
       )}
     >
@@ -181,7 +181,7 @@ function CoordinateSliceDock({
   return (
     <div
       className={cn(
-        "grid max-w-full gap-2 rounded-md border border-border bg-background/90 p-2.5 shadow-sm backdrop-blur sm:grid-cols-[auto_minmax(13rem,1fr)]",
+        "grid max-w-full gap-2 rounded-md border border-border bg-background-primary/90 p-2.5 shadow-sm backdrop-blur sm:grid-cols-[auto_minmax(13rem,1fr)]",
         className
       )}
     >
@@ -249,9 +249,9 @@ function SolidModelControls({
   const ActiveIcon = MODEL_ICONS[selectedModelId]
 
   return (
-    <div className="grid gap-2 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur sm:grid-cols-[minmax(12rem,18rem)_auto] sm:items-end">
+    <div className="grid gap-2 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur sm:grid-cols-[minmax(12rem,18rem)_auto] sm:items-end">
       <label className="grid gap-1.5 text-xs">
-        <span className="font-medium text-muted-foreground">Model</span>
+        <span className="font-medium text-text-muted">Model</span>
         <Select
           value={selectedBaseModelId}
           onValueChange={(value) => {
@@ -261,7 +261,7 @@ function SolidModelControls({
           }}
         >
           <SelectTrigger
-            className="h-9 w-full justify-between bg-background/75"
+            className="h-9 w-full justify-between bg-background-primary/75"
             aria-label="Select solid color space model"
           >
             <SelectValue placeholder="Model" />
@@ -282,7 +282,7 @@ function SolidModelControls({
       </label>
       <label
         className={cn(
-          "flex h-9 items-center justify-between gap-3 rounded-md border border-border bg-background/75 px-2.5 text-xs",
+          "flex h-9 items-center justify-between gap-3 rounded-md border border-border bg-background-primary/75 px-2.5 text-xs",
           !cubeSupported && "opacity-60"
         )}
       >
@@ -371,11 +371,11 @@ export function ColorSpaceSolidModelsPage() {
   return (
     <PlaygroundStage
       topStart={
-        <div className="max-w-sm rounded-md border border-border bg-background/90 p-4 shadow-sm backdrop-blur">
+        <div className="max-w-sm rounded-md border border-border bg-background-primary/90 p-4 shadow-sm backdrop-blur">
           <code className="text-sm font-bold">
             색 공간을 실제 3D 표면으로 보기
           </code>
-          <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">
+          <p className="mt-1 hidden text-xs leading-5 text-text-muted sm:block">
             점군 대신 닫힌 표면 mesh로 RGB, HSL, HSV, HWB, XYZ, xyY, Lab, LCH,
             OKLab, OKLCH와 펼친 Cube 모델의 형태 차이를 비교합니다. CIE 1931은
             디스플레이 색역이 아니라 XYZ/xyY reference boundary입니다.
@@ -387,7 +387,7 @@ export function ColorSpaceSolidModelsPage() {
             </Badge>
             <Badge variant="normal">{mesh.shapeLabel}</Badge>
           </div>
-          <label className="mt-3 flex items-center justify-between gap-3 rounded-md border border-border bg-background/75 px-2.5 py-2 text-xs">
+          <label className="mt-3 flex items-center justify-between gap-3 rounded-md border border-border bg-background-primary/75 px-2.5 py-2 text-xs">
             <span className="font-medium">Wireframe</span>
             <Switch
               size="sm"
@@ -448,7 +448,7 @@ export function ColorSpaceSolidModelsPage() {
         model={selectedModel}
         sliceMesh={sliceMesh}
         showWireframe={showWireframe}
-        className="size-full min-h-0 rounded-none border-0 bg-background/70 shadow-none md:min-h-0"
+        className="size-full min-h-0 rounded-none border-0 bg-background-primary/70 shadow-none md:min-h-0"
       />
     </PlaygroundStage>
   )

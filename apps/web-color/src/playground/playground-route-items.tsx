@@ -195,7 +195,7 @@ export function PlaygroundRouteGroup({
       }
     >
       {name && (
-        <div className="mb-4 flex items-center justify-center gap-1 text-center font-mono text-sm text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
+        <div className="mb-4 flex items-center justify-center gap-1 text-center font-mono text-sm text-text-normal [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
           {ListIcon && <ListIcon />}
           {name}
         </div>

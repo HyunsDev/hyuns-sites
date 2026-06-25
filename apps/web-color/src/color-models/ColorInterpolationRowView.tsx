@@ -18,7 +18,7 @@ export function ColorInterpolationRowView({ row }: InterpolationRowViewProps) {
     .join(", ")})`
 
   return (
-    <section className="rounded-md border border-border bg-background/92 p-3 shadow-sm backdrop-blur">
+    <section className="rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <code className="flex items-center gap-2 text-sm font-bold">
           <SwatchBookIcon className="size-4" />
@@ -46,7 +46,7 @@ export function ColorInterpolationRowView({ row }: InterpolationRowViewProps) {
               className="h-9 rounded-md border border-border"
               style={{ backgroundColor: step.hex }}
             />
-            <code className="truncate text-center text-[10px] text-muted-foreground">
+            <code className="truncate text-center text-[10px] text-text-muted">
               {step.hex}
             </code>
           </div>

@@ -2,70 +2,7 @@
 @import "@hyunsdev/ui/globals.css";
 @source "./**/*.{ts,tsx}";
 
-@theme inline {
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-:root {
-  --background: var(--background-primary);
-  --foreground: var(--text-color);
-  --card: var(--card-background);
-  --card-foreground: var(--card-text);
-  --popover: var(--floating-background);
-  --popover-foreground: var(--floating-text);
-  --primary: var(--interactive-accent);
-  --primary-foreground: var(--text-on-accent);
-  --secondary: var(--interactive-normal);
-  --secondary-foreground: var(--text-color);
-  --muted: var(--background-secondary);
-  --muted-foreground: var(--text-muted);
-  --accent-foreground: var(--text-color);
-  --destructive: var(--text-error);
-  --input: var(--field-border);
-  --ring: var(--focus-ring);
-  --chart-1: oklch(0.871 0.006 286.286);
-  --chart-2: oklch(0.552 0.016 285.938);
-  --chart-3: oklch(0.442 0.017 285.786);
-  --chart-4: oklch(0.37 0.013 285.805);
-  --chart-5: oklch(0.274 0.006 286.033);
-}
-
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
   #root {
     min-height: 100svh;
   }

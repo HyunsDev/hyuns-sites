@@ -225,10 +225,10 @@ export function CieXyzGamutCanvas({
         className="block size-full"
       />
       <div className="pointer-events-none absolute top-3 left-3 hidden flex-wrap items-center gap-2 lg:flex">
-        <span className="rounded-md border border-border bg-background/85 px-2 py-1 font-mono text-[0.65rem] text-foreground shadow-sm backdrop-blur">
+        <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-normal shadow-sm backdrop-blur">
           {visibleCount} gamuts
         </span>
-        <span className="rounded-md border border-border bg-background/85 px-2 py-1 font-mono text-[0.65rem] text-muted-foreground shadow-sm backdrop-blur">
+        <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
           {getOverlayScopeLabel({ showVisibleCone, viewMode, visibleCount })}
         </span>
       </div>

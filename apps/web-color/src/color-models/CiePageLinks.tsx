@@ -16,7 +16,7 @@ const CIE_PAGE_LINKS = [
 
 export function CiePageLinks({ current }: { readonly current: CiePageId }) {
   return (
-    <div className="grid w-full max-w-[min(100%,42rem)] grid-cols-1 gap-2 rounded-md border border-border bg-background/90 p-3 shadow-sm backdrop-blur sm:grid-cols-3">
+    <div className="grid w-full max-w-[min(100%,42rem)] grid-cols-1 gap-2 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur sm:grid-cols-3">
       {CIE_PAGE_LINKS.map((item) => (
         <Button
           key={item.id}

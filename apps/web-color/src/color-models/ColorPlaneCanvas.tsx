@@ -65,7 +65,7 @@ export function ColorPlaneCanvas({
   return (
     <div
       className={cn(
-        "relative aspect-square overflow-hidden rounded-md border border-border bg-background shadow-sm",
+        "relative aspect-square overflow-hidden rounded-md border border-border bg-background-primary shadow-sm",
         className
       )}
     >

@@ -238,11 +238,11 @@ export function PlaygroundIndexPage({
 
   return (
     <PlaygroundTransitionContext.Provider value={contextValue}>
-      <div className="bg-dot-grid flex min-h-svh flex-col bg-muted/40 text-foreground">
+      <div className="bg-dot-grid flex min-h-svh flex-col bg-background-secondary/40 text-text-normal">
         <header className="flex min-h-18 shrink-0 flex-col items-center justify-center gap-1 px-4 py-3 text-center">
           <code className="text-sm font-bold">{title}</code>
           {description && (
-            <p className="max-w-xl text-xs text-muted-foreground">
+            <p className="max-w-xl text-xs text-text-muted">
               {description}
             </p>
           )}
