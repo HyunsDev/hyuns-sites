@@ -107,7 +107,7 @@ export function PortalRouteIndex({
       applied
       type="button"
       disabled={transitionState.phase === "exiting"}
-      className="group justify-between"
+      className="group w-full justify-between"
       onClick={handleClick}
       onKeyDown={handlePressStart}
       onKeyUp={handlePressEnd}

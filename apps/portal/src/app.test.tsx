@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 import { App } from "./app";
@@ -46,6 +46,18 @@ describe("Portal", () => {
       "href",
       "https://www.instagram.com/hyunsdev"
     );
+  });
+
+  it("shows external link destinations as tooltips", async () => {
+    renderPortal();
+
+    fireEvent.focus(await screen.findByRole("link", { name: "HyunsDev" }));
+    expect(screen.getByRole("tooltip", { name: "https://hyuns.dev" })).toBeVisible();
+
+    fireEvent.focus(screen.getByRole("link", { name: "PKM Utils" }));
+    expect(screen.getByRole("tooltip", { name: "https://pkm-utils.hyuns.dev" })).toBeVisible();
+
+    expect(screen.queryByRole("tooltip", { name: "/projects" })).not.toBeInTheDocument();
   });
 
   it("renders the projects route placeholder", async () => {

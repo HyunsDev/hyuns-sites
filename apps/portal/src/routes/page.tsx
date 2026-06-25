@@ -1,5 +1,10 @@
 import { useParams } from "@tanstack/react-router";
 import { Button } from "@hyunsdev/ui/components/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from "@hyunsdev/ui/components/tooltip";
 import { getPortalPage } from "../portal-data";
 import type { PortalItem, PortalPage } from "../portal-data";
 import { getPortalIcon } from "../portal-icons";
@@ -22,7 +27,7 @@ function PortalItemButton({ item }: { item: PortalItem }) {
 
   if (item.disabled) {
     return (
-      <Button type="button" disabled className="justify-start">
+      <Button type="button" disabled className="w-full justify-start">
         <ItemIcon />
         {item.label}
       </Button>
@@ -41,11 +46,25 @@ function PortalItemButton({ item }: { item: PortalItem }) {
   }
 
   if (item.href) {
-    return <PortalRouteFeature icon={ItemIcon} label={item.label} href={item.href} />;
+    return (
+      <Tooltip >
+        <TooltipTrigger asChild>
+          <PortalRouteFeature icon={ItemIcon} label={item.label} href={item.href} />
+        </TooltipTrigger>
+        <TooltipContent
+          side="top"
+          sideOffset={8}
+          className="max-w-[min(320px,calc(100vw-32px))] overflow-hidden text-ellipsis whitespace-nowrap font-mono text-xs"
+          
+        >
+          {item.href}
+        </TooltipContent>
+      </Tooltip>
+    );
   }
 
   return (
-    <Button type="button" disabled className="justify-start">
+    <Button type="button" disabled className="w-full justify-start">
       <ItemIcon />
       {item.label}
     </Button>
