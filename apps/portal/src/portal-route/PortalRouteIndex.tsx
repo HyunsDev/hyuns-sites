@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { ElementType } from "react";
+import type { ElementType, MouseEvent } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Button } from "@hyunsdev/ui/components/button";
@@ -19,10 +19,12 @@ export function PortalRouteIndex({
   direction = "next",
   icon,
   label,
+  openInNewTab = false,
   path
 }: {
   icon: ElementType;
   label: string;
+  openInNewTab?: boolean;
   path: string;
   direction?: PortalDirection;
 }) {
@@ -58,8 +60,16 @@ export function PortalRouteIndex({
     });
   };
 
-  const handleClick = () => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (transitionState.phase === "exiting" || isNavigatingRef.current) {
+      return;
+    }
+
+    if (openInNewTab || event.metaKey || event.ctrlKey) {
+      window.open(path, "_blank", "noopener,noreferrer");
+      setPressed(false);
+      pressStartedAtRef.current = null;
+
       return;
     }
 
@@ -131,7 +141,7 @@ export function PortalRouteIndex({
 
       <span className="flex w-full items-center justify-center gap-2">
         <RouteIcon />
-        {label}
+        <span className={cn(openInNewTab && "underline underline-offset-4")}>{label}</span>
       </span>
 
       <ArrowRightIcon
