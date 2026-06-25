@@ -4,6 +4,7 @@ import { createMemoryHistory } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 import { App } from "./app";
 import { getPortalPage } from "./portal-data";
+import { getPortalIcon } from "./portal-icons";
 import { getRouter } from "./router";
 
 function renderPortal(path = "/") {
@@ -57,5 +58,14 @@ describe("Portal", () => {
   it("loads pages from YAML data", () => {
     expect(getPortalPage("/")?.columns).toHaveLength(3);
     expect(getPortalPage("/projects")?.title).toBe("Projects");
+  });
+
+  it("supports Simple Icons from YAML icon names", () => {
+    const YouTubeIcon = getPortalIcon("Simple:YouTube");
+
+    render(<YouTubeIcon data-testid="simple-icon" />);
+
+    expect(screen.getByTestId("simple-icon")).toHaveAttribute("viewBox", "0 0 24 24");
+    expect(screen.getByTestId("simple-icon").querySelector("path")).toHaveAttribute("d");
   });
 });

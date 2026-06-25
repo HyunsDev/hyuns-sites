@@ -39,25 +39,25 @@ pages:
             icon: ExternalLink
             items:
               - label: 블로그
-                icon: BookOpenText
+                icon: Simple:Velog
                 href: https://velog.io/@phw3071
               - label: 유튜브 (개발)
-                icon: TvMinimalPlay
+                icon: Simple:YouTube
                 href: https://www.youtube.com/@hyunsdev
               - label: 유튜브 (영상)
-                icon: TvMinimalPlay
+                icon: Simple:YouTube
                 href: https://www.youtube.com/@hyuns_production
               - label: 인스타그램 (개인)
-                icon: AtSign
+                icon: Simple:Instagram
                 href: https://www.instagram.com/hyunsdev
               - label: 인스타그램 (현우공간)
-                icon: Camera
+                icon: Simple:Instagram
                 href: https://www.instagram.com/hyuns.space
               - label: 인스타그램 (일상)
-                icon: Camera
+                icon: Simple:Instagram
                 href: https://www.instagram.com/hyuns.privacy
               - label: Threads
-                icon: MessageCircle
+                icon: Simple:Threads
                 href: https://www.instagram.com/hyunsdev
 
   - path: /projects
