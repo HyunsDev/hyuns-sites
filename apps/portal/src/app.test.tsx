@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { App } from "./app";
 import { getPortalPage } from "./portal-data";
 import { getPortalIcon } from "./portal-icons";
+import { PortalRouteFeature } from "./portal-route";
 import { getRouter } from "./router";
 
 function renderPortal(path = "/") {
@@ -118,9 +119,26 @@ describe("Portal", () => {
   it("supports Simple Icons from YAML icon names", () => {
     const YouTubeIcon = getPortalIcon("Simple:YouTube");
 
+    expect(YouTubeIcon).toBeDefined();
+
+    if (!YouTubeIcon) {
+      throw new Error("Expected Simple:YouTube to resolve to an icon.");
+    }
+
     render(<YouTubeIcon data-testid="simple-icon" />);
 
     expect(screen.getByTestId("simple-icon")).toHaveAttribute("viewBox", "0 0 24 24");
     expect(screen.getByTestId("simple-icon").querySelector("path")).toHaveAttribute("d");
+  });
+
+  it("does not render a fallback icon when an item icon is omitted", () => {
+    expect(getPortalIcon()).toBeUndefined();
+
+    const { container } = render(
+      <PortalRouteFeature label="No Icon" href="https://example.com" />
+    );
+
+    expect(screen.getByRole("link", { name: "No Icon" })).toBeVisible();
+    expect(container.querySelector("svg")).not.toBeInTheDocument();
   });
 });

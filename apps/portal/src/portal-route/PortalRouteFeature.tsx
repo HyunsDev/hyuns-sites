@@ -4,7 +4,7 @@ import { Button } from "@hyunsdev/ui/components/button";
 import { cn } from "@hyunsdev/ui/lib/utils";
 
 export type PortalFeature = {
-  icon: ElementType;
+  icon?: ElementType;
   label: string;
   href: string;
   openInNewTab?: boolean;
@@ -20,7 +20,7 @@ export const PortalRouteFeature = forwardRef<HTMLAnchorElement, PortalRouteFeatu
     return (
       <Button asChild className="w-full">
         <a ref={ref} href={href} {...anchorProps}>
-          <RouteIcon />
+          {RouteIcon ? <RouteIcon /> : null}
           <span className={cn(openInNewTab && "underline underline-offset-4")}>{label}</span>
         </a>
       </Button>

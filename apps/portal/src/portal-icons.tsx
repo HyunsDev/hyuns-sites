@@ -74,9 +74,9 @@ const simpleIcons: Record<string, ElementType> = {
   youtube: createSimpleIcon(siYoutube)
 };
 
-export function getPortalIcon(name?: string): ElementType {
+export function getPortalIcon(name?: string): ElementType | undefined {
   if (!name) {
-    return LinkIcon;
+    return undefined;
   }
 
   const simpleIconMatch = name.match(/^simple:(.+)$/i);

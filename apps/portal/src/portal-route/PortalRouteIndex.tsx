@@ -22,7 +22,7 @@ export function PortalRouteIndex({
   openInNewTab = false,
   path
 }: {
-  icon: ElementType;
+  icon?: ElementType;
   label: string;
   openInNewTab?: boolean;
   path: string;
@@ -140,7 +140,7 @@ export function PortalRouteIndex({
       />
 
       <span className="flex w-full items-center justify-center gap-2">
-        <RouteIcon />
+        {RouteIcon ? <RouteIcon /> : null}
         <span className={cn(openInNewTab && "underline underline-offset-4")}>{label}</span>
       </span>
 

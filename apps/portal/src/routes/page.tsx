@@ -63,7 +63,7 @@ function PortalItemButton({
   if (item.disabled) {
     return (
       <Button type="button" disabled className="w-full justify-start">
-        <ItemIcon />
+        {ItemIcon ? <ItemIcon /> : null}
         {item.label}
       </Button>
     );
@@ -107,7 +107,7 @@ function PortalItemButton({
 
   return (
     <Button type="button" disabled className="w-full justify-start">
-      <ItemIcon />
+      {ItemIcon ? <ItemIcon /> : null}
       {item.label}
     </Button>
   );
