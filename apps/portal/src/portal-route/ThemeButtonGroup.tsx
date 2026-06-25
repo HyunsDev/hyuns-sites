@@ -1,0 +1,34 @@
+import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
+import { useTheme } from "@hyunsdev/ui/components/theme-provider";
+import { ToggleGroup, ToggleGroupItem } from "@hyunsdev/ui/components/toggle-group";
+import { isThemeMode } from "@hyunsdev/ui/lib/theme";
+
+export function ThemeButtonGroup() {
+  const { theme, setTheme } = useTheme();
+  const handleValueChange = (value: string) => {
+    if (isThemeMode(value)) {
+      setTheme(value);
+    }
+  };
+
+  return (
+    <ToggleGroup
+      type="single"
+      className="bg-transparent"
+      aria-label="Theme selector"
+      value={theme}
+      size="sm"
+      onValueChange={handleValueChange}
+    >
+      <ToggleGroupItem value="light" aria-label="Light theme">
+        <SunIcon />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="dark" aria-label="Dark theme">
+        <MoonIcon />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="system" aria-label="System theme">
+        <MonitorIcon />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
