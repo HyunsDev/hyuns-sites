@@ -1,0 +1,9 @@
+{
+  "extends": "@workspace/typescript-config/vite-app",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
+  },
+  "include": ["src", "vite.config.ts", "vitest.config.ts"],
+  "exclude": ["dist", "node_modules"],
+  "references": [{ "path": "../../packages/site-ui" }]
+}
