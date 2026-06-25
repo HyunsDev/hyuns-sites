@@ -3,36 +3,39 @@ pages:
     title: Portal
     columns:
       - groups:
-          - title: 개인 웹사이트
-            icon: Globe2
+          - title: Offical
             items:
               - label: HyunsDev
                 icon: Code2
                 href: https://hyuns.dev
-              - label: 현우공간
+              - label: Hyuns Space
                 icon: House
                 href: https://hyuns.space
               - label: Subtitle
                 icon: Captions
                 href: https://subtitle.hyuns.dev
 
-          - title: 유틸리티
-            icon: Wrench
-            items:
-              - label: PKM Utils
-                icon: NotebookText
-                href: https://pkm-utils.hyuns.dev
-              - label: Cubic Bezier
-                icon: ChartSpline
-                href: https://cubic-bezier.hyuns.dev
+      - groups:
+        - title: 유틸리티
+          icon: Wrench
+          items:
+            - label: PKM Utils
+              icon: NotebookText
+              href: https://pkm-utils.hyuns.dev
+            - label: Cubic Bezier
+              icon: ChartSpline
+              href: https://cubic-bezier.hyuns.dev
+            - label: Hyuns UI
+              icon: Blocks
+              href: https://ui-playground.hyuns.dev
 
       - groups:
           - title: 프로젝트
             icon: Folder
             items:
-              - label: Projects
+              - label: Simulators
                 icon: Folder
-                path: /projects
+                path: /simulators
 
       - groups:
           - title: 외부 링크
@@ -60,17 +63,28 @@ pages:
                 icon: Simple:Threads
                 href: https://www.instagram.com/hyunsdev
 
-  - path: /projects
-    title: Projects
+  - path: /simulators
+    title: Simulators
     columns:
       - groups:
           - title: 프로젝트
-            icon: Folder
             items:
-              - label: 추후 추가 예정
-                icon: FolderClock
-                disabled: true
-              - label: Portal
-                icon: Home
-                path: /
-                direction: prev
+              - label: 스페이스 그래비티
+                href: https://space-gravity.hyuns.dev
+              - label: 원운동 시뮬레이터
+                href: https://circular-motion.hyuns.dev/
+              - label: 자이로볼
+                href: https://gyroball.hyuns.dev
+              - label: 포물선 운동
+                href: https://pendulum.hyuns.dev
+              - label: 레이케스터
+                href: https://raycaster.hyuns.dev
+              - label: 단진자 운동
+                href: https://pendulum.hyuns.dev
+              - label: 몬티 홀 문제
+                href: https://hyunsdev.github.io/SSR-monty-hall-problem-p5js
+              - label: 빛의 굴절과 반사
+                href: https://hyunsdev.github.io/physics-refraction-simulator
+              - label: 펭귄 스케이팅
+                href: https://hyunsdev.github.io/math-animation-game
+            
