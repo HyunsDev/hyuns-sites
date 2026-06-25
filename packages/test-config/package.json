@@ -1,0 +1,18 @@
+{
+  "name": "@workspace/test-config",
+  "private": true,
+  "version": "0.0.0",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    "./react": "./src/react.ts",
+    "./setup": "./src/setup.ts"
+  },
+  "peerDependencies": {
+    "vite": "^7.0.0",
+    "vitest": "^3.0.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.6.0"
+  }
+}

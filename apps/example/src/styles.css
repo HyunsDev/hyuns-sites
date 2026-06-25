@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "@hyunsdev/ui/globals.css";
+
+@source "../../../packages/site-ui/src/**/*.{ts,tsx}";

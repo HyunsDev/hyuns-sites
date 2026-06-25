@@ -1,0 +1,10 @@
+{
+  "extends": "@workspace/typescript-config/react-library",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
+}
