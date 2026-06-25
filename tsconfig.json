@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "./apps/example" },
+    { "path": "./apps/portal" },
     { "path": "./packages/site-ui" }
   ]
 }
