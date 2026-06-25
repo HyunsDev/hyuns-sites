@@ -16,6 +16,7 @@
   "dependencies": {
     "@hyunsdev/ui": "^0.1.0",
     "@tanstack/react-router": "^1.170.16",
+    "js-yaml": "^4.2.0",
     "lucide-react": "^1.8.0",
     "motion": "^12.38.0",
     "react": "^19.1.0",
@@ -24,10 +25,10 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/history": "^1.162.0",
+    "@vitejs/plugin-react": "^4.6.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/test-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
-    "@vitejs/plugin-react": "^4.6.0",
     "tailwindcss": "^4.1.11",
     "vite": "^7.0.0",
     "vitest": "^3.2.4"

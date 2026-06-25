@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 import { App } from "./app";
+import { getPortalPage } from "./portal-data";
 import { getRouter } from "./router";
 
 function renderPortal(path = "/") {
@@ -51,5 +52,10 @@ describe("Portal", () => {
 
     expect(await screen.findByText("Projects")).toBeVisible();
     expect(screen.getByText("추후 추가 예정")).toBeVisible();
+  });
+
+  it("loads pages from YAML data", () => {
+    expect(getPortalPage("/")?.columns).toHaveLength(3);
+    expect(getPortalPage("/projects")?.title).toBe("Projects");
   });
 });

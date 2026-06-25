@@ -6,8 +6,7 @@ import {
   Outlet
 } from "@tanstack/react-router";
 import type { RouterHistory } from "@tanstack/react-router";
-import { HomeRoute } from "./routes/home";
-import { ProjectsRoute } from "./routes/projects";
+import { DynamicPageRoute, HomeRoute } from "./routes/page";
 
 function RootRoute() {
   return <Outlet />;
@@ -23,13 +22,13 @@ const indexRoute = createRoute({
   component: HomeRoute
 });
 
-const projectsRoute = createRoute({
+const dynamicPageRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/projects",
-  component: ProjectsRoute
+  path: "$pageId",
+  component: DynamicPageRoute
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, projectsRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, dynamicPageRoute]);
 
 export function getRouter({ history }: { history?: RouterHistory } = {}) {
   return createRouter({

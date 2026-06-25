@@ -1,0 +1,76 @@
+pages:
+  - path: /
+    title: Portal
+    columns:
+      - groups:
+          - title: 개인 웹사이트
+            icon: Globe2
+            items:
+              - label: HyunsDev
+                icon: Code2
+                href: https://hyuns.dev
+              - label: 현우공간
+                icon: House
+                href: https://hyuns.space
+              - label: Subtitle
+                icon: Captions
+                href: https://subtitle.hyuns.dev
+
+          - title: 유틸리티
+            icon: Wrench
+            items:
+              - label: PKM Utils
+                icon: NotebookText
+                href: https://pkm-utils.hyuns.dev
+              - label: Cubic Bezier
+                icon: ChartSpline
+                href: https://cubic-bezier.hyuns.dev
+
+      - groups:
+          - title: 프로젝트
+            icon: Folder
+            items:
+              - label: Projects
+                icon: Folder
+                path: /projects
+
+      - groups:
+          - title: 외부 링크
+            icon: ExternalLink
+            items:
+              - label: 블로그
+                icon: BookOpenText
+                href: https://velog.io/@phw3071
+              - label: 유튜브 (개발)
+                icon: TvMinimalPlay
+                href: https://www.youtube.com/@hyunsdev
+              - label: 유튜브 (영상)
+                icon: TvMinimalPlay
+                href: https://www.youtube.com/@hyuns_production
+              - label: 인스타그램 (개인)
+                icon: AtSign
+                href: https://www.instagram.com/hyunsdev
+              - label: 인스타그램 (현우공간)
+                icon: Camera
+                href: https://www.instagram.com/hyuns.space
+              - label: 인스타그램 (일상)
+                icon: Camera
+                href: https://www.instagram.com/hyuns.privacy
+              - label: Threads
+                icon: MessageCircle
+                href: https://www.instagram.com/hyunsdev
+
+  - path: /projects
+    title: Projects
+    columns:
+      - groups:
+          - title: 프로젝트
+            icon: Folder
+            items:
+              - label: 추후 추가 예정
+                icon: FolderClock
+                disabled: true
+              - label: Portal
+                icon: Home
+                path: /
+                direction: prev
