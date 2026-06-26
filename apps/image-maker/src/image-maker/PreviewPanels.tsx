@@ -42,7 +42,7 @@ function PreviewStage({
   if (!image) {
     return (
       <div
-        className={`grid ${stageHeight} place-items-center rounded-md border border-dashed border-border bg-muted/20 p-6 text-center`}
+        className={`grid ${stageHeight} w-full min-w-0 place-items-center rounded-md border border-dashed border-border bg-muted/20 p-6 text-center`}
       >
         <p className="text-sm font-medium">No source selected</p>
       </div>
@@ -53,7 +53,7 @@ function PreviewStage({
 
   return (
     <div
-      className={`image-maker-checkerboard grid ${stageHeight} place-items-center overflow-hidden rounded-md border border-border p-5`}
+      className={`image-maker-checkerboard grid ${stageHeight} w-full min-w-0 place-items-center overflow-hidden rounded-md border border-border p-5`}
     >
       <img
         src={svgToDataUrl(image.svg)}
@@ -80,8 +80,8 @@ function PreviewPane({
   const disabled = image === null;
 
   return (
-    <section className="flex flex-col gap-3 p-3">
-      <div>
+    <section className="flex w-full min-w-0 flex-col gap-3 p-3">
+      <div className="w-full min-w-0">
         <PreviewStage image={image} mode={mode} sourceTitle={sourceTitle} />
       </div>
       <div className="flex shrink-0 flex-wrap gap-2">
@@ -168,8 +168,8 @@ export function PreviewPanels({
   onDownloadSvg
 }: PreviewPanelsProps) {
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      <div className="grid min-h-0 flex-1 divide-y divide-border md:grid-rows-2">
+    <div className="flex h-full w-full min-w-0 flex-1 flex-col">
+      <div className="grid min-h-0 w-full min-w-0 flex-1 divide-y divide-border md:grid-rows-2">
         <PreviewPane
           image={iconImage}
           mode="icon"

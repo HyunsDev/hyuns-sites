@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@hyunsdev/ui/components/button";
+import {
+  ResizablePanel,
+  ResizablePanelGroup
+} from "@hyunsdev/ui/components/resizable";
 import { RotateCcwIcon } from "lucide-react";
 import {
   Panel,
@@ -11,6 +15,7 @@ import {
 import {
   Workbench,
   WorkbenchContentArea,
+  WorkbenchContextAreaRail,
   WorkbenchProvider
 } from "@hyunsdev/ui/layouts/workbench";
 import { copyPngToClipboard, copySvgToClipboard, downloadPng, downloadSvg } from "./exporters";
@@ -40,6 +45,13 @@ type ImageMakerWorkbenchProps = {
 };
 
 type WorkbenchOrientation = "horizontal" | "vertical";
+
+const OPTION_PANEL_DEFAULT_SIZE = "380px";
+const WORKBENCH_PANEL_MIN_SIZE = "220px";
+const WORKBENCH_RESIZE_TARGET_MINIMUM_SIZE = {
+  coarse: 36,
+  fine: 12
+} as const;
 
 function getFilename(sourceKind: SourceKind, mode: string, extension: string) {
   return `image-maker-${sourceKind}-${mode}.${extension}`;
@@ -115,74 +127,98 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
       <Workbench>
         <ImageMakerSidebar activeKind={sourceKind} />
         <WorkbenchContentArea orientation={workbenchOrientation}>
-          <Panel key="options" className="w-[380px] min-w-[380px] basis-[380px]">
-            <PanelHeader>
-              <PanelHeaderLeading>
-                <div className="grid gap-1">
-                  <h1 className="text-base font-semibold leading-6">{sourceConfig.label}</h1>
-                </div>
-              </PanelHeaderLeading>
-            </PanelHeader>
-            <PanelBody className="p-0">
-              <OptionsPanel
-                options={options}
-                pngFileName={pngFileName}
-                sourceKind={sourceKind}
-                svgText={svgText}
-                userPresets={userPresets}
-                onFileError={(message) => setStatus({ kind: "error", message })}
-                onOptionsChange={setOptions}
-                onPngDataUrlChange={(dataUrl, fileName) => {
-                  setPngDataUrl(dataUrl);
-                  setPngFileName(fileName);
-                }}
-                onSvgTextChange={setSvgText}
-                onUserPresetsChange={(presets) => {
-                  writeUserColorPresets(presets);
-                  setUserPresets(presets);
-                }}
-              />
-            </PanelBody>
-          </Panel>
-          <Panel key="preview" className="min-w-0">
-            <PanelHeader>
-              <PanelHeaderLeading>
-                <span className="truncate text-sm font-medium">{sourceTitle}</span>
-              </PanelHeaderLeading>
-              <PanelHeaderTrailing>
-                <Button type="button" size="sm" variant="outline" onClick={resetOptions}>
-                  <RotateCcwIcon aria-hidden="true" className="size-3.5" />
-                  Reset
-                </Button>
-              </PanelHeaderTrailing>
-            </PanelHeader>
-            <PanelBody className="p-0">
-              <PreviewPanels
-                bannerImage={bannerImage}
-                iconImage={iconImage}
-                sourceTitle={sourceTitle}
-                status={status}
-                onCopySvg={(image) =>
-                  void runExport(() => copySvgToClipboard(image), "SVG copied.")
-                }
-                onCopyPng={(image) =>
-                  void runExport(() => copyPngToClipboard(image), "PNG copied.")
-                }
-                onDownloadSvg={(image) =>
-                  void runExport(
-                    () => downloadSvg(image, getFilename(sourceKind, image.mode, "svg")),
-                    "SVG downloaded."
-                  )
-                }
-                onDownloadPng={(image) =>
-                  void runExport(
-                    () => downloadPng(image, getFilename(sourceKind, image.mode, "png")),
-                    "PNG downloaded."
-                  )
-                }
-              />
-            </PanelBody>
-          </Panel>
+          <ResizablePanelGroup
+            orientation={workbenchOrientation}
+            resizeTargetMinimumSize={WORKBENCH_RESIZE_TARGET_MINIMUM_SIZE}
+            className="relative z-[calc(var(--layer-sidebar)+1)] min-h-0 min-w-0 flex-1 aria-[orientation=vertical]:flex-col"
+            style={{ overflow: "visible" }}
+          >
+            <ResizablePanel
+              defaultSize={workbenchOrientation === "horizontal" ? OPTION_PANEL_DEFAULT_SIZE : "50%"}
+              groupResizeBehavior={
+                workbenchOrientation === "horizontal" ? "preserve-pixel-size" : undefined
+              }
+              minSize={WORKBENCH_PANEL_MIN_SIZE}
+              className="relative min-h-0 min-w-0"
+              style={{ overflow: "visible" }}
+            >
+              <Panel>
+                <PanelHeader>
+                  <PanelHeaderLeading>
+                    <div className="grid gap-1">
+                      <h1 className="text-base font-semibold leading-6">{sourceConfig.label}</h1>
+                    </div>
+                  </PanelHeaderLeading>
+                </PanelHeader>
+                <PanelBody className="p-0">
+                  <OptionsPanel
+                    options={options}
+                    pngFileName={pngFileName}
+                    sourceKind={sourceKind}
+                    svgText={svgText}
+                    userPresets={userPresets}
+                    onFileError={(message) => setStatus({ kind: "error", message })}
+                    onOptionsChange={setOptions}
+                    onPngDataUrlChange={(dataUrl, fileName) => {
+                      setPngDataUrl(dataUrl);
+                      setPngFileName(fileName);
+                    }}
+                    onSvgTextChange={setSvgText}
+                    onUserPresetsChange={(presets) => {
+                      writeUserColorPresets(presets);
+                      setUserPresets(presets);
+                    }}
+                  />
+                </PanelBody>
+              </Panel>
+            </ResizablePanel>
+            <WorkbenchContextAreaRail />
+            <ResizablePanel
+              minSize={WORKBENCH_PANEL_MIN_SIZE}
+              className="relative min-h-0 min-w-0"
+              style={{ overflow: "visible" }}
+            >
+              <Panel className="min-w-0">
+                <PanelHeader>
+                  <PanelHeaderLeading>
+                    <span className="truncate text-sm font-medium">{sourceTitle}</span>
+                  </PanelHeaderLeading>
+                  <PanelHeaderTrailing>
+                    <Button type="button" size="sm" variant="outline" onClick={resetOptions}>
+                      <RotateCcwIcon aria-hidden="true" className="size-3.5" />
+                      Reset
+                    </Button>
+                  </PanelHeaderTrailing>
+                </PanelHeader>
+                <PanelBody className="p-0">
+                  <PreviewPanels
+                    bannerImage={bannerImage}
+                    iconImage={iconImage}
+                    sourceTitle={sourceTitle}
+                    status={status}
+                    onCopySvg={(image) =>
+                      void runExport(() => copySvgToClipboard(image), "SVG copied.")
+                    }
+                    onCopyPng={(image) =>
+                      void runExport(() => copyPngToClipboard(image), "PNG copied.")
+                    }
+                    onDownloadSvg={(image) =>
+                      void runExport(
+                        () => downloadSvg(image, getFilename(sourceKind, image.mode, "svg")),
+                        "SVG downloaded."
+                      )
+                    }
+                    onDownloadPng={(image) =>
+                      void runExport(
+                        () => downloadPng(image, getFilename(sourceKind, image.mode, "png")),
+                        "PNG downloaded."
+                      )
+                    }
+                  />
+                </PanelBody>
+              </Panel>
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </WorkbenchContentArea>
       </Workbench>
     </WorkbenchProvider>

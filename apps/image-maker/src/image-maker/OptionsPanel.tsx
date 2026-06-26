@@ -51,7 +51,7 @@ export function OptionsPanel({
   const canEditIconColor = sourceKind !== "png";
 
   return (
-    <div className="grid h-full content-start gap-2.5 overflow-hidden p-2.5">
+    <div className="grid h-full w-full min-w-0 content-start gap-2.5 overflow-hidden p-2.5">
       <FieldGroup title="Source">
         <SourceControls
           pngFileName={pngFileName}
