@@ -1,18 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  BadgeIcon,
-  BoxIcon,
-  ChevronDownIcon,
-  ClipboardIcon,
-  Code2Icon,
-  DownloadIcon,
-  ImageIcon,
-  ImagePlusIcon,
-  LayersIcon,
-  PaletteIcon,
-  SearchIcon,
-  ShapesIcon
-} from "lucide-react";
+import { useEffect, useMemo, useState, type ComponentType, type SVGProps } from "react";
+import BadgeIcon from "lucide-react/dist/esm/icons/badge.mjs";
+import BoxIcon from "lucide-react/dist/esm/icons/box.mjs";
+import ChevronDownIcon from "lucide-react/dist/esm/icons/chevron-down.mjs";
+import ClipboardIcon from "lucide-react/dist/esm/icons/clipboard.mjs";
+import Code2Icon from "lucide-react/dist/esm/icons/code-2.mjs";
+import DownloadIcon from "lucide-react/dist/esm/icons/download.mjs";
+import ImageIcon from "lucide-react/dist/esm/icons/image.mjs";
+import ImagePlusIcon from "lucide-react/dist/esm/icons/image-plus.mjs";
+import LayersIcon from "lucide-react/dist/esm/icons/layers.mjs";
+import PaletteIcon from "lucide-react/dist/esm/icons/palette.mjs";
+import SearchIcon from "lucide-react/dist/esm/icons/search.mjs";
+import ShapesIcon from "lucide-react/dist/esm/icons/shapes.mjs";
 import { siGithub } from "simple-icons";
 import { Alert, AlertDescription, AlertTitle } from "@hyunsdev/ui/components/alert";
 import { Button } from "@hyunsdev/ui/components/button";
@@ -43,8 +41,15 @@ import {
 } from "@hyunsdev/ui/layouts/workbench";
 
 import { brandIconEntries, loadBrandIconSvg } from "@/maker/brand-icons";
+import { getSupportsDisplayP3 } from "@/maker/color";
 import { createDefaultOptions, normalizeOptionsForMode } from "@/maker/defaults";
-import { lucideIconEntries } from "@/maker/lucide-icons";
+import { loadLucideIcon, lucideIconEntries } from "@/maker/lucide-icons";
+import {
+  defaultColorPresets,
+  readUserColorPresets,
+  writeUserColorPresets,
+  type ColorPreset
+} from "@/maker/presets";
 import {
   buildPngPreviewStyle,
   buildVectorSvg,
@@ -166,6 +171,8 @@ export function App() {
   const [lucideQuery, setLucideQuery] = useState("search");
   const [brandQuery, setBrandQuery] = useState("github");
   const [selectedLucide, setSelectedLucide] = useState<LucideIconEntry>(defaultLucideIcon);
+  const [selectedLucideIcon, setSelectedLucideIcon] =
+    useState<ComponentType<SVGProps<SVGSVGElement>> | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<BrandIconEntry>(defaultBrandIcon);
   const [brandSvg, setBrandSvg] = useState("");
   const [svgInput, setSvgInput] = useState(
@@ -173,10 +180,36 @@ export function App() {
   );
   const [pngSource, setPngSource] = useState<PngSource | null>(null);
   const [status, setStatus] = useState<CopyStatus>("idle");
+  const [supportsDisplayP3, setSupportsDisplayP3] = useState(false);
+  const [userPresets, setUserPresets] = useState<ColorPreset[]>(() => readUserColorPresets());
 
   useEffect(() => {
     setOptions((current) => normalizeOptionsForMode(current, mode.asset, mode.source));
   }, [mode.asset, mode.source]);
+
+  useEffect(() => {
+    setSupportsDisplayP3(getSupportsDisplayP3());
+  }, []);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    loadLucideIcon(selectedLucide)
+      .then((Icon) => {
+        if (isCurrent) {
+          setSelectedLucideIcon(() => Icon);
+        }
+      })
+      .catch(() => {
+        if (isCurrent) {
+          setSelectedLucideIcon(null);
+        }
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [selectedLucide]);
 
   useEffect(() => {
     let isCurrent = true;
@@ -209,10 +242,14 @@ export function App() {
 
   const vectorSource = useMemo<VectorSource | null>(() => {
     if (mode.source === "lucide") {
+      if (!selectedLucideIcon) {
+        return null;
+      }
+
       return {
         kind: "lucide",
         title: selectedLucide.title,
-        Icon: selectedLucide.Icon
+        Icon: selectedLucideIcon
       };
     }
 
@@ -235,7 +272,7 @@ export function App() {
     }
 
     return null;
-  }, [brandSvg, mode.source, sanitizedSvg, selectedBrand, selectedLucide]);
+  }, [brandSvg, mode.source, sanitizedSvg, selectedBrand, selectedLucide, selectedLucideIcon]);
 
   const outputSvg = useMemo(() => {
     if (!vectorSource) {
@@ -322,6 +359,27 @@ export function App() {
       });
     };
     reader.readAsDataURL(file);
+  }
+
+  function applyPreset(preset: ColorPreset) {
+    updateOptions(preset.options);
+  }
+
+  function saveCurrentPreset() {
+    const nextPreset: ColorPreset = {
+      id: `user-${Date.now()}`,
+      name: `Preset ${userPresets.length + 1}`,
+      options: {
+        backgroundColor: options.backgroundColor,
+        iconColor: options.iconColor,
+        paddingPercent: options.paddingPercent,
+        radiusPercent: options.radiusPercent
+      }
+    };
+    const nextPresets = [...userPresets, nextPreset];
+
+    setUserPresets(nextPresets);
+    writeUserColorPresets(nextPresets);
   }
 
   return (
@@ -512,12 +570,42 @@ export function App() {
                     onChange={(backgroundColor) => updateOptions({ backgroundColor })}
                   />
                   {mode.source !== "png" ? (
-                    <ColorInput
-                      label="아이콘 색"
-                      value={options.iconColor}
-                      onChange={(iconColor) => updateOptions({ iconColor })}
-                    />
+                    <>
+                      <ColorInput
+                        label="아이콘 색"
+                        value={options.iconColor}
+                        onChange={(iconColor) => updateOptions({ iconColor })}
+                      />
+                      <FieldRow label="색 영역" value={options.colorSpace}>
+                        <ToggleGroup
+                          type="single"
+                          value={options.colorSpace}
+                          onValueChange={(value) => {
+                            if (value) {
+                              updateOptions({ colorSpace: value as MakerOptions["colorSpace"] });
+                            }
+                          }}
+                        >
+                          <ToggleGroupItem value="srgb">sRGB</ToggleGroupItem>
+                          <ToggleGroupItem value="display-p3">Display P3</ToggleGroupItem>
+                        </ToggleGroup>
+                      </FieldRow>
+                      {options.colorSpace === "display-p3" && !supportsDisplayP3 ? (
+                        <Alert>
+                          <PaletteIcon className="size-4" />
+                          <AlertTitle>Display P3 표시 미지원</AlertTitle>
+                          <AlertDescription>
+                            이 브라우저는 Display P3 표시를 지원하지 않아 sRGB로 미리보기됩니다.
+                          </AlertDescription>
+                        </Alert>
+                      ) : null}
+                    </>
                   ) : null}
+                  <PresetPanel
+                    presets={[...defaultColorPresets, ...userPresets]}
+                    onApply={applyPreset}
+                    onSave={saveCurrentPreset}
+                  />
                 </div>
               </section>
               <section className="bg-muted/30 flex min-h-0 flex-col gap-4 p-4">
@@ -578,6 +666,49 @@ export function App() {
         </WorkbenchContentArea>
       </Workbench>
     </WorkbenchProvider>
+  );
+}
+
+function PresetPanel({
+  presets,
+  onApply,
+  onSave
+}: {
+  presets: ColorPreset[];
+  onApply: (preset: ColorPreset) => void;
+  onSave: () => void;
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between gap-2">
+        <Label className="text-xs">컬러 프리셋</Label>
+        <Button size="sm" variant="outline" onClick={onSave}>
+          저장
+        </Button>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        {presets.map((preset) => (
+          <button
+            className="border-border hover:bg-accent flex min-w-0 items-center gap-2 rounded-md border px-2 py-1.5 text-left text-xs transition-colors"
+            key={preset.id}
+            type="button"
+            onClick={() => onApply(preset)}
+          >
+            <span className="flex shrink-0 -space-x-1">
+              <span
+                className="border-background size-4 rounded-full border"
+                style={{ backgroundColor: preset.options.backgroundColor }}
+              />
+              <span
+                className="border-background size-4 rounded-full border"
+                style={{ backgroundColor: preset.options.iconColor }}
+              />
+            </span>
+            <span className="truncate">{preset.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 

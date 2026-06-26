@@ -22,7 +22,7 @@ export type MakerOptions = {
 export type LucideIconEntry = {
   id: string;
   title: string;
-  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+  moduleKey: string;
 };
 
 export type BrandIconEntry = {

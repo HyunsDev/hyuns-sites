@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
+import { toCssColor } from "./color";
 import type { MakerOptions, PngSource, VectorSource } from "./types";
 
 function getInnerSvg(svg: string) {
@@ -50,11 +51,13 @@ export function buildVectorSvg(source: VectorSource, options: MakerOptions) {
   const boxWidth = Math.max(0, width - padding * 2);
   const boxHeight = Math.max(0, height - padding * 2);
   const radius = Math.min(width, height) * (radiusPercent / 100);
-  const icon = buildVectorInner(source, source.kind === "brand" ? iconColor : iconColor);
+  const renderedBackgroundColor = toCssColor(backgroundColor, options.colorSpace);
+  const renderedIconColor = toCssColor(iconColor, options.colorSpace);
+  const icon = buildVectorInner(source, renderedIconColor);
   const ariaTitle = `${source.title} ${width} by ${height}`;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${ariaTitle}">
-  <rect width="${width}" height="${height}" rx="${radius}" fill="${backgroundColor}" />
+  <rect width="${width}" height="${height}" rx="${radius}" fill="${renderedBackgroundColor}" />
   <svg x="${padding}" y="${padding}" width="${boxWidth}" height="${boxHeight}" viewBox="${icon.viewBox}" preserveAspectRatio="xMidYMid meet">
     ${icon.inner}
   </svg>
