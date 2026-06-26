@@ -1,0 +1,39 @@
+{
+  "name": "@hyunsdev/playground-ui",
+  "version": "0.0.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./AccentSelector": "./src/AccentSelector.tsx",
+    "./PlaygroundCenter": "./src/PlaygroundCenter.tsx",
+    "./PlaygroundRoute": "./src/PlaygroundRoute.tsx",
+    "./PlaygroundSection": "./src/PlaygroundSection.tsx",
+    "./PlaygroundSplit": "./src/PlaygroundSplit.tsx",
+    "./PlaygroundTools": "./src/PlaygroundTools.tsx",
+    "./ThemeButtonGroup": "./src/ThemeButtonGroup.tsx"
+  },
+  "scripts": {
+    "check": "pnpm lint && pnpm typecheck",
+    "lint": "eslint src",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "lucide-react": "^1.8.0"
+  },
+  "peerDependencies": {
+    "@hyunsdev/ui": "^0.2.0",
+    "@tanstack/react-router": "^1.170.16",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@hyunsdev/ui": "^0.2.0",
+    "@tanstack/history": "^1.162.0",
+    "@tanstack/react-router": "^1.170.16",
+    "@types/react": "^19.1.8",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "react": "^19.1.0"
+  }
+}

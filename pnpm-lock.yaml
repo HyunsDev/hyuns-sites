@@ -289,6 +289,34 @@ importers:
         specifier: ^8.35.0
         version: 8.62.0(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
 
+  packages/playground-ui:
+    dependencies:
+      lucide-react:
+        specifier: ^1.8.0
+        version: 1.21.0(react@19.2.7)
+    devDependencies:
+      '@hyunsdev/ui':
+        specifier: ^0.2.0
+        version: 0.2.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)(typescript@5.9.3)
+      '@tanstack/history':
+        specifier: ^1.162.0
+        version: 1.162.0
+      '@tanstack/react-router':
+        specifier: ^1.170.16
+        version: 1.170.16(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@types/react':
+        specifier: ^19.1.8
+        version: 19.2.17
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      react:
+        specifier: ^19.1.0
+        version: 19.2.7
+
   packages/site-ui:
     devDependencies:
       '@hyunsdev/ui':
