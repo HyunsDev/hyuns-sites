@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hyuns UI"
+  short_description: "Use Hyuns UI in hyuns-sites"
+  default_prompt: "Use $hyuns-ui to build or modify hyuns-sites app UI with @hyunsdev/ui, @workspace/site-ui, Tailwind v4 tokens, Portal YAML, and app-level validation."
