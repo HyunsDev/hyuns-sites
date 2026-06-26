@@ -1,4 +1,3 @@
-import type { IconNode } from "lucide-react";
 import { assertNever } from "./types";
 import type {
   GraphicAsset,
@@ -34,22 +33,6 @@ function getCanvasSize(options: ImageMakerOptions, mode: RenderMode) {
     width: options.bannerWidth,
     height: options.bannerHeight
   };
-}
-
-function serializeAttributes(attributes: Record<string, string>) {
-  return Object.entries(attributes)
-    .map(([key, value]) => `${key}="${escapeText(value)}"`)
-    .join(" ");
-}
-
-function renderIconNode(iconNode: IconNode) {
-  return iconNode
-    .map(([elementName, attributes]) => {
-      const serialized = serializeAttributes(attributes);
-
-      return `<${elementName}${serialized ? ` ${serialized}` : ""} />`;
-    })
-    .join("");
 }
 
 function superellipseCorner(
@@ -158,10 +141,6 @@ function getBackgroundPath(
 
 function renderGraphic(asset: GraphicAsset, color: string) {
   switch (asset.kind) {
-    case "brand":
-      return `<path fill="${escapeText(color)}" d="${escapeText(asset.path)}" />`;
-    case "lucide":
-      return `<g fill="none" stroke="${escapeText(color)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${renderIconNode(asset.iconNode)}</g>`;
     case "png":
       return `<image href="${escapeText(asset.dataUrl)}" x="0" y="0" width="24" height="24" preserveAspectRatio="xMidYMid meet" />`;
     case "svg":

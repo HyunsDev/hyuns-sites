@@ -4,10 +4,12 @@ import { renderImageSvg, sanitizeSvgText } from "./renderers";
 import type { GraphicAsset } from "./types";
 
 const asset: GraphicAsset = {
-  kind: "brand",
+  kind: "svg",
   title: "Test",
-  path: "M0 0h24v24H0z",
-  color: "#111827"
+  svg: {
+    viewBox: "0 0 24 24",
+    body: '<path fill="currentColor" d="M0 0h24v24H0z"/>'
+  }
 };
 
 describe("renderImageSvg", () => {
@@ -18,7 +20,7 @@ describe("renderImageSvg", () => {
     expect(icon.width).toBe(512);
     expect(icon.height).toBe(512);
     expect(icon.svg).toContain('width="512"');
-    expect(icon.svg).toContain('fill="#ffffff"');
+    expect(icon.svg).toContain('color="#ffffff"');
     expect(banner.width).toBe(1920);
     expect(banner.height).toBe(1080);
     expect(banner.svg).toContain('viewBox="0 0 1920 1080"');

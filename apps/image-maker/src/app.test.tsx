@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { App } from "./app";
 import { getRouter } from "./router";
 
-function renderImageMaker(path = "/lucide") {
+function renderImageMaker(path = "/svg") {
   const history = createMemoryHistory({
     initialEntries: [path]
   });
@@ -19,10 +19,9 @@ describe("Image Maker", () => {
     renderImageMaker();
 
     expect(await screen.findByText("Image Maker")).toBeVisible();
-    expect(screen.getByRole("link", { name: "Lucide 아이콘/배너" })).toBeVisible();
-    expect(screen.getByRole("link", { name: "Brand 아이콘/배너" })).toBeVisible();
     expect(screen.getByRole("link", { name: "Svg 아이콘/배너" })).toBeVisible();
     expect(screen.getByRole("link", { name: "PNG 아이콘/배너" })).toBeVisible();
+    expect(screen.getAllByRole("link")).toHaveLength(3);
     expect(screen.getByRole("link", { name: "Developed By HyunsDev" })).toHaveAttribute(
       "href",
       "https://github.com/HyunsDev/hyuns-sites"

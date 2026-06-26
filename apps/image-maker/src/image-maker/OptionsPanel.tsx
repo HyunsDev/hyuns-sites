@@ -18,16 +18,12 @@ const SAMPLE_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 </svg>`;
 
 type OptionsPanelProps = {
-  readonly brandValue: string;
-  readonly lucideValue: string;
   readonly options: ImageMakerOptions;
   readonly pngFileName: string | null;
   readonly sourceKind: SourceKind;
   readonly svgText: string;
   readonly userPresets: readonly ColorPreset[];
-  readonly onBrandValueChange: (value: string) => void;
   readonly onFileError: (message: string) => void;
-  readonly onLucideValueChange: (value: string) => void;
   readonly onOptionsChange: (options: ImageMakerOptions) => void;
   readonly onPngDataUrlChange: (dataUrl: string, fileName: string) => void;
   readonly onSvgTextChange: (value: string) => void;
@@ -42,16 +38,12 @@ function mergeOptions(options: ImageMakerOptions, patch: Partial<ImageMakerOptio
 }
 
 export function OptionsPanel({
-  brandValue,
-  lucideValue,
   options,
   pngFileName,
   sourceKind,
   svgText,
   userPresets,
-  onBrandValueChange,
   onFileError,
-  onLucideValueChange,
   onOptionsChange,
   onPngDataUrlChange,
   onSvgTextChange,
@@ -65,14 +57,10 @@ export function OptionsPanel({
       <div className="grid gap-5 p-4">
         <FieldGroup title="Source">
           <SourceControls
-            brandValue={brandValue}
-            lucideValue={lucideValue}
             pngFileName={pngFileName}
             sourceKind={sourceKind}
             svgText={svgText}
-            onBrandValueChange={onBrandValueChange}
             onFileError={onFileError}
-            onLucideValueChange={onLucideValueChange}
             onPngDataUrlChange={onPngDataUrlChange}
             onSvgTextChange={onSvgTextChange}
           />

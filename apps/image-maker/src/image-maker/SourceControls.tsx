@@ -1,6 +1,5 @@
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import { Button } from "@hyunsdev/ui/components/button";
-import { Combobox } from "@hyunsdev/ui/components/combobox";
 import {
   FileUpload,
   FileUploadDropzone,
@@ -11,25 +10,14 @@ import {
 import { Label } from "@hyunsdev/ui/components/label";
 import { Textarea } from "@hyunsdev/ui/components/textarea";
 import { Input } from "@hyunsdev/ui/components/input";
-import { LUCIDE_ICON_OPTIONS } from "./icon-sources";
 import { errorMessageFromUnknown, readFileAsDataUrl, readFileAsText } from "./file-readers";
 import type { SourceKind } from "./types";
 
-const LazyBrandSourceControl = lazy(() =>
-  import("./BrandSourceControl").then((module) => ({
-    default: module.BrandSourceControl
-  }))
-);
-
 type SourceControlsProps = {
-  readonly brandValue: string;
-  readonly lucideValue: string;
   readonly pngFileName: string | null;
   readonly sourceKind: SourceKind;
   readonly svgText: string;
-  readonly onBrandValueChange: (value: string) => void;
   readonly onFileError: (message: string) => void;
-  readonly onLucideValueChange: (value: string) => void;
   readonly onPngDataUrlChange: (dataUrl: string, fileName: string) => void;
   readonly onSvgTextChange: (value: string) => void;
 };
@@ -44,14 +32,10 @@ function FileDropzoneLabel({ label }: { readonly label: string }) {
 }
 
 export function SourceControls({
-  brandValue,
-  lucideValue,
   pngFileName,
   sourceKind,
   svgText,
-  onBrandValueChange,
   onFileError,
-  onLucideValueChange,
   onPngDataUrlChange,
   onSvgTextChange
 }: SourceControlsProps) {
@@ -59,29 +43,6 @@ export function SourceControls({
   const [pngFiles, setPngFiles] = useState<FileUploadItem[]>([]);
 
   switch (sourceKind) {
-    case "lucide":
-      return (
-        <div className="grid gap-2">
-          <Label>Lucide icon</Label>
-          <Combobox
-            options={LUCIDE_ICON_OPTIONS}
-            value={lucideValue}
-            onValueChange={(value) => {
-              if (value) {
-                onLucideValueChange(value);
-              }
-            }}
-            placeholder="Search Lucide"
-            emptyMessage="No Lucide icon"
-          />
-        </div>
-      );
-    case "brand":
-      return (
-        <Suspense fallback={<BrandSourceFallback />}>
-          <LazyBrandSourceControl value={brandValue} onValueChange={onBrandValueChange} />
-        </Suspense>
-      );
     case "svg":
       return (
         <div className="grid gap-3">
@@ -154,15 +115,6 @@ export function SourceControls({
     default:
       return null;
   }
-}
-
-function BrandSourceFallback() {
-  return (
-    <div className="grid gap-2">
-      <Label>Brand icon</Label>
-      <Input value="Loading brands..." readOnly />
-    </div>
-  );
 }
 
 export function ResetSvgButton({ onClick }: { readonly onClick: () => void }) {

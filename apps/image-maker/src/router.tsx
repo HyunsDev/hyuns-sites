@@ -9,8 +9,8 @@ import {
 import type { RouterHistory } from "@tanstack/react-router";
 import { ImageMakerWorkbench } from "./image-maker/ImageMakerWorkbench";
 
-function redirectToLucideRoute() {
-  return <Navigate to="/lucide" replace />;
+function redirectToSvgRoute() {
+  return <Navigate to="/svg" replace />;
 }
 
 function RootRoute() {
@@ -24,19 +24,7 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: redirectToLucideRoute
-});
-
-const lucideRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/lucide",
-  component: () => <ImageMakerWorkbench sourceKind="lucide" />
-});
-
-const brandRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/brand",
-  component: () => <ImageMakerWorkbench sourceKind="brand" />
+  component: redirectToSvgRoute
 });
 
 const svgRoute = createRoute({
@@ -51,13 +39,7 @@ const pngRoute = createRoute({
   component: () => <ImageMakerWorkbench sourceKind="png" />
 });
 
-const routeTree = rootRoute.addChildren([
-  indexRoute,
-  lucideRoute,
-  brandRoute,
-  svgRoute,
-  pngRoute
-]);
+const routeTree = rootRoute.addChildren([indexRoute, svgRoute, pngRoute]);
 
 export function getRouter({ history }: { readonly history?: RouterHistory } = {}) {
   return createRouter({

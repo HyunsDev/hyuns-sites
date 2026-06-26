@@ -1,10 +1,3 @@
-import {
-  BadgeIcon,
-  ImageIcon,
-  ShapesIcon,
-  SparklesIcon,
-  type LucideIcon
-} from "lucide-react";
 import type { SourceKind } from "./types";
 
 export type SourceConfig = {
@@ -12,42 +5,23 @@ export type SourceConfig = {
   readonly label: string;
   readonly title: string;
   readonly description: string;
-  readonly path: "/brand" | "/lucide" | "/png" | "/svg";
-  readonly Icon: LucideIcon;
+  readonly path: "/png" | "/svg";
 };
 
 export const SOURCE_CONFIGS: readonly SourceConfig[] = [
   {
-    kind: "lucide",
-    label: "Lucide 아이콘/배너",
-    title: "Lucide",
-    description: "Lucide stroke icons",
-    path: "/lucide",
-    Icon: SparklesIcon
-  },
-  {
-    kind: "brand",
-    label: "Brand 아이콘/배너",
-    title: "Brand",
-    description: "Simple Icons brand marks",
-    path: "/brand",
-    Icon: BadgeIcon
-  },
-  {
     kind: "svg",
     label: "Svg 아이콘/배너",
     title: "SVG",
-    description: "Custom SVG source",
-    path: "/svg",
-    Icon: ShapesIcon
+    description: "Paste or upload SVG source",
+    path: "/svg"
   },
   {
     kind: "png",
     label: "PNG 아이콘/배너",
     title: "PNG",
-    description: "Custom PNG source",
-    path: "/png",
-    Icon: ImageIcon
+    description: "Upload custom PNG source",
+    path: "/png"
   }
 ] as const;
 

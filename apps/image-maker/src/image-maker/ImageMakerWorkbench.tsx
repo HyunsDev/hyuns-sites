@@ -15,7 +15,7 @@ import {
   WorkbenchProvider
 } from "@hyunsdev/ui/layouts/workbench";
 import { copyPngToClipboard, copySvgToClipboard, downloadPng, downloadSvg } from "./exporters";
-import { svgGraphicFromText, useBrandGraphic, useLucideGraphic } from "./graphic-assets";
+import { svgGraphicFromText } from "./graphic-assets";
 import { ImageMakerSidebar } from "./ImageMakerSidebar";
 import { OptionsPanel, SAMPLE_SVG } from "./OptionsPanel";
 import {
@@ -27,7 +27,13 @@ import { PreviewPanels } from "./PreviewPanels";
 import { errorMessageFromUnknown } from "./file-readers";
 import { getSourceConfig } from "./source-config";
 import { renderImageSvg } from "./renderers";
-import type { ColorPreset, ExportStatus, GraphicAsset, ImageMakerOptions, SourceKind } from "./types";
+import type {
+  ColorPreset,
+  ExportStatus,
+  GraphicAsset,
+  ImageMakerOptions,
+  SourceKind
+} from "./types";
 import { assertNever } from "./types";
 
 type ImageMakerWorkbenchProps = {
@@ -65,31 +71,25 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
   const [userPresets, setUserPresets] = useState<readonly ColorPreset[]>(() =>
     readUserColorPresets()
   );
-  const [lucideValue, setLucideValue] = useState("camera");
-  const [brandValue, setBrandValue] = useState("github");
   const [svgText, setSvgText] = useState(SAMPLE_SVG);
   const [pngDataUrl, setPngDataUrl] = useState<string | null>(null);
   const [pngFileName, setPngFileName] = useState<string | null>(null);
   const [status, setStatus] = useState<ExportStatus>({ kind: "idle" });
   const workbenchOrientation = useResponsiveWorkbenchOrientation();
-  const brandGraphic = useBrandGraphic(brandValue, sourceKind, setOptions, setStatus);
-  const lucideGraphic = useLucideGraphic(lucideValue, setStatus);
   const sourceConfig = getSourceConfig(sourceKind);
 
   const activeGraphic = useMemo<GraphicAsset | null>(() => {
     switch (sourceKind) {
-      case "brand":
-        return brandGraphic;
-      case "lucide":
-        return lucideGraphic;
       case "png":
-        return pngDataUrl ? { kind: "png", title: pngFileName ?? "Custom PNG", dataUrl: pngDataUrl } : null;
+        return pngDataUrl
+          ? { kind: "png", title: pngFileName ?? "Custom PNG", dataUrl: pngDataUrl }
+          : null;
       case "svg":
         return svgGraphicFromText(svgText);
       default:
         return assertNever(sourceKind);
     }
-  }, [brandGraphic, lucideGraphic, pngDataUrl, pngFileName, sourceKind, svgText]);
+  }, [pngDataUrl, pngFileName, sourceKind, svgText]);
 
   const iconImage = activeGraphic ? renderImageSvg(activeGraphic, options, "icon") : null;
   const bannerImage = activeGraphic ? renderImageSvg(activeGraphic, options, "banner") : null;
@@ -107,19 +107,7 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
     }
   }
 
-  function handleBrandValueChange(value: string) {
-    setBrandValue(value);
-  }
-
   function resetOptions() {
-    if (sourceKind === "brand") {
-      setOptions({
-        ...DEFAULT_IMAGE_OPTIONS,
-        iconColor: brandGraphic?.color ?? DEFAULT_IMAGE_OPTIONS.iconColor
-      });
-      return;
-    }
-
     setOptions(DEFAULT_IMAGE_OPTIONS);
   }
 
@@ -139,16 +127,12 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
             </PanelHeader>
             <PanelBody className="p-0">
               <OptionsPanel
-                brandValue={brandValue}
-                lucideValue={lucideValue}
                 options={options}
                 pngFileName={pngFileName}
                 sourceKind={sourceKind}
                 svgText={svgText}
                 userPresets={userPresets}
-                onBrandValueChange={handleBrandValueChange}
                 onFileError={(message) => setStatus({ kind: "error", message })}
-                onLucideValueChange={setLucideValue}
                 onOptionsChange={setOptions}
                 onPngDataUrlChange={(dataUrl, fileName) => {
                   setPngDataUrl(dataUrl);

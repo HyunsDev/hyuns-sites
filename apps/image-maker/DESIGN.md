@@ -25,7 +25,7 @@ Image Maker is a quiet production workbench for making reusable icon and banner 
 
 - App chrome uses Hyuns UI semantic tokens instead of product-specific palettes.
 - User-generated output colors are data values controlled by the editor, not chrome colors.
-- Brand icon defaults may use Simple Icons hex values only inside generated artwork or swatches.
+- Source colors are controlled by the editor; PNG sources keep their original pixels.
 
 ## 3. Typography
 
@@ -84,7 +84,7 @@ All spacing derives from a base of 4px.
 ### Workbench Shell
 
 - **Structure**: `Workbench` with `WorkbenchPrimarySidebar` and `WorkbenchContentArea`.
-- **Variants**: source routes for Lucide, Brand, SVG, and PNG.
+- **Variants**: source routes for SVG and PNG.
 - **Spacing**: panel padding uses `--space-4`; menu rows use Workbench defaults.
 - **States**: active route, hover, focus, disabled.
 - **Accessibility**: sidebar links use buttons/anchors with visible labels and tooltips where icon-only.
@@ -134,4 +134,3 @@ Use Hyuns UI mixed surface treatment: semantic panel borders, muted preview well
 | Default border | `border-border` | Panels, preview wells, upload areas |
 | Muted fill | `bg-muted/30` | Preview wells |
 | Primary fill | `bg-background` | Generated image stage |
-

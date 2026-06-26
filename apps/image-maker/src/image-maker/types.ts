@@ -1,6 +1,4 @@
-import type { IconNode } from "lucide-react";
-
-export const SOURCE_KINDS = ["lucide", "brand", "svg", "png"] as const;
+export const SOURCE_KINDS = ["svg", "png"] as const;
 
 export type SourceKind = (typeof SOURCE_KINDS)[number];
 
@@ -31,17 +29,6 @@ export type SanitizedSvg = {
 };
 
 export type GraphicAsset =
-  | {
-      readonly kind: "brand";
-      readonly title: string;
-      readonly path: string;
-      readonly color: string;
-    }
-  | {
-      readonly kind: "lucide";
-      readonly title: string;
-      readonly iconNode: IconNode;
-    }
   | {
       readonly kind: "png";
       readonly title: string;
