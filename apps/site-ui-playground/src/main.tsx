@@ -1,0 +1,17 @@
+import { StrictMode } from "react";
+import { RouterProvider } from "@tanstack/react-router";
+import { createRoot } from "react-dom/client";
+import { router } from "./router";
+import "./styles.css";
+
+const rootElement = document.getElementById("root");
+
+if (!rootElement) {
+  throw new Error("Missing #root element for Site UI Playground.");
+}
+
+createRoot(rootElement).render(
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
+);

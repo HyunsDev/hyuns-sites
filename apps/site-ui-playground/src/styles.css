@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@hyunsdev/ui/globals.css";
+
+@source "./**/*.{ts,tsx}";
+@source "../../../packages/site-ui/src/**/*.{ts,tsx}";
+
+@layer base {
+  #root {
+    min-height: 100svh;
+  }
+}
