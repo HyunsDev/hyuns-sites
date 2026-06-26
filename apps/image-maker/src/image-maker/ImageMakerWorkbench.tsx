@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Badge } from "@hyunsdev/ui/components/badge";
 import { Button } from "@hyunsdev/ui/components/button";
 import {
   Panel,
   PanelBody,
-  PanelFooter,
   PanelHeader,
   PanelHeaderLeading,
   PanelHeaderTrailing
@@ -121,7 +119,6 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
               <PanelHeaderLeading>
                 <div className="grid gap-1">
                   <h1 className="text-base font-semibold leading-6">{sourceConfig.label}</h1>
-                  <p className="text-xs text-muted-foreground">{sourceConfig.description}</p>
                 </div>
               </PanelHeaderLeading>
             </PanelHeader>
@@ -149,10 +146,7 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
           <Panel key="preview" className="min-w-0">
             <PanelHeader>
               <PanelHeaderLeading>
-                <div className="flex min-w-0 items-center gap-2">
-                  <Badge variant="normal">{sourceConfig.title}</Badge>
-                  <span className="truncate text-sm font-medium">{sourceTitle}</span>
-                </div>
+                <span className="truncate text-sm font-medium">{sourceTitle}</span>
               </PanelHeaderLeading>
               <PanelHeaderTrailing>
                 <Button type="button" size="sm" variant="outline" onClick={resetOptions}>
@@ -186,10 +180,6 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
                 }
               />
             </PanelBody>
-            <PanelFooter className="justify-between gap-3 text-xs text-muted-foreground">
-              <span>Icon {options.iconSize} x {options.iconSize}</span>
-              <span>Banner {options.bannerWidth} x {options.bannerHeight}</span>
-            </PanelFooter>
           </Panel>
         </WorkbenchContentArea>
       </Workbench>

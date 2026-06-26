@@ -24,9 +24,8 @@ type SourceControlsProps = {
 
 function FileDropzoneLabel({ label }: { readonly label: string }) {
   return (
-    <div className="grid gap-1 text-center">
+    <div className="grid text-center">
       <span className="text-sm font-medium">{label}</span>
-      <span className="text-xs text-muted-foreground">Drop file or click</span>
     </div>
   );
 }
@@ -45,14 +44,14 @@ export function SourceControls({
   switch (sourceKind) {
     case "svg":
       return (
-        <div className="grid gap-3">
-          <div className="grid gap-2">
+        <div className="grid gap-2">
+          <div className="grid gap-1.5">
             <Label htmlFor="svg-source">SVG source</Label>
             <Textarea
               id="svg-source"
               value={svgText}
               onChange={(event) => onSvgTextChange(event.currentTarget.value)}
-              className="min-h-32 font-mono text-xs"
+              className="min-h-14 font-mono text-xs"
             />
           </div>
           <FileUpload
@@ -73,7 +72,7 @@ export function SourceControls({
             }}
           >
             <FileUploadInput aria-label="SVG file" />
-            <FileUploadDropzone>
+            <FileUploadDropzone className="min-h-12 p-2">
               <FileDropzoneLabel label="SVG file" />
             </FileUploadDropzone>
             <FileUploadList />
@@ -82,7 +81,7 @@ export function SourceControls({
       );
     case "png":
       return (
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <FileUpload
             accept="image/png,.png"
             value={pngFiles}
@@ -101,15 +100,17 @@ export function SourceControls({
             }}
           >
             <FileUploadInput aria-label="PNG file" />
-            <FileUploadDropzone>
+            <FileUploadDropzone className="min-h-16 p-2">
               <FileDropzoneLabel label="PNG file" />
             </FileUploadDropzone>
             <FileUploadList />
           </FileUpload>
-          <div className="grid gap-2">
-            <Label htmlFor="png-file-name">Selected file</Label>
-            <Input id="png-file-name" value={pngFileName ?? "No PNG selected"} readOnly />
-          </div>
+          <Input
+            id="png-file-name"
+            aria-label="Selected PNG file"
+            value={pngFileName ?? "No PNG selected"}
+            readOnly
+          />
         </div>
       );
     default:

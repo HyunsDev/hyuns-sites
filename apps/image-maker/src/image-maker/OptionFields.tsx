@@ -60,7 +60,7 @@ function NumberInput({
   step = 1,
   value,
   onValueChange,
-  className = "h-9 w-full text-right font-mono text-xs"
+  className = "h-8 w-full text-right font-mono text-xs"
 }: Omit<NumberFieldProps, "label"> & {
   readonly ariaLabel?: string;
   readonly className?: string;
@@ -88,9 +88,8 @@ function NumberInput({
 
 export function FieldGroup({ children, title }: FieldGroupProps) {
   return (
-    <section className="grid gap-3">
-      <h2 className="text-sm font-semibold leading-5">{title}</h2>
-      <div className="grid gap-3">{children}</div>
+    <section className="grid gap-2" aria-label={title}>
+      <div className="grid gap-2">{children}</div>
     </section>
   );
 }
@@ -105,7 +104,7 @@ export function NumberField({
   onValueChange
 }: NumberFieldProps) {
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-1.5">
       <Label htmlFor={id}>{label}</Label>
       <NumberInput
         id={id}
@@ -123,11 +122,11 @@ export function NumberRowField({ fields, label }: NumberRowFieldProps) {
   const labelId = `${fields[0].id}-group-label`;
 
   return (
-    <div className="grid gap-2" role="group" aria-labelledby={labelId}>
+    <div className="grid gap-1.5" role="group" aria-labelledby={labelId}>
       <div id={labelId} className="text-sm font-medium leading-none">
         {label}
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-1.5">
         {fields.map((field) => (
           <NumberInput
             key={field.id}
@@ -155,7 +154,7 @@ export function SliderNumberField({
   onValueChange
 }: NumberFieldProps) {
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-1.5">
       <div className="flex items-center justify-between gap-3">
         <Label htmlFor={id}>{label}</Label>
         <NumberInput
@@ -165,7 +164,7 @@ export function SliderNumberField({
           step={step}
           value={value}
           onValueChange={onValueChange}
-          className="h-8 w-24 text-right font-mono text-xs"
+          className="h-7 w-20 text-right font-mono text-xs"
         />
       </div>
       <Slider
@@ -188,7 +187,7 @@ export function SliderNumberField({
 
 export function ColorField({ id, label, value, onValueChange }: ColorFieldProps) {
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-1.5">
       <Label htmlFor={id}>{label}</Label>
       <ColorPicker
         id={id}

@@ -1,4 +1,3 @@
-import { Badge } from "@hyunsdev/ui/components/badge";
 import { Button } from "@hyunsdev/ui/components/button";
 import { svgToDataUrl } from "./renderers";
 import type { ExportStatus, RenderMode, RenderedImage } from "./types";
@@ -40,10 +39,7 @@ function PreviewStage({
   if (!image) {
     return (
       <div className="grid h-full min-h-52 place-items-center rounded-md border border-dashed border-border bg-muted/20 p-6 text-center">
-        <div className="grid gap-1">
-          <p className="text-sm font-medium">No source selected</p>
-          <p className="text-xs text-muted-foreground">Choose an icon or upload a file.</p>
-        </div>
+        <p className="text-sm font-medium">No source selected</p>
       </div>
     );
   }
@@ -77,16 +73,7 @@ function PreviewPane({
   const disabled = image === null;
 
   return (
-    <section className="flex min-h-[380px] flex-col gap-3 p-4 md:h-full md:min-h-0">
-      <div className="flex shrink-0 items-start justify-between gap-3">
-        <div className="grid gap-1">
-          <h2 className="text-sm font-semibold leading-5">{titleForMode(mode)}</h2>
-          <p className="font-mono text-xs text-muted-foreground">
-            {image ? `${image.width} x ${image.height}` : "No output"}
-          </p>
-        </div>
-        <Badge variant="normal">{mode.toUpperCase()}</Badge>
-      </div>
+    <section className="flex min-h-[320px] flex-col gap-3 p-3 md:h-full md:min-h-0">
       <div className="min-h-0 flex-1">
         <PreviewStage image={image} mode={mode} sourceTitle={sourceTitle} />
       </div>

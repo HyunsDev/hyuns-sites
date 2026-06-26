@@ -31,8 +31,8 @@ describe("Image Maker", () => {
   it("shows icon and banner preview export controls", async () => {
     renderImageMaker();
 
-    expect(await screen.findByText("아이콘 미리보기")).toBeVisible();
-    expect(screen.getByText("배너 미리보기")).toBeVisible();
+    expect(await screen.findByAltText("Custom SVG 아이콘 미리보기")).toBeVisible();
+    expect(screen.getByAltText("Custom SVG 배너 미리보기")).toBeVisible();
     expect(screen.getAllByRole("button", { name: "SVG 복사" })).toHaveLength(2);
     expect(screen.getAllByRole("button", { name: "PNG 다운로드" })).toHaveLength(2);
   });
@@ -40,13 +40,13 @@ describe("Image Maker", () => {
   it("renders image size controls as compact number inputs", async () => {
     renderImageMaker();
 
-    expect(await screen.findByLabelText("Icon image")).toHaveAttribute("type", "number");
+    expect(await screen.findByLabelText("Icon size")).toHaveAttribute("type", "number");
     expect(screen.getByLabelText("Banner width")).toHaveAttribute("type", "number");
     expect(screen.getByLabelText("Banner height")).toHaveAttribute("type", "number");
     expect(screen.getByLabelText("Banner icon")).toHaveAttribute("type", "number");
     expect(screen.queryByText("Banner width")).not.toBeInTheDocument();
     expect(screen.queryByText("Banner height")).not.toBeInTheDocument();
-    expect(screen.queryByRole("slider", { name: "Icon image" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("slider", { name: "Icon size" })).not.toBeInTheDocument();
     expect(screen.queryByRole("slider", { name: "Banner width" })).not.toBeInTheDocument();
     expect(screen.queryByRole("slider", { name: "Banner height" })).not.toBeInTheDocument();
     expect(screen.queryByRole("slider", { name: "Banner icon" })).not.toBeInTheDocument();

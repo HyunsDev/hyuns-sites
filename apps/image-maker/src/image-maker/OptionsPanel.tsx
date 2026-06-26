@@ -1,6 +1,4 @@
 import { Button } from "@hyunsdev/ui/components/button";
-import { Separator } from "@hyunsdev/ui/components/separator";
-import { ScrollArea } from "@hyunsdev/ui/components/scroll-area";
 import { DEFAULT_COLOR_PRESETS, createUserColorPreset } from "./presets";
 import {
   ColorField,
@@ -53,56 +51,29 @@ export function OptionsPanel({
   const canEditIconColor = sourceKind !== "png";
 
   return (
-    <ScrollArea className="h-full">
-      <div className="grid gap-5 p-4">
-        <FieldGroup title="Source">
-          <SourceControls
-            pngFileName={pngFileName}
-            sourceKind={sourceKind}
-            svgText={svgText}
-            onFileError={onFileError}
-            onPngDataUrlChange={onPngDataUrlChange}
-            onSvgTextChange={onSvgTextChange}
-          />
-          {sourceKind === "svg" ? <ResetSvgButton onClick={() => onSvgTextChange(SAMPLE_SVG)} /> : null}
-        </FieldGroup>
+    <div className="grid h-full content-start gap-2.5 overflow-hidden p-2.5">
+      <FieldGroup title="Source">
+        <SourceControls
+          pngFileName={pngFileName}
+          sourceKind={sourceKind}
+          svgText={svgText}
+          onFileError={onFileError}
+          onPngDataUrlChange={onPngDataUrlChange}
+          onSvgTextChange={onSvgTextChange}
+        />
+        {sourceKind === "svg" ? <ResetSvgButton onClick={() => onSvgTextChange(SAMPLE_SVG)} /> : null}
+      </FieldGroup>
 
-        <Separator />
-
-        <FieldGroup title="Size">
+      <FieldGroup title="Size">
+        <div className="grid grid-cols-2 gap-2">
           <NumberField
             id="icon-size"
-            label="Icon image"
+            label="Icon size"
             min={128}
             max={2048}
             step={8}
             value={options.iconSize}
             onValueChange={(iconSize) => onOptionsChange(mergeOptions(options, { iconSize }))}
-          />
-          <NumberRowField
-            label="Banner image"
-            fields={[
-              {
-                id: "banner-width",
-                ariaLabel: "Banner width",
-                min: 640,
-                max: 4096,
-                step: 16,
-                value: options.bannerWidth,
-                onValueChange: (bannerWidth) =>
-                  onOptionsChange(mergeOptions(options, { bannerWidth }))
-              },
-              {
-                id: "banner-height",
-                ariaLabel: "Banner height",
-                min: 360,
-                max: 2160,
-                step: 16,
-                value: options.bannerHeight,
-                onValueChange: (bannerHeight) =>
-                  onOptionsChange(mergeOptions(options, { bannerHeight }))
-              }
-            ]}
           />
           <NumberField
             id="banner-graphic-size"
@@ -115,11 +86,36 @@ export function OptionsPanel({
               onOptionsChange(mergeOptions(options, { bannerGraphicSize }))
             }
           />
-        </FieldGroup>
+        </div>
+        <NumberRowField
+          label="Banner size"
+          fields={[
+            {
+              id: "banner-width",
+              ariaLabel: "Banner width",
+              min: 640,
+              max: 4096,
+              step: 16,
+              value: options.bannerWidth,
+              onValueChange: (bannerWidth) =>
+                onOptionsChange(mergeOptions(options, { bannerWidth }))
+            },
+            {
+              id: "banner-height",
+              ariaLabel: "Banner height",
+              min: 360,
+              max: 2160,
+              step: 16,
+              value: options.bannerHeight,
+              onValueChange: (bannerHeight) =>
+                onOptionsChange(mergeOptions(options, { bannerHeight }))
+            }
+          ]}
+        />
+      </FieldGroup>
 
-        <Separator />
-
-        <FieldGroup title="Color">
+      <FieldGroup title="Color">
+        <div className="grid grid-cols-2 gap-2">
           <ColorField
             id="background-color"
             label="Background"
@@ -136,57 +132,57 @@ export function OptionsPanel({
               onValueChange={(iconColor) => onOptionsChange(mergeOptions(options, { iconColor }))}
             />
           ) : null}
-          <div className="grid grid-cols-2 gap-2">
-            {presets.map((preset) => (
-              <SwatchButton
-                key={preset.id}
-                backgroundColor={preset.backgroundColor}
-                iconColor={preset.iconColor}
-                label={preset.name}
-                onClick={() =>
-                  onOptionsChange(
-                    mergeOptions(options, {
-                      backgroundColor: preset.backgroundColor,
-                      iconColor: preset.iconColor
-                    })
-                  )
-                }
-              />
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                const nextPresets = [...userPresets, createUserColorPreset(options)];
-                onUserPresetsChange(nextPresets);
-              }}
-            >
-              Save preset
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={userPresets.length === 0}
-              onClick={() => {
-                const nextPresets = userPresets.slice(0, -1);
-                onUserPresetsChange(nextPresets);
-              }}
-            >
-              Delete last
-            </Button>
-          </div>
-        </FieldGroup>
+        </div>
+        <div className="grid grid-cols-3 gap-1.5">
+          {presets.map((preset) => (
+            <SwatchButton
+              key={preset.id}
+              backgroundColor={preset.backgroundColor}
+              iconColor={preset.iconColor}
+              label={preset.name}
+              onClick={() =>
+                onOptionsChange(
+                  mergeOptions(options, {
+                    backgroundColor: preset.backgroundColor,
+                    iconColor: preset.iconColor
+                  })
+                )
+              }
+            />
+          ))}
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              const nextPresets = [...userPresets, createUserColorPreset(options)];
+              onUserPresetsChange(nextPresets);
+            }}
+          >
+            Save preset
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={userPresets.length === 0}
+            onClick={() => {
+              const nextPresets = userPresets.slice(0, -1);
+              onUserPresetsChange(nextPresets);
+            }}
+          >
+            Delete last
+          </Button>
+        </div>
+      </FieldGroup>
 
-        <Separator />
-
-        <FieldGroup title="Shape">
+      <FieldGroup title="Shape">
+        <div className="grid grid-cols-2 gap-2">
           <SliderNumberField
             id="border-radius"
-            label="Border radius"
+            label="Radius"
             min={0}
             max={1024}
             step={1}
@@ -197,25 +193,25 @@ export function OptionsPanel({
           />
           <SliderNumberField
             id="curvature"
-            label="Curvature"
+            label="Curve"
             min={2}
             max={8}
             step={0.1}
             value={options.curvature}
             onValueChange={(curvature) => onOptionsChange(mergeOptions(options, { curvature }))}
           />
-          <SliderNumberField
-            id="padding"
-            label="Margin"
-            min={0}
-            max={512}
-            step={4}
-            value={options.padding}
-            onValueChange={(padding) => onOptionsChange(mergeOptions(options, { padding }))}
-          />
-        </FieldGroup>
-      </div>
-    </ScrollArea>
+        </div>
+        <SliderNumberField
+          id="padding"
+          label="Margin"
+          min={0}
+          max={512}
+          step={4}
+          value={options.padding}
+          onValueChange={(padding) => onOptionsChange(mergeOptions(options, { padding }))}
+        />
+      </FieldGroup>
+    </div>
   );
 }
 
