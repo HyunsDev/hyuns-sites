@@ -31,9 +31,6 @@ pages:
             - label: Web Color
               icon: Palette
               href: https://web-color.hyuns.dev
-            - label: Image Maker
-              icon: ImagePlus
-              href: https://image-maker.hyuns.dev
 
       - groups:
           - title: 프로젝트

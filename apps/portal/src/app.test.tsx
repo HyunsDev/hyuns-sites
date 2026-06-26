@@ -43,10 +43,6 @@ describe("Portal", () => {
       "href",
       "https://web-color.hyuns.dev"
     );
-    expect(screen.getByRole("link", { name: "Image Maker" })).toHaveAttribute(
-      "href",
-      "https://image-maker.hyuns.dev"
-    );
     expect(screen.getByRole("link", { name: "블로그" })).toHaveAttribute(
       "href",
       "https://velog.io/@phw3071"
