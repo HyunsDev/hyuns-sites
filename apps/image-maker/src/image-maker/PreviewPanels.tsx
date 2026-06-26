@@ -48,7 +48,7 @@ function PreviewStage({
     );
   }
 
-  const maxWidth = mode === "icon" ? "min(58%, 280px)" : "min(88%, 720px)";
+  const maxWidth = mode === "icon" ? "min(42%, 200px)" : "min(88%, 720px)";
 
   return (
     <div className="image-maker-checkerboard grid h-full min-h-52 place-items-center overflow-hidden rounded-md border border-border p-5">
