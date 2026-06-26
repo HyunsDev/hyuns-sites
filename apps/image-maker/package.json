@@ -1,0 +1,35 @@
+{
+  "name": "image-maker",
+  "private": true,
+  "version": "0.0.0",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm generate:brands && vite build",
+    "check": "pnpm generate:brands && pnpm lint && pnpm typecheck && pnpm test",
+    "dev": "vite --host 0.0.0.0",
+    "generate:brands": "node scripts/generate-brand-index.mjs",
+    "lint": "eslint src",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hyunsdev/ui": "^0.2.0",
+    "@tanstack/react-router": "^1.170.16",
+    "lucide-react": "^1.8.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "simple-icons": "^16.24.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@vitejs/plugin-react": "^4.6.0",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/test-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "tailwindcss": "^4.1.11",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4"
+  }
+}

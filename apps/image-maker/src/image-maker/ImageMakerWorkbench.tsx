@@ -1,0 +1,214 @@
+import { useEffect, useMemo, useState } from "react";
+import { Badge } from "@hyunsdev/ui/components/badge";
+import { Button } from "@hyunsdev/ui/components/button";
+import {
+  Panel,
+  PanelBody,
+  PanelFooter,
+  PanelHeader,
+  PanelHeaderLeading,
+  PanelHeaderTrailing
+} from "@hyunsdev/ui/layouts/panel";
+import {
+  Workbench,
+  WorkbenchContentArea,
+  WorkbenchProvider
+} from "@hyunsdev/ui/layouts/workbench";
+import { copyPngToClipboard, copySvgToClipboard, downloadPng, downloadSvg } from "./exporters";
+import { svgGraphicFromText, useBrandGraphic, useLucideGraphic } from "./graphic-assets";
+import { ImageMakerSidebar } from "./ImageMakerSidebar";
+import { OptionsPanel, SAMPLE_SVG } from "./OptionsPanel";
+import {
+  DEFAULT_IMAGE_OPTIONS,
+  readUserColorPresets,
+  writeUserColorPresets
+} from "./presets";
+import { PreviewPanels } from "./PreviewPanels";
+import { errorMessageFromUnknown } from "./file-readers";
+import { getSourceConfig } from "./source-config";
+import { renderImageSvg } from "./renderers";
+import type { ColorPreset, ExportStatus, GraphicAsset, ImageMakerOptions, SourceKind } from "./types";
+import { assertNever } from "./types";
+
+type ImageMakerWorkbenchProps = {
+  readonly sourceKind: SourceKind;
+};
+
+type WorkbenchOrientation = "horizontal" | "vertical";
+
+function getFilename(sourceKind: SourceKind, mode: string, extension: string) {
+  return `image-maker-${sourceKind}-${mode}.${extension}`;
+}
+
+function useResponsiveWorkbenchOrientation(): WorkbenchOrientation {
+  const [orientation, setOrientation] = useState<WorkbenchOrientation>("horizontal");
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const syncOrientation = () => {
+      setOrientation(media.matches ? "vertical" : "horizontal");
+    };
+
+    syncOrientation();
+    media.addEventListener("change", syncOrientation);
+
+    return () => {
+      media.removeEventListener("change", syncOrientation);
+    };
+  }, []);
+
+  return orientation;
+}
+
+export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
+  const [options, setOptions] = useState<ImageMakerOptions>(DEFAULT_IMAGE_OPTIONS);
+  const [userPresets, setUserPresets] = useState<readonly ColorPreset[]>(() =>
+    readUserColorPresets()
+  );
+  const [lucideValue, setLucideValue] = useState("camera");
+  const [brandValue, setBrandValue] = useState("github");
+  const [svgText, setSvgText] = useState(SAMPLE_SVG);
+  const [pngDataUrl, setPngDataUrl] = useState<string | null>(null);
+  const [pngFileName, setPngFileName] = useState<string | null>(null);
+  const [status, setStatus] = useState<ExportStatus>({ kind: "idle" });
+  const workbenchOrientation = useResponsiveWorkbenchOrientation();
+  const brandGraphic = useBrandGraphic(brandValue, sourceKind, setOptions, setStatus);
+  const lucideGraphic = useLucideGraphic(lucideValue, setStatus);
+  const sourceConfig = getSourceConfig(sourceKind);
+
+  const activeGraphic = useMemo<GraphicAsset | null>(() => {
+    switch (sourceKind) {
+      case "brand":
+        return brandGraphic;
+      case "lucide":
+        return lucideGraphic;
+      case "png":
+        return pngDataUrl ? { kind: "png", title: pngFileName ?? "Custom PNG", dataUrl: pngDataUrl } : null;
+      case "svg":
+        return svgGraphicFromText(svgText);
+      default:
+        return assertNever(sourceKind);
+    }
+  }, [brandGraphic, lucideGraphic, pngDataUrl, pngFileName, sourceKind, svgText]);
+
+  const iconImage = activeGraphic ? renderImageSvg(activeGraphic, options, "icon") : null;
+  const bannerImage = activeGraphic ? renderImageSvg(activeGraphic, options, "banner") : null;
+  const sourceTitle = activeGraphic?.title ?? sourceConfig.title;
+
+  async function runExport(
+    action: () => Promise<void> | void,
+    message: string
+  ) {
+    try {
+      await action();
+      setStatus({ kind: "success", message });
+    } catch (error) {
+      setStatus({ kind: "error", message: errorMessageFromUnknown(error) });
+    }
+  }
+
+  function handleBrandValueChange(value: string) {
+    setBrandValue(value);
+  }
+
+  function resetOptions() {
+    if (sourceKind === "brand") {
+      setOptions({
+        ...DEFAULT_IMAGE_OPTIONS,
+        iconColor: brandGraphic?.color ?? DEFAULT_IMAGE_OPTIONS.iconColor
+      });
+      return;
+    }
+
+    setOptions(DEFAULT_IMAGE_OPTIONS);
+  }
+
+  return (
+    <WorkbenchProvider>
+      <Workbench>
+        <ImageMakerSidebar activeKind={sourceKind} />
+        <WorkbenchContentArea orientation={workbenchOrientation}>
+          <Panel key="options" className="min-w-80">
+            <PanelHeader>
+              <PanelHeaderLeading>
+                <div className="grid gap-1">
+                  <h1 className="text-base font-semibold leading-6">{sourceConfig.label}</h1>
+                  <p className="text-xs text-muted-foreground">{sourceConfig.description}</p>
+                </div>
+              </PanelHeaderLeading>
+            </PanelHeader>
+            <PanelBody className="p-0">
+              <OptionsPanel
+                brandValue={brandValue}
+                lucideValue={lucideValue}
+                options={options}
+                pngFileName={pngFileName}
+                sourceKind={sourceKind}
+                svgText={svgText}
+                userPresets={userPresets}
+                onBrandValueChange={handleBrandValueChange}
+                onFileError={(message) => setStatus({ kind: "error", message })}
+                onLucideValueChange={setLucideValue}
+                onOptionsChange={setOptions}
+                onPngDataUrlChange={(dataUrl, fileName) => {
+                  setPngDataUrl(dataUrl);
+                  setPngFileName(fileName);
+                }}
+                onSvgTextChange={setSvgText}
+                onUserPresetsChange={(presets) => {
+                  writeUserColorPresets(presets);
+                  setUserPresets(presets);
+                }}
+              />
+            </PanelBody>
+          </Panel>
+          <Panel key="preview" className="min-w-0">
+            <PanelHeader>
+              <PanelHeaderLeading>
+                <div className="flex min-w-0 items-center gap-2">
+                  <Badge variant="normal">{sourceConfig.title}</Badge>
+                  <span className="truncate text-sm font-medium">{sourceTitle}</span>
+                </div>
+              </PanelHeaderLeading>
+              <PanelHeaderTrailing>
+                <Button type="button" size="sm" variant="outline" onClick={resetOptions}>
+                  Reset
+                </Button>
+              </PanelHeaderTrailing>
+            </PanelHeader>
+            <PanelBody className="p-0">
+              <PreviewPanels
+                bannerImage={bannerImage}
+                iconImage={iconImage}
+                sourceTitle={sourceTitle}
+                status={status}
+                onCopySvg={(image) =>
+                  void runExport(() => copySvgToClipboard(image), "SVG copied.")
+                }
+                onCopyPng={(image) =>
+                  void runExport(() => copyPngToClipboard(image), "PNG copied.")
+                }
+                onDownloadSvg={(image) =>
+                  void runExport(
+                    () => downloadSvg(image, getFilename(sourceKind, image.mode, "svg")),
+                    "SVG downloaded."
+                  )
+                }
+                onDownloadPng={(image) =>
+                  void runExport(
+                    () => downloadPng(image, getFilename(sourceKind, image.mode, "png")),
+                    "PNG downloaded."
+                  )
+                }
+              />
+            </PanelBody>
+            <PanelFooter className="justify-between gap-3 text-xs text-muted-foreground">
+              <span>Icon {options.iconSize} x {options.iconSize}</span>
+              <span>Banner {options.bannerWidth} x {options.bannerHeight}</span>
+            </PanelFooter>
+          </Panel>
+        </WorkbenchContentArea>
+      </Workbench>
+    </WorkbenchProvider>
+  );
+}
