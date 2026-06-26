@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@hyunsdev/ui/components/button";
+import { RotateCcwIcon } from "lucide-react";
 import {
   FileUpload,
   FileUploadDropzone,
@@ -121,6 +122,7 @@ export function SourceControls({
 export function ResetSvgButton({ onClick }: { readonly onClick: () => void }) {
   return (
     <Button type="button" variant="outline" size="sm" onClick={onClick}>
+      <RotateCcwIcon aria-hidden="true" className="size-3.5" />
       Reset SVG
     </Button>
   );

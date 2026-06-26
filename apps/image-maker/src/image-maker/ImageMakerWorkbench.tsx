@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@hyunsdev/ui/components/button";
+import { RotateCcwIcon } from "lucide-react";
 import {
   Panel,
   PanelBody,
@@ -150,6 +151,7 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
               </PanelHeaderLeading>
               <PanelHeaderTrailing>
                 <Button type="button" size="sm" variant="outline" onClick={resetOptions}>
+                  <RotateCcwIcon aria-hidden="true" className="size-3.5" />
                   Reset
                 </Button>
               </PanelHeaderTrailing>

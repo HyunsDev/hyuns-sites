@@ -1,4 +1,5 @@
 import { Button } from "@hyunsdev/ui/components/button";
+import { CopyIcon, DownloadIcon } from "lucide-react";
 import { svgToDataUrl } from "./renderers";
 import type { ExportStatus, RenderMode, RenderedImage } from "./types";
 
@@ -89,6 +90,7 @@ function PreviewPane({
             }
           }}
         >
+          <CopyIcon aria-hidden="true" className="size-3.5" />
           SVG 복사
         </Button>
         <Button
@@ -102,6 +104,7 @@ function PreviewPane({
             }
           }}
         >
+          <CopyIcon aria-hidden="true" className="size-3.5" />
           PNG 복사
         </Button>
         <Button
@@ -115,6 +118,7 @@ function PreviewPane({
             }
           }}
         >
+          <DownloadIcon aria-hidden="true" className="size-3.5" />
           SVG 다운로드
         </Button>
         <Button
@@ -128,6 +132,7 @@ function PreviewPane({
             }
           }}
         >
+          <DownloadIcon aria-hidden="true" className="size-3.5" />
           PNG 다운로드
         </Button>
       </div>
