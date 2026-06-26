@@ -76,6 +76,21 @@ describe("renderImageSvg", () => {
     expect(curvedBanner.svg).toBe(squircleBanner.svg);
     expect(curvedIcon.svg).not.toBe(squircleIcon.svg);
   });
+
+  it("renders banners with a rectangular background regardless of border radius", () => {
+    const banner = renderImageSvg(
+      asset,
+      {
+        ...DEFAULT_IMAGE_OPTIONS,
+        borderRadius: 512,
+        curvature: 8
+      },
+      "banner"
+    );
+
+    expect(banner.svg).toContain('<path d="M0 0H1920V1080H0Z"');
+    expect(banner.svg).not.toContain("Q");
+  });
 });
 
 describe("sanitizeSvgText", () => {

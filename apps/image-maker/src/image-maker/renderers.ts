@@ -35,6 +35,10 @@ function getCanvasSize(options: ImageMakerOptions, mode: RenderMode) {
   };
 }
 
+function createRectPath(width: number, height: number) {
+  return `M0 0H${width}V${height}H0Z`;
+}
+
 function superellipseCorner(
   cx: number,
   cy: number,
@@ -68,7 +72,7 @@ export function createSquirclePath(
   const r = clamp(radius, 0, maxRadius);
 
   if (r <= 0) {
-    return `M0 0H${width}V${height}H0Z`;
+    return createRectPath(width, height);
   }
 
   const exponent = clamp(curvature, 2, 8);
@@ -91,28 +95,6 @@ export function createSquirclePath(
   return `M${points.join("L")}Z`;
 }
 
-function createRoundedRectPath(width: number, height: number, radius: number) {
-  const maxRadius = Math.min(width, height) / 2;
-  const r = clamp(radius, 0, maxRadius);
-
-  if (r <= 0) {
-    return `M0 0H${width}V${height}H0Z`;
-  }
-
-  return [
-    `M${r} 0`,
-    `H${width - r}`,
-    `Q${width} 0 ${width} ${r}`,
-    `V${height - r}`,
-    `Q${width} ${height} ${width - r} ${height}`,
-    `H${r}`,
-    `Q0 ${height} 0 ${height - r}`,
-    `V${r}`,
-    `Q0 0 ${r} 0`,
-    "Z"
-  ].join("");
-}
-
 function getGraphicSize(options: ImageMakerOptions, mode: RenderMode, width: number, height: number) {
   const maxGraphicSize = Math.min(width, height);
 
@@ -133,7 +115,7 @@ function getBackgroundPath(
   height: number
 ) {
   if (mode === "banner") {
-    return createRoundedRectPath(width, height, options.borderRadius);
+    return createRectPath(width, height);
   }
 
   return createSquirclePath(width, height, options.borderRadius, options.curvature);
