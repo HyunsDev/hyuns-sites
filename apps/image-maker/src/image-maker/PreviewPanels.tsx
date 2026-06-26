@@ -37,9 +37,13 @@ function PreviewStage({
   readonly mode: RenderMode;
   readonly sourceTitle: string;
 }) {
+  const stageHeight = mode === "icon" ? "h-[200px]" : "h-[300px]";
+
   if (!image) {
     return (
-      <div className="grid h-full min-h-52 place-items-center rounded-md border border-dashed border-border bg-muted/20 p-6 text-center">
+      <div
+        className={`grid ${stageHeight} place-items-center rounded-md border border-dashed border-border bg-muted/20 p-6 text-center`}
+      >
         <p className="text-sm font-medium">No source selected</p>
       </div>
     );
@@ -48,7 +52,9 @@ function PreviewStage({
   const maxWidth = mode === "icon" ? "min(42%, 200px)" : "min(88%, 720px)";
 
   return (
-    <div className="image-maker-checkerboard grid h-full min-h-52 place-items-center overflow-hidden rounded-md border border-border p-5">
+    <div
+      className={`image-maker-checkerboard grid ${stageHeight} place-items-center overflow-hidden rounded-md border border-border p-5`}
+    >
       <img
         src={svgToDataUrl(image.svg)}
         alt={`${sourceTitle} ${titleForMode(mode)}`}
@@ -74,8 +80,8 @@ function PreviewPane({
   const disabled = image === null;
 
   return (
-    <section className="flex min-h-[320px] flex-col gap-3 p-3 md:h-full md:min-h-0">
-      <div className="min-h-0 flex-1">
+    <section className="flex flex-col gap-3 p-3">
+      <div>
         <PreviewStage image={image} mode={mode} sourceTitle={sourceTitle} />
       </div>
       <div className="flex shrink-0 flex-wrap gap-2">

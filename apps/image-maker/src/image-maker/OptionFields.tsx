@@ -164,7 +164,7 @@ export function SliderNumberField({
           step={step}
           value={value}
           onValueChange={onValueChange}
-          className="h-7 w-20 text-right font-mono text-xs"
+          className="h-7 min-w-0 flex-1 text-right font-mono text-xs"
         />
       </div>
       <Slider
@@ -211,7 +211,13 @@ export function SwatchButton({
   readonly onClick: () => void;
 }) {
   return (
-    <Button type="button" variant="outline" size="sm" className="justify-start" onClick={onClick}>
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      className="w-full justify-start"
+      onClick={onClick}
+    >
       <span
         aria-hidden="true"
         className="size-4 rounded border border-border"

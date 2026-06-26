@@ -156,6 +156,7 @@ export function OptionsPanel({
             type="button"
             variant="outline"
             size="sm"
+            className="w-full"
             onClick={() => {
               const nextPresets = [...userPresets, createUserColorPreset(options)];
               onUserPresetsChange(nextPresets);
@@ -167,6 +168,7 @@ export function OptionsPanel({
             type="button"
             variant="outline"
             size="sm"
+            className="w-full"
             disabled={userPresets.length === 0}
             onClick={() => {
               const nextPresets = userPresets.slice(0, -1);

@@ -115,7 +115,7 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
       <Workbench>
         <ImageMakerSidebar activeKind={sourceKind} />
         <WorkbenchContentArea orientation={workbenchOrientation}>
-          <Panel key="options" className="min-w-80">
+          <Panel key="options" className="w-[380px] min-w-[380px] basis-[380px]">
             <PanelHeader>
               <PanelHeaderLeading>
                 <div className="grid gap-1">
