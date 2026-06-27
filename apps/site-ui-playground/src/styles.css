@@ -2,6 +2,7 @@
 @import "@hyunsdev/ui/globals.css";
 
 @source "./**/*.{ts,tsx}";
+@source "../../../packages/playground-ui/src/**/*.{ts,tsx}";
 @source "../../../packages/site-ui/src/**/*.{ts,tsx}";
 
 @layer base {
