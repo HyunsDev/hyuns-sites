@@ -35,6 +35,7 @@ const BASE_CONTROLS_MIN_DISTANCE = 2.2
 const BASE_CONTROLS_MAX_DISTANCE = 5.5
 
 export function SolidColorSpaceModelCanvas({
+  autoRotate,
   className,
   gamutRendering,
   mesh,
@@ -42,6 +43,7 @@ export function SolidColorSpaceModelCanvas({
   sliceMesh,
   showWireframe,
 }: {
+  readonly autoRotate: boolean
   readonly className?: string
   readonly gamutRendering: ColorGamutRendering
   readonly mesh: SolidColorSpaceMesh
@@ -53,11 +55,16 @@ export function SolidColorSpaceModelCanvas({
   const hostRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const labelLayerRef = useRef<HTMLDivElement | null>(null)
+  const autoRotateRef = useRef(autoRotate)
   const axisLabels = useMemo(
     () => getColorSpaceAxisLabels(model.id),
     [model.id]
   )
   const gamutRenderLabel = getColorGamutRenderLabel(gamutRendering)
+
+  useEffect(() => {
+    autoRotateRef.current = autoRotate
+  }, [autoRotate])
 
   useEffect(() => {
     const host = hostRef.current
@@ -95,7 +102,7 @@ export function SolidColorSpaceModelCanvas({
     camera.lookAt(0, 0, 0)
 
     const controls = new OrbitControls(camera, canvas)
-    controls.autoRotate = true
+    controls.autoRotate = autoRotateRef.current
     controls.autoRotateSpeed = 0.52
     controls.enableDamping = true
     controls.enablePan = false
@@ -168,6 +175,7 @@ export function SolidColorSpaceModelCanvas({
 
     let animationFrameId = 0
     const render = () => {
+      controls.autoRotate = autoRotateRef.current
       controls.update()
       renderer.render(scene, camera)
       updateAxisLabels(camera, renderWidth, renderHeight)

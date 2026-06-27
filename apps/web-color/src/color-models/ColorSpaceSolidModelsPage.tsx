@@ -1,13 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { EyeOffIcon } from "lucide-react"
 
-import { Button } from "@hyunsdev/ui/components/button"
-import { ButtonGroup } from "@hyunsdev/ui/components/button-group"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@hyunsdev/ui/components/tooltip"
 import { createColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
 import {
   buildSolidSliceMesh,
@@ -26,6 +18,8 @@ import type {
 } from "@/color-models/color-gamut"
 import { COLOR_SPACE_MODEL_BY_ID } from "@/color-models/color-space-models"
 import { ColorSpaceSolidSettingsPanel } from "@/color-models/ColorSpaceSolidSettingsPanel"
+import { ColorSpaceSolidOverlayTools } from "@/color-models/ColorSpaceSolidOverlayTools"
+import { getSolidModelKeyboardAction } from "@/color-models/color-space-solid-keyboard"
 import type {
   BaseColorSpaceModelId,
   ColorSpaceModelId,
@@ -37,7 +31,6 @@ import {
   isHueCubeModelId,
 } from "@/color-models/color-space-models"
 import { SolidColorSpaceModelCanvas } from "@/color-models/SolidColorSpaceModelCanvas"
-import { PlaygroundTools } from "@/playground/PlaygroundIndexPage"
 import { PlaygroundStage } from "@/playground/PlaygroundRoute"
 
 const CIE_REFERENCE_MODEL_IDS = ["xyz", "xyy"] as const
@@ -86,43 +79,12 @@ function isSolidGamutModeSupported(
   return gamutId !== "cie-1931" || isCieReferenceModel(modelId)
 }
 
-function isInteractiveEnterTarget(target: EventTarget | null) {
-  return (
-    target instanceof Element &&
-    target.closest(
-      'a, button, input, select, textarea, [contenteditable="true"], [role="button"], [role="combobox"], [role="slider"], [role="switch"]'
-    ) !== null
-  )
-}
-
-function SolidModelOverlayTools({ onHide }: { readonly onHide: () => void }) {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-2">
-      <PlaygroundTools />
-      <ButtonGroup>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              size="icon-sm"
-              variant="outline"
-              aria-label="UI 숨기기"
-              onClick={onHide}
-            >
-              <EyeOffIcon />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>UI 숨기기 (Enter)</TooltipContent>
-        </Tooltip>
-      </ButtonGroup>
-    </div>
-  )
-}
-
 export function ColorSpaceSolidModelsPage() {
   const [selectedModelId, setSelectedModelId] =
     useState<ColorSpaceModelId>("oklch")
   const [selectedGamutId, setSelectedGamutId] =
     useState<ColorGamutModeId>("srgb")
+  const [autoRotationEnabled, setAutoRotationEnabled] = useState(true)
   const [showWireframe, setShowWireframe] = useState(true)
   const [showSlice, setShowSlice] = useState(false)
   const [uiHidden, setUiHidden] = useState(false)
@@ -174,15 +136,21 @@ export function ColorSpaceSolidModelsPage() {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (
-        event.key !== "Enter" ||
-        event.repeat ||
-        isInteractiveEnterTarget(event.target)
-      ) {
-        return
-      }
+      const action = getSolidModelKeyboardAction(event)
 
-      setUiHidden((current) => !current)
+      switch (action) {
+        case "hide-ui":
+          setUiHidden((current) => !current)
+          return
+        case "toggle-rotation":
+          event.preventDefault()
+          setAutoRotationEnabled((current) => !current)
+          return
+        case null:
+          return
+        default:
+          assertNeverKeyboardAction(action)
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown)
@@ -247,11 +215,18 @@ export function ColorSpaceSolidModelsPage() {
         bottomCenter={uiHidden ? null : renderSettingsPanel("lg:hidden")}
         bottomEnd={
           uiHidden ? null : (
-            <SolidModelOverlayTools onHide={() => setUiHidden(true)} />
+            <ColorSpaceSolidOverlayTools
+              autoRotationEnabled={autoRotationEnabled}
+              onAutoRotationToggle={() => {
+                setAutoRotationEnabled((current) => !current)
+              }}
+              onHide={() => setUiHidden(true)}
+            />
           )
         }
       >
         <SolidColorSpaceModelCanvas
+          autoRotate={autoRotationEnabled}
           gamutRendering={gamutRendering}
           mesh={mesh}
           model={selectedModel}
@@ -262,4 +237,8 @@ export function ColorSpaceSolidModelsPage() {
       </PlaygroundStage>
     </div>
   )
+}
+
+function assertNeverKeyboardAction(action: never): never {
+  throw new RangeError(`Unknown solid model keyboard action: ${action}`)
 }
