@@ -27,10 +27,15 @@ import {
 import { createModelFrame } from "@/color-models/three-frame"
 import { createSolidColorSpaceObject } from "@/color-models/three-solid-scene"
 import { disposeObjectTree } from "@/color-models/three-scene"
+import {
+  applySolidModelViewState,
+  createDefaultSolidModelViewState,
+  readSolidModelViewState,
+  type SolidModelViewState,
+} from "@/color-models/solid-model-view-state"
 import { useTheme } from "@hyunsdev/ui/components/theme-provider"
 import { cn } from "@hyunsdev/ui/lib/utils"
 
-const BASE_CAMERA_POSITION = { x: 3.15, y: 2.2, z: 3.15 } as const
 const BASE_CONTROLS_MIN_DISTANCE = 2.2
 const BASE_CONTROLS_MAX_DISTANCE = 5.5
 
@@ -59,6 +64,7 @@ export function SolidColorSpaceModelCanvas({
   const labelLayerRef = useRef<HTMLDivElement | null>(null)
   const autoRotateRef = useRef(autoRotate)
   const showGuidesRef = useRef(showGuides)
+  const viewStateRef = useRef<SolidModelViewState | null>(null)
   const axisLabels = useMemo(
     () => getColorSpaceAxisLabels(model.id),
     [model.id]
@@ -101,12 +107,6 @@ export function SolidColorSpaceModelCanvas({
 
     const scene = new Scene()
     const camera = new PerspectiveCamera(42, 1, 0.1, 100)
-    camera.position.set(
-      BASE_CAMERA_POSITION.x,
-      BASE_CAMERA_POSITION.y,
-      BASE_CAMERA_POSITION.z
-    )
-    camera.lookAt(0, 0, 0)
 
     const controls = new OrbitControls(camera, canvas)
     controls.autoRotate = autoRotateRef.current
@@ -149,21 +149,23 @@ export function SolidColorSpaceModelCanvas({
     let resizeFrameId = 0
     let renderWidth = 1
     let renderHeight = 1
+    let cameraScale = 1
     const resize = () => {
       resizeFrameId = 0
       renderWidth = Math.max(1, Math.floor(host.clientWidth))
       renderHeight = Math.max(1, Math.floor(host.clientHeight))
 
       renderer.setSize(renderWidth, renderHeight, false)
-      const cameraScale = getResponsiveCameraScale(renderWidth, renderHeight)
-      camera.position.set(
-        BASE_CAMERA_POSITION.x * cameraScale,
-        BASE_CAMERA_POSITION.y * cameraScale,
-        BASE_CAMERA_POSITION.z * cameraScale
-      )
-      camera.lookAt(0, 0, 0)
+      cameraScale = getResponsiveCameraScale(renderWidth, renderHeight)
       controls.minDistance = BASE_CONTROLS_MIN_DISTANCE * cameraScale
       controls.maxDistance = BASE_CONTROLS_MAX_DISTANCE * cameraScale
+      applySolidModelViewState({
+        camera,
+        cameraScale,
+        controls,
+        viewState:
+          viewStateRef.current ?? createDefaultSolidModelViewState(cameraScale),
+      })
       camera.aspect = renderWidth / renderHeight
       camera.updateProjectionMatrix()
       controls.update()
@@ -178,13 +180,18 @@ export function SolidColorSpaceModelCanvas({
     }
     const resizeObserver = new ResizeObserver(queueResize)
     resizeObserver.observe(host)
-    queueResize()
+    resize()
 
     let animationFrameId = 0
     const render = () => {
       controls.autoRotate = autoRotateRef.current
       frame.visible = showGuidesRef.current
       controls.update()
+      viewStateRef.current = readSolidModelViewState({
+        camera,
+        cameraScale,
+        controls,
+      })
       renderer.render(scene, camera)
       updateAxisLabels(camera, renderWidth, renderHeight)
       animationFrameId = window.requestAnimationFrame(render)
@@ -192,6 +199,11 @@ export function SolidColorSpaceModelCanvas({
     render()
 
     return () => {
+      viewStateRef.current = readSolidModelViewState({
+        camera,
+        cameraScale,
+        controls,
+      })
       window.cancelAnimationFrame(animationFrameId)
       if (resizeFrameId !== 0) {
         window.cancelAnimationFrame(resizeFrameId)
