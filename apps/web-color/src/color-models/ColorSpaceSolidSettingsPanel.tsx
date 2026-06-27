@@ -61,7 +61,7 @@ export function ColorSpaceSolidSettingsPanel({
     <section
       aria-label="3D solid model settings"
       className={cn(
-        "grid max-h-[calc(100svh-1.5rem)] w-[min(100vw-1.5rem,24rem)] gap-2 overflow-y-auto rounded-md border border-border bg-background-primary/90 p-3 text-xs shadow-sm backdrop-blur",
+        "grid max-h-[calc(100svh-1.5rem)] w-[min(100vw-1.5rem,22rem)] gap-2 overflow-y-auto rounded-md border border-border bg-background-primary/90 p-3 text-xs shadow-sm backdrop-blur",
         className
       )}
     >

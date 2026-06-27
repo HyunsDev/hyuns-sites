@@ -1,4 +1,13 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { EyeOffIcon } from "lucide-react"
+
+import { Button } from "@hyunsdev/ui/components/button"
+import { ButtonGroup } from "@hyunsdev/ui/components/button-group"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@hyunsdev/ui/components/tooltip"
 import { createColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
 import {
   buildSolidSliceMesh,
@@ -77,6 +86,38 @@ function isSolidGamutModeSupported(
   return gamutId !== "cie-1931" || isCieReferenceModel(modelId)
 }
 
+function isInteractiveEnterTarget(target: EventTarget | null) {
+  return (
+    target instanceof Element &&
+    target.closest(
+      'a, button, input, select, textarea, [contenteditable="true"], [role="button"], [role="combobox"], [role="slider"], [role="switch"]'
+    ) !== null
+  )
+}
+
+function SolidModelOverlayTools({ onHide }: { readonly onHide: () => void }) {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-2">
+      <PlaygroundTools />
+      <ButtonGroup>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="icon-sm"
+              variant="outline"
+              aria-label="UI 숨기기"
+              onClick={onHide}
+            >
+              <EyeOffIcon />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>UI 숨기기 (Enter)</TooltipContent>
+        </Tooltip>
+      </ButtonGroup>
+    </div>
+  )
+}
+
 export function ColorSpaceSolidModelsPage() {
   const [selectedModelId, setSelectedModelId] =
     useState<ColorSpaceModelId>("oklch")
@@ -84,6 +125,7 @@ export function ColorSpaceSolidModelsPage() {
     useState<ColorGamutModeId>("srgb")
   const [showWireframe, setShowWireframe] = useState(true)
   const [showSlice, setShowSlice] = useState(false)
+  const [uiHidden, setUiHidden] = useState(false)
   const [slice, setSlice] = useState<SolidSliceState>(() =>
     createDefaultSolidSliceState("rgb")
   )
@@ -130,6 +172,26 @@ export function ColorSpaceSolidModelsPage() {
     slice,
   ])
 
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (
+        event.key !== "Enter" ||
+        event.repeat ||
+        isInteractiveEnterTarget(event.target)
+      ) {
+        return
+      }
+
+      setUiHidden((current) => !current)
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [])
+
   function selectSolidModel(modelId: ColorSpaceModelId) {
     setSelectedModelId(modelId)
 
@@ -172,20 +234,32 @@ export function ColorSpaceSolidModelsPage() {
     )
   }
 
+  function showUi() {
+    if (uiHidden) {
+      setUiHidden(false)
+    }
+  }
+
   return (
-    <PlaygroundStage
-      bottomStart={renderSettingsPanel("hidden lg:grid")}
-      bottomCenter={renderSettingsPanel("lg:hidden")}
-      bottomEnd={<PlaygroundTools />}
-    >
-      <SolidColorSpaceModelCanvas
-        gamutRendering={gamutRendering}
-        mesh={mesh}
-        model={selectedModel}
-        sliceMesh={sliceMesh}
-        showWireframe={showWireframe}
-        className="size-full min-h-0 rounded-none border-0 bg-background-primary/70 shadow-none md:min-h-0"
-      />
-    </PlaygroundStage>
+    <div onPointerDownCapture={showUi}>
+      <PlaygroundStage
+        bottomStart={uiHidden ? null : renderSettingsPanel("hidden lg:grid")}
+        bottomCenter={uiHidden ? null : renderSettingsPanel("lg:hidden")}
+        bottomEnd={
+          uiHidden ? null : (
+            <SolidModelOverlayTools onHide={() => setUiHidden(true)} />
+          )
+        }
+      >
+        <SolidColorSpaceModelCanvas
+          gamutRendering={gamutRendering}
+          mesh={mesh}
+          model={selectedModel}
+          sliceMesh={sliceMesh}
+          showWireframe={showWireframe}
+          className="size-full min-h-0 rounded-none border-0 bg-background-primary/70 shadow-none md:min-h-0"
+        />
+      </PlaygroundStage>
+    </div>
   )
 }
