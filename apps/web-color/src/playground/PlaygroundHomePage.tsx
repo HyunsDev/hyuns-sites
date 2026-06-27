@@ -6,6 +6,7 @@ import {
   PaletteIcon,
   PanelTopIcon,
   ScissorsIcon,
+  UsbIcon,
 } from "lucide-react"
 
 import {
@@ -52,6 +53,11 @@ export function PlaygroundHomePage() {
             icon={ScissorsIcon}
             label="Gamut Clipping"
             path="/color-gamut-clipping"
+          />
+          <PlaygroundRouteFeature
+            icon={UsbIcon}
+            label="Arduino RGB"
+            path="/arduino-rgb"
           />
         </PlaygroundRouteGroup>
       </PlaygroundRouteColumn>

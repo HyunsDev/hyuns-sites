@@ -15,6 +15,7 @@ import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-
 import { Route as ColorInterpolationRouteImport } from "./routes/color-interpolation"
 import { Route as ColorGamutClippingRouteImport } from "./routes/color-gamut-clipping"
 import { Route as ColorCoordinatePlanesRouteImport } from "./routes/color-coordinate-planes"
+import { Route as ArduinoRgbRouteImport } from "./routes/arduino-rgb"
 import { Route as IndexRouteImport } from "./routes/index"
 
 const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
@@ -47,6 +48,11 @@ const ColorCoordinatePlanesRoute = ColorCoordinatePlanesRouteImport.update({
   path: "/color-coordinate-planes",
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArduinoRgbRoute = ArduinoRgbRouteImport.update({
+  id: "/arduino-rgb",
+  path: "/arduino-rgb",
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
@@ -55,6 +61,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
+  "/arduino-rgb": typeof ArduinoRgbRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
+  "/arduino-rgb": typeof ArduinoRgbRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
+  "/arduino-rgb": typeof ArduinoRgbRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | "/"
+    | "/arduino-rgb"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
+    | "/arduino-rgb"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
   id:
     | "__root__"
     | "/"
+    | "/arduino-rgb"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArduinoRgbRoute: typeof ArduinoRgbRoute
   ColorCoordinatePlanesRoute: typeof ColorCoordinatePlanesRoute
   ColorGamutClippingRoute: typeof ColorGamutClippingRoute
   ColorInterpolationRoute: typeof ColorInterpolationRoute
@@ -165,6 +178,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ColorCoordinatePlanesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/arduino-rgb": {
+      id: "/arduino-rgb"
+      path: "/arduino-rgb"
+      fullPath: "/arduino-rgb"
+      preLoaderRoute: typeof ArduinoRgbRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/": {
       id: "/"
       path: "/"
@@ -177,6 +197,7 @@ declare module "@tanstack/react-router" {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArduinoRgbRoute: ArduinoRgbRoute,
   ColorCoordinatePlanesRoute: ColorCoordinatePlanesRoute,
   ColorGamutClippingRoute: ColorGamutClippingRoute,
   ColorInterpolationRoute: ColorInterpolationRoute,
