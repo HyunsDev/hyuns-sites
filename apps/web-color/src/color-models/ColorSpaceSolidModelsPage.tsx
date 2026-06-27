@@ -35,13 +35,14 @@ import { PlaygroundStage } from "@/playground/PlaygroundRoute"
 
 const CIE_REFERENCE_MODEL_IDS = ["xyz", "xyy"] as const
 
+type SolidHueCubeBaseModelId = Exclude<HueCubeBaseModelId, "hwb">
+
 const CUBE_MODEL_BY_BASE_ID = {
   hsl: "hsl-cube",
   hsv: "hsv-cube",
-  hwb: "hwb-cube",
   lch: "lch-cube",
   oklch: "oklch-cube",
-} as const satisfies Record<HueCubeBaseModelId, HueCubeModelId>
+} as const satisfies Record<SolidHueCubeBaseModelId, HueCubeModelId>
 
 function isCieReferenceModel(modelId: ColorSpaceModelId) {
   return CIE_REFERENCE_MODEL_IDS.some((item) => item === modelId)
@@ -49,11 +50,10 @@ function isCieReferenceModel(modelId: ColorSpaceModelId) {
 
 function isHueCubeBaseModelId(
   modelId: BaseColorSpaceModelId
-): modelId is HueCubeBaseModelId {
+): modelId is SolidHueCubeBaseModelId {
   return (
     modelId === "hsl" ||
     modelId === "hsv" ||
-    modelId === "hwb" ||
     modelId === "lch" ||
     modelId === "oklch"
   )
