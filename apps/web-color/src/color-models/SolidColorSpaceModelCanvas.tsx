@@ -41,6 +41,7 @@ export function SolidColorSpaceModelCanvas({
   mesh,
   model,
   sliceMesh,
+  showGuides,
   showWireframe,
 }: {
   readonly autoRotate: boolean
@@ -49,6 +50,7 @@ export function SolidColorSpaceModelCanvas({
   readonly mesh: SolidColorSpaceMesh
   readonly model: ColorSpaceModelDefinition
   readonly sliceMesh?: SolidColorSpaceMesh | null
+  readonly showGuides: boolean
   readonly showWireframe: boolean
 }) {
   const { resolvedTheme } = useTheme()
@@ -56,6 +58,7 @@ export function SolidColorSpaceModelCanvas({
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const labelLayerRef = useRef<HTMLDivElement | null>(null)
   const autoRotateRef = useRef(autoRotate)
+  const showGuidesRef = useRef(showGuides)
   const axisLabels = useMemo(
     () => getColorSpaceAxisLabels(model.id),
     [model.id]
@@ -65,6 +68,10 @@ export function SolidColorSpaceModelCanvas({
   useEffect(() => {
     autoRotateRef.current = autoRotate
   }, [autoRotate])
+
+  useEffect(() => {
+    showGuidesRef.current = showGuides
+  }, [showGuides])
 
   useEffect(() => {
     const host = hostRef.current
@@ -176,6 +183,7 @@ export function SolidColorSpaceModelCanvas({
     let animationFrameId = 0
     const render = () => {
       controls.autoRotate = autoRotateRef.current
+      frame.visible = showGuidesRef.current
       controls.update()
       renderer.render(scene, camera)
       updateAxisLabels(camera, renderWidth, renderHeight)
@@ -224,23 +232,26 @@ export function SolidColorSpaceModelCanvas({
       <ColorSpaceAxisLabelLayer
         labelLayerRef={labelLayerRef}
         labels={axisLabels}
+        className={!showGuides ? "hidden" : undefined}
       />
-      <div className="pointer-events-none absolute top-3 left-3 hidden max-w-[calc(100%-1.5rem)] flex-wrap items-center gap-2 lg:flex">
-        <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-normal shadow-sm backdrop-blur">
-          {mesh.vertexCount.toLocaleString()} vertices
-        </span>
-        <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-normal shadow-sm backdrop-blur">
-          {mesh.triangleCount.toLocaleString()} triangles
-        </span>
-        <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
-          {gamutRenderLabel}
-        </span>
-        {sliceMesh && (
-          <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
-            {sliceMesh.shapeLabel}
+      {showGuides && (
+        <div className="pointer-events-none absolute top-3 left-3 hidden max-w-[calc(100%-1.5rem)] flex-wrap items-center gap-2 lg:flex">
+          <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-normal shadow-sm backdrop-blur">
+            {mesh.vertexCount.toLocaleString()} vertices
           </span>
-        )}
-      </div>
+          <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-normal shadow-sm backdrop-blur">
+            {mesh.triangleCount.toLocaleString()} triangles
+          </span>
+          <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
+            {gamutRenderLabel}
+          </span>
+          {sliceMesh && (
+            <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
+              {sliceMesh.shapeLabel}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   )
 }

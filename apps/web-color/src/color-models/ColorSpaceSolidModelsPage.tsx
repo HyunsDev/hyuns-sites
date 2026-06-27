@@ -85,6 +85,7 @@ export function ColorSpaceSolidModelsPage() {
   const [selectedGamutId, setSelectedGamutId] =
     useState<ColorGamutModeId>("srgb")
   const [autoRotationEnabled, setAutoRotationEnabled] = useState(true)
+  const [showGuides, setShowGuides] = useState(true)
   const [showWireframe, setShowWireframe] = useState(true)
   const [showSlice, setShowSlice] = useState(false)
   const [uiHidden, setUiHidden] = useState(false)
@@ -185,6 +186,7 @@ export function ColorSpaceSolidModelsPage() {
         selectedBaseModelId={selectedBaseModelId}
         selectedGamutId={selectedGamutId}
         selectedModelId={selectedModel.id}
+        showGuides={showGuides}
         showSlice={showSlice}
         showWireframe={showWireframe}
         slice={slice}
@@ -195,6 +197,7 @@ export function ColorSpaceSolidModelsPage() {
         onCubeEnabledChange={(enabled) => {
           selectSolidModel(resolveSolidModelId(selectedBaseModelId, enabled))
         }}
+        onGuidesEnabledChange={setShowGuides}
         onWireframeChange={setShowWireframe}
         onSliceEnabledChange={setShowSlice}
         onSliceChange={setSlice}
@@ -231,6 +234,7 @@ export function ColorSpaceSolidModelsPage() {
           mesh={mesh}
           model={selectedModel}
           sliceMesh={sliceMesh}
+          showGuides={showGuides}
           showWireframe={showWireframe}
           className="size-full min-h-0 rounded-none border-0 bg-background-primary/70 shadow-none md:min-h-0"
         />

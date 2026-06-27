@@ -24,6 +24,7 @@ type ColorSpaceSolidSettingsPanelProps = {
   readonly isGamutModeSupported: (gamutId: ColorGamutModeId) => boolean
   readonly onCubeEnabledChange: (enabled: boolean) => void
   readonly onGamutSelect: (gamutId: ColorGamutModeId) => void
+  readonly onGuidesEnabledChange: (enabled: boolean) => void
   readonly onModelSelect: (modelId: BaseColorSpaceModelId) => void
   readonly onSliceChange: (slice: SolidSliceState) => void
   readonly onSliceEnabledChange: (enabled: boolean) => void
@@ -31,6 +32,7 @@ type ColorSpaceSolidSettingsPanelProps = {
   readonly selectedBaseModelId: BaseColorSpaceModelId
   readonly selectedGamutId: ColorGamutModeId
   readonly selectedModelId: ColorSpaceModelId
+  readonly showGuides: boolean
   readonly showSlice: boolean
   readonly showWireframe: boolean
   readonly slice: SolidSliceState
@@ -44,6 +46,7 @@ export function ColorSpaceSolidSettingsPanel({
   isGamutModeSupported,
   onCubeEnabledChange,
   onGamutSelect,
+  onGuidesEnabledChange,
   onModelSelect,
   onSliceChange,
   onSliceEnabledChange,
@@ -51,6 +54,7 @@ export function ColorSpaceSolidSettingsPanel({
   selectedBaseModelId,
   selectedGamutId,
   selectedModelId,
+  showGuides,
   showSlice,
   showWireframe,
   slice,
@@ -87,6 +91,12 @@ export function ColorSpaceSolidSettingsPanel({
         ariaLabel="Toggle wireframe overlay"
         checked={showWireframe}
         onCheckedChange={onWireframeChange}
+      />
+      <SettingsSwitchRow
+        label="Guide"
+        ariaLabel="Toggle model guides"
+        checked={showGuides}
+        onCheckedChange={onGuidesEnabledChange}
       />
       <SettingsSwitchRow
         label="Slice"
