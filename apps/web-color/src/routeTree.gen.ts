@@ -9,24 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/__root"
-import { Route as PerceptualColorStepsRouteImport } from "./routes/perceptual-color-steps"
 import { Route as CssColorNotationsRouteImport } from "./routes/css-color-notations"
 import { Route as ColorSpaceUnwrappedRouteImport } from "./routes/color-space-unwrapped"
 import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-solid-models"
-import { Route as ColorSpaceModelsRouteImport } from "./routes/color-space-models"
 import { Route as ColorInterpolationRouteImport } from "./routes/color-interpolation"
 import { Route as ColorGamutClippingRouteImport } from "./routes/color-gamut-clipping"
 import { Route as ColorCoordinatePlanesRouteImport } from "./routes/color-coordinate-planes"
-import { Route as Cie1931XyzRouteImport } from "./routes/cie-1931-xyz"
-import { Route as Cie1931XyRouteImport } from "./routes/cie-1931-xy"
-import { Route as Cie1931ProjectionRouteImport } from "./routes/cie-1931-projection"
 import { Route as IndexRouteImport } from "./routes/index"
 
-const PerceptualColorStepsRoute = PerceptualColorStepsRouteImport.update({
-  id: "/perceptual-color-steps",
-  path: "/perceptual-color-steps",
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
   id: "/css-color-notations",
   path: "/css-color-notations",
@@ -40,11 +30,6 @@ const ColorSpaceUnwrappedRoute = ColorSpaceUnwrappedRouteImport.update({
 const ColorSpaceSolidModelsRoute = ColorSpaceSolidModelsRouteImport.update({
   id: "/color-space-solid-models",
   path: "/color-space-solid-models",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ColorSpaceModelsRoute = ColorSpaceModelsRouteImport.update({
-  id: "/color-space-models",
-  path: "/color-space-models",
   getParentRoute: () => rootRouteImport,
 } as any)
 const ColorInterpolationRoute = ColorInterpolationRouteImport.update({
@@ -62,21 +47,6 @@ const ColorCoordinatePlanesRoute = ColorCoordinatePlanesRouteImport.update({
   path: "/color-coordinate-planes",
   getParentRoute: () => rootRouteImport,
 } as any)
-const Cie1931XyzRoute = Cie1931XyzRouteImport.update({
-  id: "/cie-1931-xyz",
-  path: "/cie-1931-xyz",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Cie1931XyRoute = Cie1931XyRouteImport.update({
-  id: "/cie-1931-xy",
-  path: "/cie-1931-xy",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Cie1931ProjectionRoute = Cie1931ProjectionRouteImport.update({
-  id: "/cie-1931-projection",
-  path: "/cie-1931-projection",
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
@@ -85,116 +55,74 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
-  "/cie-1931-projection": typeof Cie1931ProjectionRoute
-  "/cie-1931-xy": typeof Cie1931XyRoute
-  "/cie-1931-xyz": typeof Cie1931XyzRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
-  "/color-space-models": typeof ColorSpaceModelsRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
-  "/perceptual-color-steps": typeof PerceptualColorStepsRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
-  "/cie-1931-projection": typeof Cie1931ProjectionRoute
-  "/cie-1931-xy": typeof Cie1931XyRoute
-  "/cie-1931-xyz": typeof Cie1931XyzRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
-  "/color-space-models": typeof ColorSpaceModelsRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
-  "/perceptual-color-steps": typeof PerceptualColorStepsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
-  "/cie-1931-projection": typeof Cie1931ProjectionRoute
-  "/cie-1931-xy": typeof Cie1931XyRoute
-  "/cie-1931-xyz": typeof Cie1931XyzRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
-  "/color-space-models": typeof ColorSpaceModelsRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
-  "/perceptual-color-steps": typeof PerceptualColorStepsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | "/"
-    | "/cie-1931-projection"
-    | "/cie-1931-xy"
-    | "/cie-1931-xyz"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
-    | "/color-space-models"
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
-    | "/perceptual-color-steps"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
-    | "/cie-1931-projection"
-    | "/cie-1931-xy"
-    | "/cie-1931-xyz"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
-    | "/color-space-models"
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
-    | "/perceptual-color-steps"
   id:
     | "__root__"
     | "/"
-    | "/cie-1931-projection"
-    | "/cie-1931-xy"
-    | "/cie-1931-xyz"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
-    | "/color-space-models"
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
-    | "/perceptual-color-steps"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  Cie1931ProjectionRoute: typeof Cie1931ProjectionRoute
-  Cie1931XyRoute: typeof Cie1931XyRoute
-  Cie1931XyzRoute: typeof Cie1931XyzRoute
   ColorCoordinatePlanesRoute: typeof ColorCoordinatePlanesRoute
   ColorGamutClippingRoute: typeof ColorGamutClippingRoute
   ColorInterpolationRoute: typeof ColorInterpolationRoute
-  ColorSpaceModelsRoute: typeof ColorSpaceModelsRoute
   ColorSpaceSolidModelsRoute: typeof ColorSpaceSolidModelsRoute
   ColorSpaceUnwrappedRoute: typeof ColorSpaceUnwrappedRoute
   CssColorNotationsRoute: typeof CssColorNotationsRoute
-  PerceptualColorStepsRoute: typeof PerceptualColorStepsRoute
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/perceptual-color-steps": {
-      id: "/perceptual-color-steps"
-      path: "/perceptual-color-steps"
-      fullPath: "/perceptual-color-steps"
-      preLoaderRoute: typeof PerceptualColorStepsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     "/css-color-notations": {
       id: "/css-color-notations"
       path: "/css-color-notations"
@@ -214,13 +142,6 @@ declare module "@tanstack/react-router" {
       path: "/color-space-solid-models"
       fullPath: "/color-space-solid-models"
       preLoaderRoute: typeof ColorSpaceSolidModelsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/color-space-models": {
-      id: "/color-space-models"
-      path: "/color-space-models"
-      fullPath: "/color-space-models"
-      preLoaderRoute: typeof ColorSpaceModelsRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/color-interpolation": {
@@ -244,27 +165,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ColorCoordinatePlanesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/cie-1931-xyz": {
-      id: "/cie-1931-xyz"
-      path: "/cie-1931-xyz"
-      fullPath: "/cie-1931-xyz"
-      preLoaderRoute: typeof Cie1931XyzRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/cie-1931-xy": {
-      id: "/cie-1931-xy"
-      path: "/cie-1931-xy"
-      fullPath: "/cie-1931-xy"
-      preLoaderRoute: typeof Cie1931XyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/cie-1931-projection": {
-      id: "/cie-1931-projection"
-      path: "/cie-1931-projection"
-      fullPath: "/cie-1931-projection"
-      preLoaderRoute: typeof Cie1931ProjectionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     "/": {
       id: "/"
       path: "/"
@@ -277,17 +177,12 @@ declare module "@tanstack/react-router" {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  Cie1931ProjectionRoute: Cie1931ProjectionRoute,
-  Cie1931XyRoute: Cie1931XyRoute,
-  Cie1931XyzRoute: Cie1931XyzRoute,
   ColorCoordinatePlanesRoute: ColorCoordinatePlanesRoute,
   ColorGamutClippingRoute: ColorGamutClippingRoute,
   ColorInterpolationRoute: ColorInterpolationRoute,
-  ColorSpaceModelsRoute: ColorSpaceModelsRoute,
   ColorSpaceSolidModelsRoute: ColorSpaceSolidModelsRoute,
   ColorSpaceUnwrappedRoute: ColorSpaceUnwrappedRoute,
   CssColorNotationsRoute: CssColorNotationsRoute,
-  PerceptualColorStepsRoute: PerceptualColorStepsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
