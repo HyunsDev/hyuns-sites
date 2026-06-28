@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/__root"
+import { Route as SrgbP3CompareRouteImport } from "./routes/srgb-p3-compare"
 import { Route as CssColorNotationsRouteImport } from "./routes/css-color-notations"
 import { Route as ColorSpaceUnwrappedRouteImport } from "./routes/color-space-unwrapped"
 import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-solid-models"
@@ -18,6 +19,11 @@ import { Route as ColorCoordinatePlanesRouteImport } from "./routes/color-coordi
 import { Route as ArduinoRgbRouteImport } from "./routes/arduino-rgb"
 import { Route as IndexRouteImport } from "./routes/index"
 
+const SrgbP3CompareRoute = SrgbP3CompareRouteImport.update({
+  id: "/srgb-p3-compare",
+  path: "/srgb-p3-compare",
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
   id: "/css-color-notations",
   path: "/css-color-notations",
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
+    | "/srgb-p3-compare"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
+    | "/srgb-p3-compare"
   id:
     | "__root__"
     | "/"
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
+    | "/srgb-p3-compare"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,10 +144,18 @@ export interface RootRouteChildren {
   ColorSpaceSolidModelsRoute: typeof ColorSpaceSolidModelsRoute
   ColorSpaceUnwrappedRoute: typeof ColorSpaceUnwrappedRoute
   CssColorNotationsRoute: typeof CssColorNotationsRoute
+  SrgbP3CompareRoute: typeof SrgbP3CompareRoute
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
+    "/srgb-p3-compare": {
+      id: "/srgb-p3-compare"
+      path: "/srgb-p3-compare"
+      fullPath: "/srgb-p3-compare"
+      preLoaderRoute: typeof SrgbP3CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/css-color-notations": {
       id: "/css-color-notations"
       path: "/css-color-notations"
@@ -204,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorSpaceSolidModelsRoute: ColorSpaceSolidModelsRoute,
   ColorSpaceUnwrappedRoute: ColorSpaceUnwrappedRoute,
   CssColorNotationsRoute: CssColorNotationsRoute,
+  SrgbP3CompareRoute: SrgbP3CompareRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

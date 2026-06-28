@@ -50,6 +50,11 @@ export function PlaygroundHomePage() {
             path="/css-color-notations"
           />
           <PlaygroundRouteFeature
+            icon={BlendIcon}
+            label="sRGB / P3 Compare"
+            path="/srgb-p3-compare"
+          />
+          <PlaygroundRouteFeature
             icon={ScissorsIcon}
             label="Gamut Clipping"
             path="/color-gamut-clipping"
