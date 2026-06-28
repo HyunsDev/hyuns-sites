@@ -123,7 +123,7 @@ export function ColorInterpolationPage() {
         </div>
       }
     >
-      <div className="flex size-full items-start justify-center px-4 pt-[26rem] pb-80 sm:px-8 sm:pt-80 lg:pt-64">
+      <div className="flex size-full items-start justify-center overflow-y-auto px-4 pt-[26rem] pb-80 sm:px-8 sm:pt-80 lg:pt-64">
         <div className="grid w-full max-w-5xl gap-3">
           <div className="rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur">
             <code className="flex items-center gap-2 text-xs font-bold">

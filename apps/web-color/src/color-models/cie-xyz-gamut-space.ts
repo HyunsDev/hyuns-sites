@@ -1,8 +1,8 @@
-import { CIE_D65_WHITE } from "@/color-models/cie-xyz-gamut-data"
 import type {
   CieXyzChromaticity,
   CieXyzGamutDefinition,
-} from "@/color-models/cie-xyz-gamut-data"
+} from "./cie-xyz-gamut-data.ts"
+import { CIE_D65_WHITE } from "./cie-xyz-gamut-data.ts"
 
 export type XyzPoint = {
   readonly x: number
