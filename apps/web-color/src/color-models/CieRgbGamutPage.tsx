@@ -4,7 +4,7 @@ import { CieRgbGamutCanvas } from "@/color-models/CieRgbGamutCanvas"
 import {
   CieRgbInputPanel,
   CieRgbIntroPanel,
-  CieRgbPointSummaryPanel,
+  CieRgbPreviewColumn,
 } from "@/color-models/CieRgbGamutPanels"
 import {
   DEFAULT_CIE_RGB_INPUT,
@@ -40,7 +40,7 @@ export function CieRgbGamutPage() {
 
   return (
     <PlaygroundStage
-      topStart={<CieRgbIntroPanel comparison={comparison} />}
+      topStart={<CieRgbIntroPanel />}
       topEnd={
         <CieRgbInputPanel
           comparison={comparison}
@@ -49,12 +49,7 @@ export function CieRgbGamutPage() {
           onPresetSelect={setFields}
         />
       }
-      bottomCenter={
-        <CieRgbPointSummaryPanel
-          comparison={comparison}
-          className="w-[min(calc(100vw-2rem),56rem)] max-h-[34svh] overflow-y-auto"
-        />
-      }
+      startPanel={<CieRgbPreviewColumn comparison={comparison} />}
       bottomEnd={
         <div className="hidden sm:block">
           <PlaygroundTools />
