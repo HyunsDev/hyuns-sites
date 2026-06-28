@@ -16,6 +16,7 @@ import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-
 import { Route as ColorInterpolationRouteImport } from "./routes/color-interpolation"
 import { Route as ColorGamutClippingRouteImport } from "./routes/color-gamut-clipping"
 import { Route as ColorCoordinatePlanesRouteImport } from "./routes/color-coordinate-planes"
+import { Route as Cie1931RgbGamutsRouteImport } from "./routes/cie-1931-rgb-gamuts"
 import { Route as ArduinoRgbRouteImport } from "./routes/arduino-rgb"
 import { Route as IndexRouteImport } from "./routes/index"
 
@@ -54,6 +55,11 @@ const ColorCoordinatePlanesRoute = ColorCoordinatePlanesRouteImport.update({
   path: "/color-coordinate-planes",
   getParentRoute: () => rootRouteImport,
 } as any)
+const Cie1931RgbGamutsRoute = Cie1931RgbGamutsRouteImport.update({
+  id: "/cie-1931-rgb-gamuts",
+  path: "/cie-1931-rgb-gamuts",
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArduinoRgbRoute = ArduinoRgbRouteImport.update({
   id: "/arduino-rgb",
   path: "/arduino-rgb",
@@ -68,6 +74,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/arduino-rgb": typeof ArduinoRgbRoute
+  "/cie-1931-rgb-gamuts": typeof Cie1931RgbGamutsRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/arduino-rgb": typeof ArduinoRgbRoute
+  "/cie-1931-rgb-gamuts": typeof Cie1931RgbGamutsRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
   "/arduino-rgb": typeof ArduinoRgbRoute
+  "/cie-1931-rgb-gamuts": typeof Cie1931RgbGamutsRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
   fullPaths:
     | "/"
     | "/arduino-rgb"
+    | "/cie-1931-rgb-gamuts"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
   to:
     | "/"
     | "/arduino-rgb"
+    | "/cie-1931-rgb-gamuts"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | "__root__"
     | "/"
     | "/arduino-rgb"
+    | "/cie-1931-rgb-gamuts"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
@@ -138,6 +150,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArduinoRgbRoute: typeof ArduinoRgbRoute
+  Cie1931RgbGamutsRoute: typeof Cie1931RgbGamutsRoute
   ColorCoordinatePlanesRoute: typeof ColorCoordinatePlanesRoute
   ColorGamutClippingRoute: typeof ColorGamutClippingRoute
   ColorInterpolationRoute: typeof ColorInterpolationRoute
@@ -198,6 +211,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ColorCoordinatePlanesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/cie-1931-rgb-gamuts": {
+      id: "/cie-1931-rgb-gamuts"
+      path: "/cie-1931-rgb-gamuts"
+      fullPath: "/cie-1931-rgb-gamuts"
+      preLoaderRoute: typeof Cie1931RgbGamutsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/arduino-rgb": {
       id: "/arduino-rgb"
       path: "/arduino-rgb"
@@ -218,6 +238,7 @@ declare module "@tanstack/react-router" {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArduinoRgbRoute: ArduinoRgbRoute,
+  Cie1931RgbGamutsRoute: Cie1931RgbGamutsRoute,
   ColorCoordinatePlanesRoute: ColorCoordinatePlanesRoute,
   ColorGamutClippingRoute: ColorGamutClippingRoute,
   ColorInterpolationRoute: ColorInterpolationRoute,

@@ -4,6 +4,7 @@ import {
   CrosshairIcon,
   CylinderIcon,
   PaletteIcon,
+  ScanLineIcon,
   ScissorsIcon,
   UsbIcon,
 } from "lucide-react"
@@ -32,6 +33,11 @@ export function PlaygroundHomePage() {
             icon={CrosshairIcon}
             label="2D Coordinate Planes"
             path="/color-coordinate-planes"
+          />
+          <PlaygroundRouteFeature
+            icon={ScanLineIcon}
+            label="CIE 1931 RGB Gamuts"
+            path="/cie-1931-rgb-gamuts"
           />
           <PlaygroundRouteFeature
             icon={BlendIcon}
