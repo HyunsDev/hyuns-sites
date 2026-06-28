@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from "./routes/__root"
 import { Route as SrgbP3CompareRouteImport } from "./routes/srgb-p3-compare"
 import { Route as RgbChannelGamutCodesRouteImport } from "./routes/rgb-channel-gamut-codes"
 import { Route as CssColorNotationsRouteImport } from "./routes/css-color-notations"
-import { Route as ColorSpaceUnwrappedRouteImport } from "./routes/color-space-unwrapped"
 import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-solid-models"
 import { Route as ColorInterpolationRouteImport } from "./routes/color-interpolation"
 import { Route as ColorGamutClippingRouteImport } from "./routes/color-gamut-clipping"
@@ -33,11 +32,6 @@ const RgbChannelGamutCodesRoute = RgbChannelGamutCodesRouteImport.update({
 const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
   id: "/css-color-notations",
   path: "/css-color-notations",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ColorSpaceUnwrappedRoute = ColorSpaceUnwrappedRouteImport.update({
-  id: "/color-space-unwrapped",
-  path: "/color-space-unwrapped",
   getParentRoute: () => rootRouteImport,
 } as any)
 const ColorSpaceSolidModelsRoute = ColorSpaceSolidModelsRouteImport.update({
@@ -78,7 +72,6 @@ export interface FileRoutesByFullPath {
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
-  "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
   "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
@@ -90,7 +83,6 @@ export interface FileRoutesByTo {
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
-  "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
   "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
@@ -103,7 +95,6 @@ export interface FileRoutesById {
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
-  "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
   "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
@@ -117,7 +108,6 @@ export interface FileRouteTypes {
     | "/color-gamut-clipping"
     | "/color-interpolation"
     | "/color-space-solid-models"
-    | "/color-space-unwrapped"
     | "/css-color-notations"
     | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
@@ -129,7 +119,6 @@ export interface FileRouteTypes {
     | "/color-gamut-clipping"
     | "/color-interpolation"
     | "/color-space-solid-models"
-    | "/color-space-unwrapped"
     | "/css-color-notations"
     | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
@@ -141,7 +130,6 @@ export interface FileRouteTypes {
     | "/color-gamut-clipping"
     | "/color-interpolation"
     | "/color-space-solid-models"
-    | "/color-space-unwrapped"
     | "/css-color-notations"
     | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
@@ -154,7 +142,6 @@ export interface RootRouteChildren {
   ColorGamutClippingRoute: typeof ColorGamutClippingRoute
   ColorInterpolationRoute: typeof ColorInterpolationRoute
   ColorSpaceSolidModelsRoute: typeof ColorSpaceSolidModelsRoute
-  ColorSpaceUnwrappedRoute: typeof ColorSpaceUnwrappedRoute
   CssColorNotationsRoute: typeof CssColorNotationsRoute
   RgbChannelGamutCodesRoute: typeof RgbChannelGamutCodesRoute
   SrgbP3CompareRoute: typeof SrgbP3CompareRoute
@@ -181,13 +168,6 @@ declare module "@tanstack/react-router" {
       path: "/css-color-notations"
       fullPath: "/css-color-notations"
       preLoaderRoute: typeof CssColorNotationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/color-space-unwrapped": {
-      id: "/color-space-unwrapped"
-      path: "/color-space-unwrapped"
-      fullPath: "/color-space-unwrapped"
-      preLoaderRoute: typeof ColorSpaceUnwrappedRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/color-space-solid-models": {
@@ -242,7 +222,6 @@ const rootRouteChildren: RootRouteChildren = {
   ColorGamutClippingRoute: ColorGamutClippingRoute,
   ColorInterpolationRoute: ColorInterpolationRoute,
   ColorSpaceSolidModelsRoute: ColorSpaceSolidModelsRoute,
-  ColorSpaceUnwrappedRoute: ColorSpaceUnwrappedRoute,
   CssColorNotationsRoute: CssColorNotationsRoute,
   RgbChannelGamutCodesRoute: RgbChannelGamutCodesRoute,
   SrgbP3CompareRoute: SrgbP3CompareRoute,
