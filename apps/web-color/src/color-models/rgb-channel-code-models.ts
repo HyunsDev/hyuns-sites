@@ -87,30 +87,14 @@ export function createRgbChannelCodeResult(
       {
         description: "같은 byte 채널을 sRGB 좌표로 해석한 코드입니다.",
         id: "srgb",
-        rows: [
-          {
-            id: "raw",
-            label: "0-255 channel",
-            value: formatByteColor("srgb", channels),
-          },
-          { id: "css", label: "CSS valid", value: srgbCss },
-          { id: "hex", label: "Hex", value: formatHexChannels(channels) },
-        ],
+        rows: [{ id: "css", label: "CSS", value: srgbCss }],
         swatchColor: srgbCss,
         title: "sRGB",
       },
       {
         description: "같은 byte 채널을 Display P3 좌표로 해석한 코드입니다.",
         id: "display-p3",
-        rows: [
-          {
-            id: "raw",
-            label: "0-255 channel",
-            value: formatByteColor("p3", channels),
-          },
-          { id: "css", label: "CSS valid", value: displayP3Css },
-          { id: "fallback", label: "sRGB hex fallback", value: formatHexChannels(channels) },
-        ],
+        rows: [{ id: "css", label: "CSS", value: displayP3Css }],
         swatchColor: displayP3Css,
         title: "Display P3",
       },
@@ -154,10 +138,6 @@ function parseByteChannel(value: string | undefined) {
   return Number.isInteger(channel) && channel >= 0 && channel <= 255
     ? channel
     : null
-}
-
-function formatByteColor(space: "p3" | "srgb", channels: RgbByteChannels) {
-  return `color(${space} ${channels.r} ${channels.g} ${channels.b})`
 }
 
 function formatNormalizedColor(

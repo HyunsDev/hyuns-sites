@@ -54,7 +54,7 @@ export function RgbChannelCodePage() {
       <div className="flex size-full items-start justify-center overflow-y-auto px-4 pt-[25rem] pb-56 sm:px-8 sm:pt-72 lg:pt-60">
         <div className="grid w-full max-w-5xl gap-3">
           {result ? (
-            <div className="grid gap-3 lg:grid-cols-2">
+            <div className="grid gap-0 overflow-hidden rounded-md border border-border bg-background-primary/92 shadow-sm backdrop-blur lg:grid-cols-2">
               {result.cards.map((card) => (
                 <GamutCodeCard
                   key={card.id}

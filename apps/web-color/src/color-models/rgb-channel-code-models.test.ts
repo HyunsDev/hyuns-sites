@@ -38,14 +38,16 @@ test("parseRgbChannelInput rejects invalid channels", () => {
   assert.deepEqual(parseRgbChannelInput("#ff00zz"), { status: "invalid" })
 })
 
-test("createRgbChannelCodeResult returns raw and CSS-valid rows", () => {
+test("createRgbChannelCodeResult returns CSS rows only", () => {
   const result = createRgbChannelCodeResult(parseInput("255 0 0"))
   const srgbRows = result.cards[0]?.rows ?? []
   const p3Rows = result.cards[1]?.rows ?? []
 
   assert.equal(result.hex, "#ff0000")
-  assert.equal(srgbRows[0]?.value, "color(srgb 255 0 0)")
-  assert.equal(srgbRows[1]?.value, "color(srgb 1 0 0)")
-  assert.equal(p3Rows[0]?.value, "color(p3 255 0 0)")
-  assert.equal(p3Rows[1]?.value, "color(display-p3 1 0 0)")
+  assert.deepEqual(srgbRows, [
+    { id: "css", label: "CSS", value: "color(srgb 1 0 0)" },
+  ])
+  assert.deepEqual(p3Rows, [
+    { id: "css", label: "CSS", value: "color(display-p3 1 0 0)" },
+  ])
 })

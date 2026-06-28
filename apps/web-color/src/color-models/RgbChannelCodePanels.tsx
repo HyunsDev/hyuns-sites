@@ -110,9 +110,9 @@ export function GamutCodeCard({
   readonly onCopy: (key: string, value: string) => void
 }) {
   return (
-    <section className="grid min-w-0 gap-3 rounded-md border border-border bg-background-primary/92 p-3 shadow-sm backdrop-blur">
+    <section className="grid min-w-0 gap-3 bg-background-primary/92 p-3">
       <div
-        className="h-24 rounded-md border border-border"
+        className="-mx-3 -mt-3 h-24 border-b border-border"
         style={{ backgroundColor: card.swatchColor }}
       />
       <div className="grid gap-1">
