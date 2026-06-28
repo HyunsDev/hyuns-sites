@@ -37,12 +37,15 @@ function PreviewStage({
   readonly mode: RenderMode;
   readonly sourceTitle: string;
 }) {
-  const stageHeight = mode === "icon" ? "h-[200px]" : "h-[300px]";
+  const stageHeight = mode === "icon" ? 200 : 300;
+  const stagePadding = 20;
+  const stageContentHeight = stageHeight - stagePadding * 2;
 
   if (!image) {
     return (
       <div
-        className={`grid ${stageHeight} w-full min-w-0 place-items-center rounded-md border border-dashed border-border bg-muted/20 p-6 text-center`}
+        className="grid w-full min-w-0 place-items-center rounded-md border border-dashed border-border bg-muted/20 p-6 text-center"
+        style={{ height: stageHeight }}
       >
         <p className="text-sm font-medium">No source selected</p>
       </div>
@@ -53,15 +56,17 @@ function PreviewStage({
 
   return (
     <div
-      className={`image-maker-checkerboard grid ${stageHeight} w-full min-w-0 place-items-center overflow-hidden rounded-md border border-border p-5`}
+      className="image-maker-checkerboard grid w-full min-w-0 place-items-center overflow-hidden rounded-md border border-border p-5"
+      style={{ height: stageHeight }}
     >
       <img
         src={svgToDataUrl(image.svg)}
         alt={`${sourceTitle} ${titleForMode(mode)}`}
-        className="block max-h-full rounded-sm object-contain"
+        className="block h-auto w-auto max-w-full rounded-sm object-contain"
         style={{
           aspectRatio: `${image.width} / ${image.height}`,
-          width: maxWidth
+          maxHeight: stageContentHeight,
+          maxWidth
         }}
       />
     </div>
