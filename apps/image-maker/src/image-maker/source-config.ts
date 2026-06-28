@@ -1,5 +1,7 @@
 import type { SourceKind } from "./types";
 
+export type ImageMakerNavKind = SourceKind | "thumbnail";
+
 export type SourceConfig = {
   readonly kind: SourceKind;
   readonly label: string;
@@ -22,6 +24,23 @@ export const SOURCE_CONFIGS: readonly SourceConfig[] = [
     title: "PNG",
     description: "Upload custom PNG source",
     path: "/png"
+  }
+] as const;
+
+export const NAVIGATION_CONFIGS: readonly (SourceConfig | {
+  readonly kind: "thumbnail";
+  readonly label: string;
+  readonly title: string;
+  readonly description: string;
+  readonly path: "/thumbnail";
+})[] = [
+  ...SOURCE_CONFIGS,
+  {
+    kind: "thumbnail",
+    label: "Thumbnail",
+    title: "Thumbnail",
+    description: "Create desktop, mobile, and image thumbnails",
+    path: "/thumbnail"
   }
 ] as const;
 

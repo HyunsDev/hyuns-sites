@@ -1,3 +1,4 @@
+import type { ThumbnailOptions } from "./thumbnail-types";
 import type { ColorPreset, ImageMakerOptions } from "./types";
 
 const USER_PRESET_STORAGE_KEY = "hyunsdev:image-maker:color-presets";
@@ -8,12 +9,32 @@ export const DEFAULT_IMAGE_OPTIONS: ImageMakerOptions = {
   iconSize: DEFAULT_ICON_SIZE,
   bannerWidth: 1920,
   bannerHeight: 1080,
-  bannerGraphicSize: 512,
+  bannerGraphicSize: 128,
   backgroundColor: "#111827",
   iconColor: "#ffffff",
   borderRadius: Math.round(DEFAULT_ICON_SIZE * IOS_APP_ICON_RADIUS_RATIO),
   curvature: 5,
   padding: 96
+};
+
+export const DEFAULT_THUMBNAIL_OPTIONS: ThumbnailOptions = {
+  backgroundColor: "#f1f1f1",
+  canvasHeight: 1080,
+  canvasWidth: 1920,
+  desktopAlignment: "bottom",
+  horizontalPadding: 160,
+  imageBorderRadius: 20,
+  mobileGap: 40,
+  mode: "desktop",
+  shadow: {
+    blur: 32,
+    color: "#000000",
+    offsetX: 0,
+    offsetY: 24,
+    opacity: 0.28,
+    spread: 0
+  },
+  verticalPadding: 140
 };
 
 export const DEFAULT_COLOR_PRESETS: readonly ColorPreset[] = [

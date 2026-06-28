@@ -25,6 +25,7 @@ type NumberRowFieldProps = {
 };
 
 type ColorFieldProps = {
+  readonly action?: ReactNode;
   readonly id: string;
   readonly label: string;
   readonly value: string;
@@ -185,10 +186,13 @@ export function SliderNumberField({
   );
 }
 
-export function ColorField({ id, label, value, onValueChange }: ColorFieldProps) {
+export function ColorField({ action, id, label, value, onValueChange }: ColorFieldProps) {
   return (
     <div className="grid gap-1.5">
-      <Label htmlFor={id}>{label}</Label>
+      <div className="flex items-center justify-between gap-2">
+        <Label htmlFor={id}>{label}</Label>
+        {action}
+      </div>
       <ColorPicker
         id={id}
         value={isColorInputValue(value) ? value : "#000000"}

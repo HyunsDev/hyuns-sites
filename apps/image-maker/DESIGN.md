@@ -2,7 +2,7 @@
 
 ## 1. Atmosphere & Identity
 
-Image Maker is a quiet production workbench for making reusable icon and banner assets. It should feel precise, dense enough for repeated editing, and visually calm. The signature is a split preview work surface: source and option controls stay compact on the left while icon and banner outputs remain visible together on the right.
+Image Maker is a quiet production workbench for making reusable icon, banner, and thumbnail assets. It should feel precise, dense enough for repeated editing, and visually calm. The signature is a split preview work surface: source and option controls stay compact on the left while outputs remain visible on the right.
 
 ## 2. Color
 
@@ -93,11 +93,20 @@ All spacing derives from a base of 4px.
 ### Preview Panel
 
 - **Structure**: panel header, preview well, action footer.
-- **Variants**: icon and banner.
+- **Variants**: icon, banner, and thumbnail.
 - **Spacing**: preview well uses `--space-5`; actions use `--space-2`.
 - **States**: ready, loading, empty, copied, error.
 - **Accessibility**: generated images have descriptive alt text; export buttons have explicit labels.
 - **Motion**: opacity transitions only.
+
+### Thumbnail Generator
+
+- **Structure**: source uploader, mode segmented control, canvas controls with image-based auto background action, padding controls, desktop/mobile image radius controls, optional shadow controls, and one preview surface.
+- **Variants**: desktop bottom crop, desktop center fit, mobile centered single-row image group, image center fit.
+- **Spacing**: controls reuse `Option Field`; preview well uses `--space-5`.
+- **States**: empty input, one image, multiple mobile images, auto background unavailable, auto background applied, copied, error.
+- **Accessibility**: mode and alignment controls expose pressed state; file input has an explicit label.
+- **Motion**: none beyond component defaults.
 
 ### Option Field
 

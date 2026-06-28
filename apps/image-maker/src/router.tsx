@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router";
 import type { RouterHistory } from "@tanstack/react-router";
 import { ImageMakerWorkbench } from "./image-maker/ImageMakerWorkbench";
+import { ThumbnailWorkbench } from "./image-maker/ThumbnailWorkbench";
 
 function redirectToSvgRoute() {
   return <Navigate to="/svg" replace />;
@@ -39,7 +40,13 @@ const pngRoute = createRoute({
   component: () => <ImageMakerWorkbench sourceKind="png" />
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, svgRoute, pngRoute]);
+const thumbnailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/thumbnail",
+  component: ThumbnailWorkbench
+});
+
+const routeTree = rootRoute.addChildren([indexRoute, svgRoute, pngRoute, thumbnailRoute]);
 
 export function getRouter({ history }: { readonly history?: RouterHistory } = {}) {
   return createRouter({

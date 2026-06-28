@@ -4,6 +4,8 @@ export type SourceKind = (typeof SOURCE_KINDS)[number];
 
 export type RenderMode = "icon" | "banner";
 
+export type RenderedImageMode = RenderMode | "thumbnail";
+
 export type ImageMakerOptions = {
   readonly iconSize: number;
   readonly bannerWidth: number;
@@ -42,7 +44,7 @@ export type GraphicAsset =
 
 export type RenderedImage = {
   readonly height: number;
-  readonly mode: RenderMode;
+  readonly mode: RenderedImageMode;
   readonly svg: string;
   readonly width: number;
 };
