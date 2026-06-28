@@ -3,4 +3,5 @@ dist
 coverage
 *.tsbuildinfo
 .turbo
+.tanstack
 .DS_Store

@@ -20,12 +20,12 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@hyunsdev/ui": "^0.1.0",
+    "@hyunsdev/ui": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@hyunsdev/ui": "^0.1.0",
+    "@hyunsdev/ui": "^0.2.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/test-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",

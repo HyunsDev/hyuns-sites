@@ -4,4 +4,4 @@ packages:
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
-  - '@hyunsdev/ui@0.1.0'
+  - '@hyunsdev/ui@0.2.0'

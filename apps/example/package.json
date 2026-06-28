@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@hyunsdev/ui": "^0.1.0",
+    "@hyunsdev/ui": "^0.2.0",
     "@workspace/site-ui": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

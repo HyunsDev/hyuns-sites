@@ -1,0 +1,12 @@
+{
+  "extends": "@workspace/typescript-config/vite-app",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
+  },
+  "include": ["src", "vite.config.ts", "vitest.config.ts"],
+  "exclude": ["dist", "node_modules", "src/components", "src/lib"]
+}

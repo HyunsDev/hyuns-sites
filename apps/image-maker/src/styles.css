@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@import "@hyunsdev/ui/globals.css";
+
+@source "./**/*.{ts,tsx}";
+
+@layer base {
+  #root {
+    min-height: 100svh;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .image-maker-checkerboard {
+    background-color: color-mix(in oklch, var(--muted) 45%, transparent);
+    background-image:
+      linear-gradient(45deg, color-mix(in oklch, var(--border) 45%, transparent) 25%, transparent 25%),
+      linear-gradient(-45deg, color-mix(in oklch, var(--border) 45%, transparent) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, color-mix(in oklch, var(--border) 45%, transparent) 75%),
+      linear-gradient(-45deg, transparent 75%, color-mix(in oklch, var(--border) 45%, transparent) 75%);
+    background-position:
+      0 0,
+      0 8px,
+      8px -8px,
+      -8px 0;
+    background-size: 16px 16px;
+  }
+}
+

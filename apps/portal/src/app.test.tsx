@@ -22,7 +22,7 @@ describe("Portal", () => {
     renderPortal();
 
     expect(await screen.findByText("Portal")).toBeVisible();
-    expect(screen.getByText("개인 웹사이트")).toBeVisible();
+    expect(screen.getByText("Offical")).toBeVisible();
     expect(screen.getByText("유틸리티")).toBeVisible();
     expect(screen.getByText("프로젝트")).toBeVisible();
     expect(screen.getByText("외부 링크")).toBeVisible();
@@ -38,6 +38,14 @@ describe("Portal", () => {
     expect(screen.getByRole("link", { name: "PKM Utils" })).toHaveAttribute(
       "href",
       "https://pkm-utils.hyuns.dev"
+    );
+    expect(screen.getByRole("link", { name: "Web Color" })).toHaveAttribute(
+      "href",
+      "https://web-color.hyuns.dev"
+    );
+    expect(screen.getByRole("link", { name: "Image Maker" })).toHaveAttribute(
+      "href",
+      "https://image-maker.hyuns.dev"
     );
     expect(screen.getByRole("link", { name: "블로그" })).toHaveAttribute(
       "href",
@@ -58,7 +66,7 @@ describe("Portal", () => {
     fireEvent.focus(screen.getByRole("link", { name: "PKM Utils" }));
     expect(screen.getByRole("tooltip", { name: "https://pkm-utils.hyuns.dev" })).toBeVisible();
 
-    expect(screen.queryByRole("tooltip", { name: "/projects" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("tooltip", { name: "/simulators" })).not.toBeInTheDocument();
   });
 
   it("marks moveable items for new tabs while command or control is held", async () => {
@@ -66,24 +74,24 @@ describe("Portal", () => {
 
     const hyunsDevLink = await screen.findByRole("link", { name: "HyunsDev" });
     const hyunsDevLabel = screen.getByText("HyunsDev");
-    const projectsLabel = screen.getByText("Projects");
+    const simulatorsLabel = screen.getByText("Simulators");
 
     expect(hyunsDevLink).not.toHaveAttribute("target");
     expect(hyunsDevLabel).not.toHaveClass("underline");
-    expect(projectsLabel).not.toHaveClass("underline");
+    expect(simulatorsLabel).not.toHaveClass("underline");
 
     fireEvent.keyDown(window, { key: "Meta", metaKey: true });
 
     expect(hyunsDevLink).toHaveAttribute("target", "_blank");
     expect(hyunsDevLink).toHaveAttribute("rel", "noopener noreferrer");
     expect(hyunsDevLabel).toHaveClass("underline");
-    expect(projectsLabel).toHaveClass("underline");
+    expect(simulatorsLabel).toHaveClass("underline");
 
     fireEvent.keyUp(window, { key: "Meta", metaKey: false });
 
     expect(hyunsDevLink).not.toHaveAttribute("target");
     expect(hyunsDevLabel).not.toHaveClass("underline");
-    expect(projectsLabel).not.toHaveClass("underline");
+    expect(simulatorsLabel).not.toHaveClass("underline");
   });
 
   it("opens internal portal pages in a new tab while command or control is held", async () => {
@@ -93,27 +101,30 @@ describe("Portal", () => {
       renderPortal();
 
       fireEvent.keyDown(window, { key: "Control", ctrlKey: true });
-      fireEvent.click(await screen.findByRole("button", { name: "Projects" }), {
+      fireEvent.click(await screen.findByRole("button", { name: "Simulators" }), {
         ctrlKey: true
       });
 
-      expect(openSpy).toHaveBeenCalledWith("/projects", "_blank", "noopener,noreferrer");
+      expect(openSpy).toHaveBeenCalledWith("/simulators", "_blank", "noopener,noreferrer");
       expect(screen.getByText("Portal")).toBeVisible();
     } finally {
       openSpy.mockRestore();
     }
   });
 
-  it("renders the projects route placeholder", async () => {
-    renderPortal("/projects");
+  it("renders the simulators route", async () => {
+    renderPortal("/simulators");
 
-    expect(await screen.findByText("Projects")).toBeVisible();
-    expect(screen.getByText("추후 추가 예정")).toBeVisible();
+    expect(await screen.findByText("Simulators")).toBeVisible();
+    expect(screen.getByRole("link", { name: "스페이스 그래비티" })).toHaveAttribute(
+      "href",
+      "https://space-gravity.hyuns.dev"
+    );
   });
 
   it("loads pages from YAML data", () => {
-    expect(getPortalPage("/")?.columns).toHaveLength(3);
-    expect(getPortalPage("/projects")?.title).toBe("Projects");
+    expect(getPortalPage("/")?.columns).toHaveLength(4);
+    expect(getPortalPage("/simulators")?.title).toBe("Simulators");
   });
 
   it("supports Simple Icons from YAML icon names", () => {

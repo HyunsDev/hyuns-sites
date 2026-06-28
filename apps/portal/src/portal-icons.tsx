@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef, ElementType } from "react";
 import {
   AtSignIcon,
+  BlocksIcon,
   BookOpenTextIcon,
   CameraIcon,
   CaptionsIcon,
@@ -12,9 +13,11 @@ import {
   Globe2Icon,
   HomeIcon,
   HouseIcon,
+  ImagePlusIcon,
   LinkIcon,
   MessageCircleIcon,
   NotebookTextIcon,
+  PaletteIcon,
   TvMinimalPlayIcon,
   WrenchIcon
 } from "lucide-react";
@@ -49,6 +52,7 @@ function normalizeIconName(name: string) {
 
 const lucideIcons: Record<string, ElementType> = {
   AtSign: AtSignIcon,
+  Blocks: BlocksIcon,
   BookOpenText: BookOpenTextIcon,
   Camera: CameraIcon,
   Captions: CaptionsIcon,
@@ -60,9 +64,11 @@ const lucideIcons: Record<string, ElementType> = {
   Globe2: Globe2Icon,
   Home: HomeIcon,
   House: HouseIcon,
+  ImagePlus: ImagePlusIcon,
   Link: LinkIcon,
   MessageCircle: MessageCircleIcon,
   NotebookText: NotebookTextIcon,
+  Palette: PaletteIcon,
   TvMinimalPlay: TvMinimalPlayIcon,
   Wrench: WrenchIcon
 };
