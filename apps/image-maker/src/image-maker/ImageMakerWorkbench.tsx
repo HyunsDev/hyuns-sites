@@ -150,7 +150,7 @@ export function ImageMakerWorkbench({ sourceKind }: ImageMakerWorkbenchProps) {
                     </div>
                   </PanelHeaderLeading>
                 </PanelHeader>
-                <PanelBody className="p-0">
+                <PanelBody className="min-h-0 overflow-auto p-0">
                   <OptionsPanel
                     options={options}
                     pngFileName={pngFileName}

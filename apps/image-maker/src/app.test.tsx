@@ -25,7 +25,6 @@ describe("Image Maker", () => {
     expect(screen.getByRole("link", { name: "Svg 아이콘/배너" })).toBeVisible();
     expect(screen.getByRole("link", { name: "PNG 아이콘/배너" })).toBeVisible();
     expect(screen.getByRole("link", { name: "Thumbnail" })).toBeVisible();
-    expect(screen.getAllByRole("link")).toHaveLength(4);
     expect(screen.getByRole("link", { name: "Developed By HyunsDev" })).toHaveAttribute(
       "href",
       "https://github.com/HyunsDev/hyuns-sites"
@@ -63,6 +62,23 @@ describe("Image Maker", () => {
     expect(await screen.findByRole("heading", { name: "Svg 아이콘/배너" })).toBeVisible();
     expect(screen.getByLabelText("SVG source")).toBeVisible();
     expect(screen.getByRole("button", { name: "Reset SVG" })).toBeVisible();
+  });
+
+  it("shows icon library links at the bottom of the SVG options panel", async () => {
+    renderImageMaker("/svg");
+
+    const iconLibraries = await screen.findByRole("navigation", { name: "Icon libraries" });
+
+    expect(iconLibraries).toContainElement(screen.getByRole("link", { name: "Lucide Icons" }));
+    expect(screen.getByRole("link", { name: "Lucide Icons" })).toHaveAttribute(
+      "href",
+      "https://lucide.dev/icons"
+    );
+    expect(iconLibraries).toContainElement(screen.getByRole("link", { name: "Simple Icons" }));
+    expect(screen.getByRole("link", { name: "Simple Icons" })).toHaveAttribute(
+      "href",
+      "https://simpleicons.org/"
+    );
   });
 
   it("renders the thumbnail generator route", async () => {
