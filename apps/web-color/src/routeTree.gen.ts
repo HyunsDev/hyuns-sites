@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from "./routes/__root"
 import { Route as SrgbP3CompareRouteImport } from "./routes/srgb-p3-compare"
+import { Route as RgbChannelGamutCodesRouteImport } from "./routes/rgb-channel-gamut-codes"
 import { Route as CssColorNotationsRouteImport } from "./routes/css-color-notations"
 import { Route as ColorSpaceUnwrappedRouteImport } from "./routes/color-space-unwrapped"
 import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-solid-models"
@@ -22,6 +23,11 @@ import { Route as IndexRouteImport } from "./routes/index"
 const SrgbP3CompareRoute = SrgbP3CompareRouteImport.update({
   id: "/srgb-p3-compare",
   path: "/srgb-p3-compare",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RgbChannelGamutCodesRoute = RgbChannelGamutCodesRouteImport.update({
+  id: "/rgb-channel-gamut-codes",
+  path: "/rgb-channel-gamut-codes",
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
+    | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
+    | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
   id:
     | "__root__"
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | "/color-space-solid-models"
     | "/color-space-unwrapped"
     | "/css-color-notations"
+    | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
   fileRoutesById: FileRoutesById
 }
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   ColorSpaceSolidModelsRoute: typeof ColorSpaceSolidModelsRoute
   ColorSpaceUnwrappedRoute: typeof ColorSpaceUnwrappedRoute
   CssColorNotationsRoute: typeof CssColorNotationsRoute
+  RgbChannelGamutCodesRoute: typeof RgbChannelGamutCodesRoute
   SrgbP3CompareRoute: typeof SrgbP3CompareRoute
 }
 
@@ -154,6 +167,13 @@ declare module "@tanstack/react-router" {
       path: "/srgb-p3-compare"
       fullPath: "/srgb-p3-compare"
       preLoaderRoute: typeof SrgbP3CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/rgb-channel-gamut-codes": {
+      id: "/rgb-channel-gamut-codes"
+      path: "/rgb-channel-gamut-codes"
+      fullPath: "/rgb-channel-gamut-codes"
+      preLoaderRoute: typeof RgbChannelGamutCodesRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/css-color-notations": {
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorSpaceSolidModelsRoute: ColorSpaceSolidModelsRoute,
   ColorSpaceUnwrappedRoute: ColorSpaceUnwrappedRoute,
   CssColorNotationsRoute: CssColorNotationsRoute,
+  RgbChannelGamutCodesRoute: RgbChannelGamutCodesRoute,
   SrgbP3CompareRoute: SrgbP3CompareRoute,
 }
 export const routeTree = rootRouteImport

@@ -55,6 +55,11 @@ export function PlaygroundHomePage() {
             path="/srgb-p3-compare"
           />
           <PlaygroundRouteFeature
+            icon={Code2Icon}
+            label="RGB Channel Codes"
+            path="/rgb-channel-gamut-codes"
+          />
+          <PlaygroundRouteFeature
             icon={ScissorsIcon}
             label="Gamut Clipping"
             path="/color-gamut-clipping"
