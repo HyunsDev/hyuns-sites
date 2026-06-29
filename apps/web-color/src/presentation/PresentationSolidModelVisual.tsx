@@ -29,7 +29,7 @@ export function PresentationSolidModelVisual() {
   )
 
   return (
-    <div className="pointer-events-auto absolute top-[5%] left-1/2 h-[68%] w-[38%] min-w-44 -translate-x-1/2">
+    <div className="pointer-events-auto absolute top-[-4%] left-1/2 h-[88%] w-[64%] min-w-64 -translate-x-1/2 mask-b-from-78% mask-b-to-92% dark:mask-none">
       <SolidColorSpaceModelCanvas
         autoRotate
         gamutRendering={gamutRendering}
@@ -37,7 +37,7 @@ export function PresentationSolidModelVisual() {
         model={model}
         showGuides={false}
         showWireframe
-        className="size-full min-h-0 rounded-none border-0 bg-transparent shadow-none md:min-h-0"
+        className="size-full min-h-0 translate-y-[12%] scale-[1.36] rounded-none border-0 bg-transparent shadow-none md:min-h-0"
       />
     </div>
   )

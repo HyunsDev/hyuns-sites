@@ -9,6 +9,13 @@ import type {
   RgbCoordinate,
 } from "@/color-models/color-coordinate-utils"
 import {
+  PresentationSlideShell,
+  SlideKeyword,
+  SlideKeywords,
+  SlideTwoColumn,
+  SlideVisualStage,
+} from "@/presentation/PresentationSlideLayout"
+import {
   formatRgbHex,
   getReadablePreviewTextColor,
   getRgbDerivedMetrics,
@@ -29,61 +36,63 @@ export function RgbModelSlide() {
   const hexColor = useMemo(() => formatRgbHex(coordinate), [coordinate])
 
   return (
-    <section
-      className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
-      aria-label="RGB: 기계가 좋아하는 색 모델"
+    <PresentationSlideShell
+      ariaLabel="RGB: 기계가 좋아하는 색 모델"
+      title="RGB: 기계가 좋아하는 색 모델"
     >
-      <h1 className="absolute top-[11.8%] left-[6.8%] text-[clamp(1.25rem,2.9cqw,2.5rem)] leading-[1.2] font-bold tracking-normal">
-        RGB: 기계가 좋아하는 색 모델
-      </h1>
-      <RgbColorPreview
-        className="absolute top-[34%] left-[18.85%] h-[30.2%] w-[17%]"
-        coordinate={coordinate}
-        hexColor={hexColor}
-      />
-      <RgbAxisControlPanel
-        className="absolute top-[40%] left-[40.2%] w-[46.8%]"
-        coordinate={coordinate}
-        onCoordinateChange={setCoordinate}
-      />
-    </section>
+      <SlideTwoColumn variant="visualWide">
+        <SlideVisualStage className="grid place-items-center">
+          <RgbColorPreview
+            className="aspect-square w-[min(24cqw,37cqh)]"
+            coordinate={coordinate}
+            hexColor={hexColor}
+          />
+        </SlideVisualStage>
+        <div className="grid gap-[4cqh]">
+          <div className="grid gap-[1cqh]">
+            <p className="font-mono text-[clamp(0.92rem,1.65cqw,1.35rem)] leading-none font-bold text-text-muted">
+              #RRGGBB
+            </p>
+            <p className="text-[clamp(0.9rem,1.7cqw,1.4rem)] leading-[1.25] font-semibold text-text-muted">
+              R / G / B
+            </p>
+          </div>
+          <RgbAxisControlPanel
+            coordinate={coordinate}
+            onCoordinateChange={setCoordinate}
+          />
+        </div>
+      </SlideTwoColumn>
+    </PresentationSlideShell>
   )
 }
 
 export function RgbStrengthsSlide() {
   return (
-    <section
-      className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
-      aria-label="RGB의 장점"
-    >
-      <h1 className="absolute top-[11.8%] left-[6.8%] text-[clamp(1.25rem,2.9cqw,2.5rem)] leading-[1.2] font-bold tracking-normal">
-        RGB의 장점
-      </h1>
-      <div className="absolute top-[31%] left-[8%] grid gap-[2.4cqh]">
-        <KeywordLine>표시 장치에 가깝다</KeywordLine>
-        <KeywordLine>저장과 출력이 편리하다</KeywordLine>
-      </div>
-      <RgbChannelStack className="absolute top-[24%] right-[7.4%] h-[54%] w-[53%]" />
-    </section>
+    <PresentationSlideShell ariaLabel="RGB의 장점" title="RGB의 장점">
+      <SlideTwoColumn variant="visualWide">
+        <SlideKeywords>
+          <SlideKeyword>표시 장치에 가깝다</SlideKeyword>
+          <SlideKeyword>저장과 출력이 편리하다</SlideKeyword>
+        </SlideKeywords>
+        <RgbChannelStack />
+      </SlideTwoColumn>
+    </PresentationSlideShell>
   )
 }
 
 export function RgbLimitsSlide() {
   return (
-    <section
-      className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
-      aria-label="RGB의 한계"
-    >
-      <h1 className="absolute top-[11.8%] left-[6.8%] text-[clamp(1.25rem,2.9cqw,2.5rem)] leading-[1.2] font-bold tracking-normal">
-        RGB의 한계
-      </h1>
-      <div className="absolute top-[26%] left-[7.2%] grid w-[29%] gap-[2.1cqh]">
-        <KeywordLine>색조를 바꾸기 어렵다</KeywordLine>
-        <KeywordLine>채도를 바꾸기 어렵다</KeywordLine>
-        <KeywordLine>밝기를 감으로 맞추게 된다</KeywordLine>
-      </div>
-      <RgbAdjustmentProblemDemo className="absolute top-[25%] right-[6.8%] h-[56%] w-[55%]" />
-    </section>
+    <PresentationSlideShell ariaLabel="RGB의 한계" title="RGB의 한계">
+      <SlideTwoColumn variant="visualWide">
+        <SlideKeywords>
+          <SlideKeyword>색조를 바꾸기 어렵다</SlideKeyword>
+          <SlideKeyword>채도를 바꾸기 어렵다</SlideKeyword>
+          <SlideKeyword>밝기를 감으로 맞추게 된다</SlideKeyword>
+        </SlideKeywords>
+        <RgbAdjustmentProblemDemo />
+      </SlideTwoColumn>
+    </PresentationSlideShell>
   )
 }
 
@@ -236,24 +245,29 @@ type RgbChannelStackProps = {
 
 function RgbChannelStack({ className }: RgbChannelStackProps) {
   return (
-    <div className={cn("grid grid-cols-[1fr_0.35fr_0.92fr] gap-[2cqw]", className)}>
-      <div className="grid min-h-0 content-center gap-[2cqh]">
+    <div
+      className={cn(
+        "grid min-h-0 grid-cols-[minmax(0,0.95fr)_2.8rem_minmax(0,1fr)] items-center gap-[1.7cqw]",
+        className
+      )}
+    >
+      <div className="grid min-h-0 gap-[1.7cqh]">
         <RgbChannelLayer label="R" value="255" className="bg-[#ff2d55]" />
         <RgbChannelLayer label="G" value="96" className="bg-[#34c759]" />
         <RgbChannelLayer label="B" value="64" className="bg-[#0a84ff]" />
       </div>
       <div className="relative grid items-center justify-items-center">
-        <div className="h-[0.18cqh] w-full bg-border" />
-        <div className="absolute size-[1.15cqw] rotate-45 border-t border-r border-border bg-background-secondary" />
+        <div className="h-px w-full bg-border" />
+        <div className="absolute size-2.5 rotate-45 border-t border-r border-border bg-background-secondary" />
       </div>
-      <div className="grid min-h-0 content-center gap-[2.2cqh]">
-        <div className="relative isolate h-[29cqh] overflow-hidden rounded-sm border border-border bg-[#111111] shadow-sm">
-          <div className="absolute top-[9%] left-[12%] h-[52%] w-[58%] rounded-sm bg-[#ff2d55] opacity-80 mix-blend-screen" />
-          <div className="absolute top-[22%] left-[24%] h-[52%] w-[58%] rounded-sm bg-[#34c759] opacity-80 mix-blend-screen" />
-          <div className="absolute top-[35%] left-[36%] h-[52%] w-[58%] rounded-sm bg-[#0a84ff] opacity-80 mix-blend-screen" />
+      <div className="grid min-h-0 gap-[1.7cqh]">
+        <div className="relative isolate h-[30cqh] overflow-hidden rounded-sm border border-border bg-[#101010]">
+          <div className="absolute top-[10%] left-[13%] h-[52%] w-[58%] rounded-[0.2rem] bg-[#ff2d55] opacity-80 mix-blend-screen" />
+          <div className="absolute top-[23%] left-[25%] h-[52%] w-[58%] rounded-[0.2rem] bg-[#34c759] opacity-80 mix-blend-screen" />
+          <div className="absolute top-[36%] left-[37%] h-[52%] w-[58%] rounded-[0.2rem] bg-[#0a84ff] opacity-80 mix-blend-screen" />
         </div>
-        <div className="grid h-[13cqh] content-end rounded-sm border border-border bg-[#ff6040] p-[1.1cqw] text-left text-[#111111] shadow-sm">
-          <span className="font-mono text-[clamp(0.72rem,1.85cqw,1.55rem)] leading-none font-bold tracking-normal">
+        <div className="grid h-[9cqh] content-center rounded-sm bg-[#ff6040] px-[1.15cqw] text-left text-[#111111]">
+          <span className="font-mono text-[clamp(0.7rem,1.6cqw,1.3rem)] leading-none font-bold tracking-normal">
             rgb(255 96 64)
           </span>
         </div>
@@ -272,14 +286,14 @@ function RgbChannelLayer({ className, label, value }: RgbChannelLayerProps) {
   return (
     <div
       className={cn(
-        "grid h-[13cqh] grid-cols-[auto_1fr] items-center gap-[1cqw] rounded-sm p-[1.2cqw] text-white shadow-sm",
+        "grid h-[10.2cqh] grid-cols-[auto_1fr] items-center gap-[1cqw] rounded-sm p-[1cqw] text-white",
         className
       )}
     >
-      <span className="grid size-[4.2cqw] place-items-center rounded-sm bg-black/22 text-[clamp(0.85rem,2.2cqw,1.8rem)] leading-none font-bold">
+      <span className="grid size-[3.4cqw] min-h-10 min-w-10 place-items-center rounded-[0.2rem] bg-black/22 text-[clamp(0.85rem,1.8cqw,1.45rem)] leading-none font-bold">
         {label}
       </span>
-      <span className="font-mono text-[clamp(0.72rem,1.7cqw,1.3rem)] leading-none font-bold">
+      <span className="font-mono text-[clamp(0.72rem,1.45cqw,1.16rem)] leading-none font-bold">
         {value}
       </span>
     </div>
@@ -300,50 +314,43 @@ function RgbAdjustmentProblemDemo({ className }: RgbAdjustmentProblemDemoProps) 
   const currentMetrics = getRgbDerivedMetrics(coordinate)
 
   return (
-    <div className={cn("grid grid-cols-[0.78fr_1fr] gap-[2.2cqw]", className)}>
-      <div className="grid min-h-0 gap-[1.8cqh]">
-        <RgbColorPreview
-          className="h-[22cqh] border border-border shadow-sm"
-          coordinate={coordinate}
-          hexColor={hexColor}
-          label="RGB"
-        />
-        <div className="grid rounded-sm border border-border bg-background-primary/80 p-[1.4cqw] shadow-sm">
-          <RgbAxisControlPanel
-            coordinate={coordinate}
-            density="compact"
-            onCoordinateChange={setCoordinate}
-          />
+    <div className={cn("grid min-h-0 gap-[2.2cqh]", className)}>
+      <div className="grid grid-cols-[minmax(0,0.82fr)_auto_minmax(0,0.82fr)] items-stretch gap-[1.2cqw]">
+        <RgbMiniSwatch label="before" color={baseHexColor} />
+        <div className="grid items-center text-text-muted">
+          <div className="h-px w-[2.4cqw] bg-border" />
         </div>
+        <RgbMiniSwatch label="after" color={hexColor} />
       </div>
-      <div className="grid min-h-0 gap-[1.8cqh]">
-        <div className="grid grid-cols-2 gap-[1cqw]">
-          <RgbMiniSwatch label="before" color={baseHexColor} />
-          <RgbMiniSwatch label="after" color={hexColor} />
-        </div>
-        <div className="grid content-center gap-[1.35cqh] rounded-sm border border-border bg-background-primary/80 p-[1.4cqw] shadow-sm">
-          <RgbMetricShiftRow
-            label="Hue"
-            max={360}
-            suffix="deg"
-            before={baseMetrics.hue}
-            after={currentMetrics.hue}
-          />
-          <RgbMetricShiftRow
-            label="Saturation"
-            max={100}
-            suffix="%"
-            before={baseMetrics.saturation}
-            after={currentMetrics.saturation}
-          />
-          <RgbMetricShiftRow
-            label="Brightness"
-            max={100}
-            suffix="%"
-            before={baseMetrics.brightness}
-            after={currentMetrics.brightness}
-          />
-        </div>
+      <div className="grid gap-[1.5cqh] border-y border-border/70 py-[2cqh]">
+        <RgbAxisControlPanel
+          coordinate={coordinate}
+          density="compact"
+          onCoordinateChange={setCoordinate}
+        />
+      </div>
+      <div className="grid content-center gap-[1.35cqh]">
+        <RgbMetricShiftRow
+          label="Hue"
+          max={360}
+          suffix="deg"
+          before={baseMetrics.hue}
+          after={currentMetrics.hue}
+        />
+        <RgbMetricShiftRow
+          label="Saturation"
+          max={100}
+          suffix="%"
+          before={baseMetrics.saturation}
+          after={currentMetrics.saturation}
+        />
+        <RgbMetricShiftRow
+          label="Brightness"
+          max={100}
+          suffix="%"
+          before={baseMetrics.brightness}
+          after={currentMetrics.brightness}
+        />
       </div>
     </div>
   )
@@ -357,7 +364,7 @@ type RgbMiniSwatchProps = {
 function RgbMiniSwatch({ color, label }: RgbMiniSwatchProps) {
   return (
     <div
-      className="grid h-[10cqh] content-end rounded-sm border border-border p-[0.9cqw] shadow-sm"
+      className="grid h-[13cqh] content-end rounded-sm p-[1cqw]"
       style={{ backgroundColor: color }}
     >
       <span className="font-mono text-[clamp(0.58rem,1.1cqw,0.9rem)] leading-none font-bold tracking-normal text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.75)]">
@@ -402,7 +409,7 @@ function RgbMetricShiftRow({
           {suffix}
         </span>
       </div>
-      <div className="relative h-[1.6cqh] min-h-2 overflow-hidden rounded-full bg-background-secondary">
+      <div className="relative h-[1.1cqh] min-h-1.5 overflow-hidden rounded-full bg-background-primary">
         <span
           className="absolute inset-y-0 left-0 bg-border"
           style={{ width: `${beforeRatio * 100}%` }}
@@ -413,13 +420,5 @@ function RgbMetricShiftRow({
         />
       </div>
     </div>
-  )
-}
-
-function KeywordLine({ children }: { readonly children: string }) {
-  return (
-    <p className="border-l-[0.42cqw] border-text-normal pl-[1.2cqw] text-[clamp(0.95rem,2.25cqw,1.95rem)] leading-[1.18] font-bold tracking-normal">
-      {children}
-    </p>
   )
 }
