@@ -29,56 +29,55 @@ Hyuns Sites is a quiet utility workspace: direct, compact, and optimized for rep
 
 | Level | Size | Weight | Line Height | Tracking | Usage |
 |-------|------|--------|-------------|----------|-------|
-| Body | 16px / 1rem | 400 | 1.5 | 0 | Default app text |
-| Body/sm | 14px / 0.875rem | 400-500 | 1.5 | 0 | Compact descriptions and controls |
-| Caption | 12px / 0.75rem | 500 | 1.4 | 0 | Dense labels and metadata |
-| Micro | 10.4-11px / 0.65-0.6875rem | 500 | 1.2 | 0 | Canvas statistics chips |
+| H1 | `text-sm` to `text-base` | 700 | 1.4 | 0 | Playground title code label |
+| Body | `text-sm` | 400 | 1.5 | 0 | Navigation labels and body |
+| Caption | `text-xs` | 400 to 500 | 1.5 | 0 | Descriptions and hints |
 
 ### Font Stack
 
-- Primary: Hyuns UI `font-sans` stack.
-- Mono: Hyuns UI mono stack through Tailwind `font-mono`.
+- Primary: inherited from `@hyunsdev/ui/globals.css`
+- Mono: inherited from `@hyunsdev/ui/globals.css`
 
 ### Rules
 
-- Tool panels use compact type because the visualization is the primary object.
-- Do not use negative letter spacing.
+- Playground pages use compact type because they are tools, not marketing pages.
+- Use code styling for page titles when matching the shared playground shell.
 
 ## 4. Spacing & Layout
 
 ### Base Unit
 
-All spacing derives from a base of 4px.
+All spacing derives from a 4px base through Tailwind spacing tokens.
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--space-1` | 4px | Tight label and chip spacing |
-| `--space-2` | 8px | Compact control gaps |
-| `--space-3` | 12px | Overlay padding |
-| `--space-4` | 16px | Stage padding on wider screens |
-| `--space-6` | 24px | Large intra-panel separation |
+| `gap-1` | 4px | Tight item groups |
+| `gap-2` | 8px | Icon and label groups |
+| `gap-4` | 16px | Index item groups |
+| `px-4` | 16px | Compact horizontal page padding |
+| `px-6` | 24px | Standard playground page padding |
+| `py-10` | 40px | Playground content area |
 
 ### Grid
 
-- Web Color stages use a full-viewport canvas with absolute overlay slots.
-- Mobile controls use bottom-centered panels; desktop controls may pin to start/end slots.
-- Breakpoints follow Tailwind defaults.
+- Max content width comes from shared Hyuns UI layout components.
+- Breakpoints follow Tailwind defaults: sm 640px, md 768px, lg 1024px, xl 1280px, 2xl 1536px.
 
 ### Rules
 
-- Keep fixed-format controls dimensionally stable with explicit grid tracks or icon button sizes.
-- Avoid nested cards; use panels only for real tools and overlays.
+- Use `min-h-svh` or `min-h-[100svh]` for full-height app shells.
+- Keep first screens usable on mobile without horizontal scrolling.
 
 ## 5. Components
 
-### Floating Tool Panel
+### Playground Index Page
 
-- **Structure**: semantic `section` or grouped controls over `PlaygroundStage`.
-- **Variants**: bottom settings panel, compact icon toolbar, canvas metadata chips.
-- **Spacing**: 8-12px internal gaps, 12px panel padding.
-- **States**: hover, focus, active, disabled states come from Hyuns UI components.
-- **Accessibility**: icon-only controls require `aria-label`; shortcut hints belong in tooltips.
-- **Motion**: panel and control motion should be micro-duration and opacity/transform only.
+- **Structure**: `PlaygroundIndexPage` from `@hyunsdev/playground-ui/PlaygroundRoute` wraps grouped `PlaygroundRouteIndex` items.
+- **Variants**: root landing index, nested route hub.
+- **Spacing**: inherited from `NavigationIndexPage`; use `gap-4` for item groups.
+- **States**: shared navigation items handle hover, active press, focus, disabled, and transition state.
+- **Accessibility**: title and description must identify the surface; route items use text labels and icons.
+- **Motion**: use shared playground route transition behavior.
 
 ## 6. Motion & Interaction
 
@@ -86,23 +85,24 @@ All spacing derives from a base of 4px.
 
 | Type | Duration | Easing | Usage |
 |------|----------|--------|-------|
-| Micro | 100-150ms | ease-out | Button and switch state changes |
-| Standard | 200-300ms | ease-in-out | Panel appearance and route-level transitions |
+| Micro | Shared Hyuns UI token | Shared Hyuns UI easing | Button hover and press |
+| Standard | Shared playground route timing | Shared playground route easing | Index item navigation |
 
 ### Rules
 
-- Canvas motion may run continuously when it explains the model, but must offer a pause control.
-- Keyboard shortcuts must avoid hijacking focused buttons, inputs, sliders, switches, and editable content.
-- Respect established shortcuts shown in the UI.
+- Do not add custom page animation when a shared playground component already owns the transition.
+- Preserve focus-visible behavior from Hyuns UI controls.
 
 ## 7. Depth & Surface
 
 ### Strategy
 
-Mixed, with restrained borders and subtle shadows from Hyuns UI tokens.
+Use tonal shift plus lightweight borders from Hyuns UI components.
 
-| Level | Treatment | Usage |
-|-------|-----------|-------|
-| Canvas | Borderless or subtle token background | Primary visualization surface |
-| Panel | Token border, translucent primary background, backdrop blur | Floating settings and toolbars |
-| Chip | Token border, translucent primary background | Canvas metadata |
+| Type | Value | Usage |
+|------|-------|-------|
+| Background shift | `bg-background-secondary` | Playground shells |
+| Dot grid | `bg-dot-grid` | Playground index surfaces |
+| Border | Hyuns UI control border | Buttons and index items |
+
+No standalone decorative cards or shadows for first-screen playground navigation.
