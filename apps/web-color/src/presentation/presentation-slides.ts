@@ -1,15 +1,21 @@
 import type { ComponentType } from "react"
 
 import {
-  CssColorNotationSlide,
+  AgendaPresentationSlide,
   IntroPresentationSlide,
 } from "@/presentation/PresentationSlides"
-import { RgbMachineFriendlySlide } from "@/presentation/PresentationRgbModelSlide"
+import {
+  RgbLimitsSlide,
+  RgbModelSlide,
+  RgbStrengthsSlide,
+} from "@/presentation/PresentationRgbModelSlide"
 
 export const PRESENTATION_SLIDE_IDS = [
   "intro",
-  "rgb-machine-friendly",
-  "css-color-notations",
+  "agenda",
+  "rgb-model",
+  "rgb-strengths",
+  "rgb-limits",
 ] as const
 
 export type PresentationSlideId = (typeof PRESENTATION_SLIDE_IDS)[number]
@@ -35,22 +41,36 @@ const INTRO_PRESENTATION_SLIDE = {
   title: "RGB부터 OKLCH까지",
 } satisfies PresentationSlide
 
-const CSS_COLOR_NOTATION_PRESENTATION_SLIDE = {
-  component: CssColorNotationSlide,
-  id: "css-color-notations",
-  title: "CSS의 다양한 색 표기법",
+const AGENDA_PRESENTATION_SLIDE = {
+  component: AgendaPresentationSlide,
+  id: "agenda",
+  title: "오늘의 지도",
 } satisfies PresentationSlide
 
-const RGB_MACHINE_FRIENDLY_PRESENTATION_SLIDE = {
-  component: RgbMachineFriendlySlide,
-  id: "rgb-machine-friendly",
+const RGB_MODEL_PRESENTATION_SLIDE = {
+  component: RgbModelSlide,
+  id: "rgb-model",
   title: "RGB: 기계가 좋아하는 색 모델",
+} satisfies PresentationSlide
+
+const RGB_STRENGTHS_PRESENTATION_SLIDE = {
+  component: RgbStrengthsSlide,
+  id: "rgb-strengths",
+  title: "RGB의 장점",
+} satisfies PresentationSlide
+
+const RGB_LIMITS_PRESENTATION_SLIDE = {
+  component: RgbLimitsSlide,
+  id: "rgb-limits",
+  title: "RGB의 한계",
 } satisfies PresentationSlide
 
 export const PRESENTATION_SLIDES = [
   INTRO_PRESENTATION_SLIDE,
-  RGB_MACHINE_FRIENDLY_PRESENTATION_SLIDE,
-  CSS_COLOR_NOTATION_PRESENTATION_SLIDE,
+  AGENDA_PRESENTATION_SLIDE,
+  RGB_MODEL_PRESENTATION_SLIDE,
+  RGB_STRENGTHS_PRESENTATION_SLIDE,
+  RGB_LIMITS_PRESENTATION_SLIDE,
 ] satisfies readonly PresentationSlide[]
 
 export function isPresentationSlideId(
