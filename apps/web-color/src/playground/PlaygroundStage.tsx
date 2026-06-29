@@ -10,6 +10,7 @@ type PlaygroundStageProps = {
   readonly className?: string
   readonly endPanel?: ReactNode
   readonly mainClassName?: string
+  readonly startPanel?: ReactNode
   readonly topEnd?: ReactNode
   readonly topStart?: ReactNode
 }
@@ -40,6 +41,7 @@ export function PlaygroundStage({
   className,
   endPanel,
   mainClassName,
+  startPanel,
   topEnd,
   topStart,
 }: PlaygroundStageProps) {
@@ -63,6 +65,10 @@ export function PlaygroundStage({
             {topEnd}
           </PlaygroundStageSlot>
         </div>
+
+        <PlaygroundStageSlot className="absolute top-1/2 left-3 -translate-y-1/2 sm:left-4">
+          {startPanel}
+        </PlaygroundStageSlot>
 
         <PlaygroundStageSlot className="hidden max-h-[calc(100svh-2rem)] w-[360px] self-end overflow-y-auto lg:block">
           {endPanel}

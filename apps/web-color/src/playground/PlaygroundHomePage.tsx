@@ -1,15 +1,12 @@
 import {
-  ArrowDownToLineIcon,
   BlendIcon,
-  BoxIcon,
-  CircleDotIcon,
   Code2Icon,
   CrosshairIcon,
   CylinderIcon,
-  EyeIcon,
   PaletteIcon,
-  PanelTopIcon,
+  ScanLineIcon,
   ScissorsIcon,
+  UsbIcon,
 } from "lucide-react"
 
 import {
@@ -28,11 +25,6 @@ export function PlaygroundHomePage() {
       <PlaygroundRouteColumn>
         <PlaygroundRouteGroup name="Color Models" icon={PaletteIcon}>
           <PlaygroundRouteFeature
-            icon={BoxIcon}
-            label="3D Color Coordinates"
-            path="/color-space-models"
-          />
-          <PlaygroundRouteFeature
             icon={CylinderIcon}
             label="3D Solid Models"
             path="/color-space-solid-models"
@@ -43,9 +35,9 @@ export function PlaygroundHomePage() {
             path="/color-coordinate-planes"
           />
           <PlaygroundRouteFeature
-            icon={PanelTopIcon}
-            label="Unwrapped Color Spaces"
-            path="/color-space-unwrapped"
+            icon={ScanLineIcon}
+            label="CIE 1931 RGB Gamuts"
+            path="/cie-1931-rgb-gamuts"
           />
           <PlaygroundRouteFeature
             icon={BlendIcon}
@@ -58,29 +50,24 @@ export function PlaygroundHomePage() {
             path="/css-color-notations"
           />
           <PlaygroundRouteFeature
+            icon={BlendIcon}
+            label="sRGB / P3 Compare"
+            path="/srgb-p3-compare"
+          />
+          <PlaygroundRouteFeature
+            icon={Code2Icon}
+            label="RGB Channel Codes"
+            path="/rgb-channel-gamut-codes"
+          />
+          <PlaygroundRouteFeature
             icon={ScissorsIcon}
             label="Gamut Clipping"
             path="/color-gamut-clipping"
           />
           <PlaygroundRouteFeature
-            icon={EyeIcon}
-            label="Perceptual Steps"
-            path="/perceptual-color-steps"
-          />
-          <PlaygroundRouteFeature
-            icon={CircleDotIcon}
-            label="CIE 1931 xy"
-            path="/cie-1931-xy"
-          />
-          <PlaygroundRouteFeature
-            icon={BoxIcon}
-            label="CIE 1931 XYZ"
-            path="/cie-1931-xyz"
-          />
-          <PlaygroundRouteFeature
-            icon={ArrowDownToLineIcon}
-            label="XYZ to xy Projection"
-            path="/cie-1931-projection"
+            icon={UsbIcon}
+            label="Arduino RGB"
+            path="/arduino-rgb"
           />
         </PlaygroundRouteGroup>
       </PlaygroundRouteColumn>

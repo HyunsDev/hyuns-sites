@@ -4,9 +4,11 @@ import type { ColorSpaceAxisLabel } from "@/color-models/color-space-axis-labels
 import { cn } from "@hyunsdev/ui/lib/utils"
 
 export function ColorSpaceAxisLabelLayer({
+  className,
   labelLayerRef,
   labels,
 }: {
+  readonly className?: string
   readonly labelLayerRef: RefObject<HTMLDivElement | null>
   readonly labels: readonly ColorSpaceAxisLabel[]
 }) {
@@ -14,7 +16,7 @@ export function ColorSpaceAxisLabelLayer({
     <div
       ref={labelLayerRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0"
+      className={cn("pointer-events-none absolute inset-0", className)}
     >
       {labels.map((label, index) => (
         <span

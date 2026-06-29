@@ -9,22 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/__root"
-import { Route as PerceptualColorStepsRouteImport } from "./routes/perceptual-color-steps"
+import { Route as SrgbP3CompareRouteImport } from "./routes/srgb-p3-compare"
+import { Route as RgbChannelGamutCodesRouteImport } from "./routes/rgb-channel-gamut-codes"
 import { Route as CssColorNotationsRouteImport } from "./routes/css-color-notations"
-import { Route as ColorSpaceUnwrappedRouteImport } from "./routes/color-space-unwrapped"
 import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-solid-models"
-import { Route as ColorSpaceModelsRouteImport } from "./routes/color-space-models"
 import { Route as ColorInterpolationRouteImport } from "./routes/color-interpolation"
 import { Route as ColorGamutClippingRouteImport } from "./routes/color-gamut-clipping"
 import { Route as ColorCoordinatePlanesRouteImport } from "./routes/color-coordinate-planes"
-import { Route as Cie1931XyzRouteImport } from "./routes/cie-1931-xyz"
-import { Route as Cie1931XyRouteImport } from "./routes/cie-1931-xy"
-import { Route as Cie1931ProjectionRouteImport } from "./routes/cie-1931-projection"
+import { Route as Cie1931RgbGamutsRouteImport } from "./routes/cie-1931-rgb-gamuts"
+import { Route as ArduinoRgbRouteImport } from "./routes/arduino-rgb"
 import { Route as IndexRouteImport } from "./routes/index"
 
-const PerceptualColorStepsRoute = PerceptualColorStepsRouteImport.update({
-  id: "/perceptual-color-steps",
-  path: "/perceptual-color-steps",
+const SrgbP3CompareRoute = SrgbP3CompareRouteImport.update({
+  id: "/srgb-p3-compare",
+  path: "/srgb-p3-compare",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RgbChannelGamutCodesRoute = RgbChannelGamutCodesRouteImport.update({
+  id: "/rgb-channel-gamut-codes",
+  path: "/rgb-channel-gamut-codes",
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
@@ -32,19 +35,9 @@ const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
   path: "/css-color-notations",
   getParentRoute: () => rootRouteImport,
 } as any)
-const ColorSpaceUnwrappedRoute = ColorSpaceUnwrappedRouteImport.update({
-  id: "/color-space-unwrapped",
-  path: "/color-space-unwrapped",
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ColorSpaceSolidModelsRoute = ColorSpaceSolidModelsRouteImport.update({
   id: "/color-space-solid-models",
   path: "/color-space-solid-models",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ColorSpaceModelsRoute = ColorSpaceModelsRouteImport.update({
-  id: "/color-space-models",
-  path: "/color-space-models",
   getParentRoute: () => rootRouteImport,
 } as any)
 const ColorInterpolationRoute = ColorInterpolationRouteImport.update({
@@ -62,19 +55,14 @@ const ColorCoordinatePlanesRoute = ColorCoordinatePlanesRouteImport.update({
   path: "/color-coordinate-planes",
   getParentRoute: () => rootRouteImport,
 } as any)
-const Cie1931XyzRoute = Cie1931XyzRouteImport.update({
-  id: "/cie-1931-xyz",
-  path: "/cie-1931-xyz",
+const Cie1931RgbGamutsRoute = Cie1931RgbGamutsRouteImport.update({
+  id: "/cie-1931-rgb-gamuts",
+  path: "/cie-1931-rgb-gamuts",
   getParentRoute: () => rootRouteImport,
 } as any)
-const Cie1931XyRoute = Cie1931XyRouteImport.update({
-  id: "/cie-1931-xy",
-  path: "/cie-1931-xy",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Cie1931ProjectionRoute = Cie1931ProjectionRouteImport.update({
-  id: "/cie-1931-projection",
-  path: "/cie-1931-projection",
+const ArduinoRgbRoute = ArduinoRgbRouteImport.update({
+  id: "/arduino-rgb",
+  path: "/arduino-rgb",
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -85,114 +73,107 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
-  "/cie-1931-projection": typeof Cie1931ProjectionRoute
-  "/cie-1931-xy": typeof Cie1931XyRoute
-  "/cie-1931-xyz": typeof Cie1931XyzRoute
+  "/arduino-rgb": typeof ArduinoRgbRoute
+  "/cie-1931-rgb-gamuts": typeof Cie1931RgbGamutsRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
-  "/color-space-models": typeof ColorSpaceModelsRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
-  "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
-  "/perceptual-color-steps": typeof PerceptualColorStepsRoute
+  "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
+  "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
-  "/cie-1931-projection": typeof Cie1931ProjectionRoute
-  "/cie-1931-xy": typeof Cie1931XyRoute
-  "/cie-1931-xyz": typeof Cie1931XyzRoute
+  "/arduino-rgb": typeof ArduinoRgbRoute
+  "/cie-1931-rgb-gamuts": typeof Cie1931RgbGamutsRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
-  "/color-space-models": typeof ColorSpaceModelsRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
-  "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
-  "/perceptual-color-steps": typeof PerceptualColorStepsRoute
+  "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
+  "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
-  "/cie-1931-projection": typeof Cie1931ProjectionRoute
-  "/cie-1931-xy": typeof Cie1931XyRoute
-  "/cie-1931-xyz": typeof Cie1931XyzRoute
+  "/arduino-rgb": typeof ArduinoRgbRoute
+  "/cie-1931-rgb-gamuts": typeof Cie1931RgbGamutsRoute
   "/color-coordinate-planes": typeof ColorCoordinatePlanesRoute
   "/color-gamut-clipping": typeof ColorGamutClippingRoute
   "/color-interpolation": typeof ColorInterpolationRoute
-  "/color-space-models": typeof ColorSpaceModelsRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
-  "/color-space-unwrapped": typeof ColorSpaceUnwrappedRoute
   "/css-color-notations": typeof CssColorNotationsRoute
-  "/perceptual-color-steps": typeof PerceptualColorStepsRoute
+  "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
+  "/srgb-p3-compare": typeof SrgbP3CompareRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | "/"
-    | "/cie-1931-projection"
-    | "/cie-1931-xy"
-    | "/cie-1931-xyz"
+    | "/arduino-rgb"
+    | "/cie-1931-rgb-gamuts"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
-    | "/color-space-models"
     | "/color-space-solid-models"
-    | "/color-space-unwrapped"
     | "/css-color-notations"
-    | "/perceptual-color-steps"
+    | "/rgb-channel-gamut-codes"
+    | "/srgb-p3-compare"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
-    | "/cie-1931-projection"
-    | "/cie-1931-xy"
-    | "/cie-1931-xyz"
+    | "/arduino-rgb"
+    | "/cie-1931-rgb-gamuts"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
-    | "/color-space-models"
     | "/color-space-solid-models"
-    | "/color-space-unwrapped"
     | "/css-color-notations"
-    | "/perceptual-color-steps"
+    | "/rgb-channel-gamut-codes"
+    | "/srgb-p3-compare"
   id:
     | "__root__"
     | "/"
-    | "/cie-1931-projection"
-    | "/cie-1931-xy"
-    | "/cie-1931-xyz"
+    | "/arduino-rgb"
+    | "/cie-1931-rgb-gamuts"
     | "/color-coordinate-planes"
     | "/color-gamut-clipping"
     | "/color-interpolation"
-    | "/color-space-models"
     | "/color-space-solid-models"
-    | "/color-space-unwrapped"
     | "/css-color-notations"
-    | "/perceptual-color-steps"
+    | "/rgb-channel-gamut-codes"
+    | "/srgb-p3-compare"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  Cie1931ProjectionRoute: typeof Cie1931ProjectionRoute
-  Cie1931XyRoute: typeof Cie1931XyRoute
-  Cie1931XyzRoute: typeof Cie1931XyzRoute
+  ArduinoRgbRoute: typeof ArduinoRgbRoute
+  Cie1931RgbGamutsRoute: typeof Cie1931RgbGamutsRoute
   ColorCoordinatePlanesRoute: typeof ColorCoordinatePlanesRoute
   ColorGamutClippingRoute: typeof ColorGamutClippingRoute
   ColorInterpolationRoute: typeof ColorInterpolationRoute
-  ColorSpaceModelsRoute: typeof ColorSpaceModelsRoute
   ColorSpaceSolidModelsRoute: typeof ColorSpaceSolidModelsRoute
-  ColorSpaceUnwrappedRoute: typeof ColorSpaceUnwrappedRoute
   CssColorNotationsRoute: typeof CssColorNotationsRoute
-  PerceptualColorStepsRoute: typeof PerceptualColorStepsRoute
+  RgbChannelGamutCodesRoute: typeof RgbChannelGamutCodesRoute
+  SrgbP3CompareRoute: typeof SrgbP3CompareRoute
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/perceptual-color-steps": {
-      id: "/perceptual-color-steps"
-      path: "/perceptual-color-steps"
-      fullPath: "/perceptual-color-steps"
-      preLoaderRoute: typeof PerceptualColorStepsRouteImport
+    "/srgb-p3-compare": {
+      id: "/srgb-p3-compare"
+      path: "/srgb-p3-compare"
+      fullPath: "/srgb-p3-compare"
+      preLoaderRoute: typeof SrgbP3CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/rgb-channel-gamut-codes": {
+      id: "/rgb-channel-gamut-codes"
+      path: "/rgb-channel-gamut-codes"
+      fullPath: "/rgb-channel-gamut-codes"
+      preLoaderRoute: typeof RgbChannelGamutCodesRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/css-color-notations": {
@@ -202,25 +183,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof CssColorNotationsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/color-space-unwrapped": {
-      id: "/color-space-unwrapped"
-      path: "/color-space-unwrapped"
-      fullPath: "/color-space-unwrapped"
-      preLoaderRoute: typeof ColorSpaceUnwrappedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     "/color-space-solid-models": {
       id: "/color-space-solid-models"
       path: "/color-space-solid-models"
       fullPath: "/color-space-solid-models"
       preLoaderRoute: typeof ColorSpaceSolidModelsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/color-space-models": {
-      id: "/color-space-models"
-      path: "/color-space-models"
-      fullPath: "/color-space-models"
-      preLoaderRoute: typeof ColorSpaceModelsRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/color-interpolation": {
@@ -244,25 +211,18 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ColorCoordinatePlanesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/cie-1931-xyz": {
-      id: "/cie-1931-xyz"
-      path: "/cie-1931-xyz"
-      fullPath: "/cie-1931-xyz"
-      preLoaderRoute: typeof Cie1931XyzRouteImport
+    "/cie-1931-rgb-gamuts": {
+      id: "/cie-1931-rgb-gamuts"
+      path: "/cie-1931-rgb-gamuts"
+      fullPath: "/cie-1931-rgb-gamuts"
+      preLoaderRoute: typeof Cie1931RgbGamutsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/cie-1931-xy": {
-      id: "/cie-1931-xy"
-      path: "/cie-1931-xy"
-      fullPath: "/cie-1931-xy"
-      preLoaderRoute: typeof Cie1931XyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/cie-1931-projection": {
-      id: "/cie-1931-projection"
-      path: "/cie-1931-projection"
-      fullPath: "/cie-1931-projection"
-      preLoaderRoute: typeof Cie1931ProjectionRouteImport
+    "/arduino-rgb": {
+      id: "/arduino-rgb"
+      path: "/arduino-rgb"
+      fullPath: "/arduino-rgb"
+      preLoaderRoute: typeof ArduinoRgbRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/": {
@@ -277,17 +237,15 @@ declare module "@tanstack/react-router" {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  Cie1931ProjectionRoute: Cie1931ProjectionRoute,
-  Cie1931XyRoute: Cie1931XyRoute,
-  Cie1931XyzRoute: Cie1931XyzRoute,
+  ArduinoRgbRoute: ArduinoRgbRoute,
+  Cie1931RgbGamutsRoute: Cie1931RgbGamutsRoute,
   ColorCoordinatePlanesRoute: ColorCoordinatePlanesRoute,
   ColorGamutClippingRoute: ColorGamutClippingRoute,
   ColorInterpolationRoute: ColorInterpolationRoute,
-  ColorSpaceModelsRoute: ColorSpaceModelsRoute,
   ColorSpaceSolidModelsRoute: ColorSpaceSolidModelsRoute,
-  ColorSpaceUnwrappedRoute: ColorSpaceUnwrappedRoute,
   CssColorNotationsRoute: CssColorNotationsRoute,
-  PerceptualColorStepsRoute: PerceptualColorStepsRoute,
+  RgbChannelGamutCodesRoute: RgbChannelGamutCodesRoute,
+  SrgbP3CompareRoute: SrgbP3CompareRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
