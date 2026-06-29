@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from "./routes/__root"
 import { Route as SrgbP3CompareRouteImport } from "./routes/srgb-p3-compare"
 import { Route as RgbChannelGamutCodesRouteImport } from "./routes/rgb-channel-gamut-codes"
+import { Route as PresentationRouteImport } from "./routes/presentation"
 import { Route as CssColorNotationsRouteImport } from "./routes/css-color-notations"
 import { Route as ColorSpaceSolidModelsRouteImport } from "./routes/color-space-solid-models"
 import { Route as ColorInterpolationRouteImport } from "./routes/color-interpolation"
@@ -19,6 +20,7 @@ import { Route as ColorCoordinatePlanesRouteImport } from "./routes/color-coordi
 import { Route as Cie1931RgbGamutsRouteImport } from "./routes/cie-1931-rgb-gamuts"
 import { Route as ArduinoRgbRouteImport } from "./routes/arduino-rgb"
 import { Route as IndexRouteImport } from "./routes/index"
+import { Route as PresentationSlideIdRouteImport } from "./routes/presentation.$slideId"
 
 const SrgbP3CompareRoute = SrgbP3CompareRouteImport.update({
   id: "/srgb-p3-compare",
@@ -28,6 +30,11 @@ const SrgbP3CompareRoute = SrgbP3CompareRouteImport.update({
 const RgbChannelGamutCodesRoute = RgbChannelGamutCodesRouteImport.update({
   id: "/rgb-channel-gamut-codes",
   path: "/rgb-channel-gamut-codes",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PresentationRoute = PresentationRouteImport.update({
+  id: "/presentation",
+  path: "/presentation",
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssColorNotationsRoute = CssColorNotationsRouteImport.update({
@@ -70,6 +77,11 @@ const IndexRoute = IndexRouteImport.update({
   path: "/",
   getParentRoute: () => rootRouteImport,
 } as any)
+const PresentationSlideIdRoute = PresentationSlideIdRouteImport.update({
+  id: "/$slideId",
+  path: "/$slideId",
+  getParentRoute: () => PresentationRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
@@ -80,8 +92,10 @@ export interface FileRoutesByFullPath {
   "/color-interpolation": typeof ColorInterpolationRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/presentation": typeof PresentationRouteWithChildren
   "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
+  "/presentation/$slideId": typeof PresentationSlideIdRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
@@ -92,8 +106,10 @@ export interface FileRoutesByTo {
   "/color-interpolation": typeof ColorInterpolationRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/presentation": typeof PresentationRouteWithChildren
   "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
+  "/presentation/$slideId": typeof PresentationSlideIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,8 +121,10 @@ export interface FileRoutesById {
   "/color-interpolation": typeof ColorInterpolationRoute
   "/color-space-solid-models": typeof ColorSpaceSolidModelsRoute
   "/css-color-notations": typeof CssColorNotationsRoute
+  "/presentation": typeof PresentationRouteWithChildren
   "/rgb-channel-gamut-codes": typeof RgbChannelGamutCodesRoute
   "/srgb-p3-compare": typeof SrgbP3CompareRoute
+  "/presentation/$slideId": typeof PresentationSlideIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,8 +137,10 @@ export interface FileRouteTypes {
     | "/color-interpolation"
     | "/color-space-solid-models"
     | "/css-color-notations"
+    | "/presentation"
     | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
+    | "/presentation/$slideId"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
@@ -131,8 +151,10 @@ export interface FileRouteTypes {
     | "/color-interpolation"
     | "/color-space-solid-models"
     | "/css-color-notations"
+    | "/presentation"
     | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
+    | "/presentation/$slideId"
   id:
     | "__root__"
     | "/"
@@ -143,8 +165,10 @@ export interface FileRouteTypes {
     | "/color-interpolation"
     | "/color-space-solid-models"
     | "/css-color-notations"
+    | "/presentation"
     | "/rgb-channel-gamut-codes"
     | "/srgb-p3-compare"
+    | "/presentation/$slideId"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,6 +180,7 @@ export interface RootRouteChildren {
   ColorInterpolationRoute: typeof ColorInterpolationRoute
   ColorSpaceSolidModelsRoute: typeof ColorSpaceSolidModelsRoute
   CssColorNotationsRoute: typeof CssColorNotationsRoute
+  PresentationRoute: typeof PresentationRouteWithChildren
   RgbChannelGamutCodesRoute: typeof RgbChannelGamutCodesRoute
   SrgbP3CompareRoute: typeof SrgbP3CompareRoute
 }
@@ -174,6 +199,13 @@ declare module "@tanstack/react-router" {
       path: "/rgb-channel-gamut-codes"
       fullPath: "/rgb-channel-gamut-codes"
       preLoaderRoute: typeof RgbChannelGamutCodesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/presentation": {
+      id: "/presentation"
+      path: "/presentation"
+      fullPath: "/presentation"
+      preLoaderRoute: typeof PresentationRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/css-color-notations": {
@@ -232,8 +264,27 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/presentation/$slideId": {
+      id: "/presentation/$slideId"
+      path: "/$slideId"
+      fullPath: "/presentation/$slideId"
+      preLoaderRoute: typeof PresentationSlideIdRouteImport
+      parentRoute: typeof PresentationRoute
+    }
   }
 }
+
+interface PresentationRouteChildren {
+  PresentationSlideIdRoute: typeof PresentationSlideIdRoute
+}
+
+const PresentationRouteChildren: PresentationRouteChildren = {
+  PresentationSlideIdRoute: PresentationSlideIdRoute,
+}
+
+const PresentationRouteWithChildren = PresentationRoute._addFileChildren(
+  PresentationRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -244,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorInterpolationRoute: ColorInterpolationRoute,
   ColorSpaceSolidModelsRoute: ColorSpaceSolidModelsRoute,
   CssColorNotationsRoute: CssColorNotationsRoute,
+  PresentationRoute: PresentationRouteWithChildren,
   RgbChannelGamutCodesRoute: RgbChannelGamutCodesRoute,
   SrgbP3CompareRoute: SrgbP3CompareRoute,
 }

@@ -69,6 +69,11 @@ export function PlaygroundHomePage() {
             label="Arduino RGB"
             path="/arduino-rgb"
           />
+          <PlaygroundRouteFeature
+            icon={Code2Icon}
+            label="Presentation"
+            path="/presentation"
+          />
         </PlaygroundRouteGroup>
       </PlaygroundRouteColumn>
     </PlaygroundIndexPage>

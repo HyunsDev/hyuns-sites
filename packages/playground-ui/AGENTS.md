@@ -4,7 +4,7 @@ This file applies to everything under `packages/playground-ui`.
 
 ## Purpose
 
-`@hyunsdev/playground-ui` contains shared shell components and helpers used by
+`@workspace/playground-ui` contains shared shell components and helpers used by
 the playground applications.
 
 ## Ground Rules
@@ -18,5 +18,5 @@ the playground applications.
 
 ## Validation
 
-- `pnpm --filter @hyunsdev/playground-ui check`
+- `pnpm --filter @workspace/playground-ui check`
 - Run the affected playground check when shared playground shell behavior changes

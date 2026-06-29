@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PlaygroundIndexPage } from "@hyunsdev/playground-ui/PlaygroundRoute";
+import { PlaygroundIndexPage } from "@workspace/playground-ui/PlaygroundRoute";
 
 export const Route = createFileRoute("/layouts")({
   component: () => (

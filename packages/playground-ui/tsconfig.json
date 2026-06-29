@@ -7,8 +7,8 @@
     "rootDir": "src",
     "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
     "paths": {
-      "@hyunsdev/playground-ui": ["./src/index.ts"],
-      "@hyunsdev/playground-ui/*": ["./src/*"],
+      "@workspace/playground-ui": ["./src/index.ts"],
+      "@workspace/playground-ui/*": ["./src/*"],
       "@/*": ["src/*"]
     }
   }

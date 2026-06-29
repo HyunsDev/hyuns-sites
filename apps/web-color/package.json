@@ -16,6 +16,7 @@
   "dependencies": {
     "@hyunsdev/ui": "^0.2.0",
     "@tanstack/react-router": "^1.170.16",
+    "@workspace/playground-ui": "workspace:*",
     "culori": "^4.0.2",
     "lucide-react": "^1.8.0",
     "motion": "^12.38.0",

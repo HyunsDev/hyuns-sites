@@ -14,9 +14,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@hyunsdev/playground-ui": "workspace:*",
     "@hyunsdev/ui": "^0.2.0",
     "@tanstack/react-router": "^1.170.16",
+    "@workspace/playground-ui": "workspace:*",
     "@workspace/site-ui": "workspace:*",
     "lucide-react": "^1.8.0",
     "react": "^19.1.0",

@@ -4,7 +4,7 @@ import {
   PlaygroundRouteColumn,
   PlaygroundRouteGroup,
   PlaygroundRouteIndex
-} from "@hyunsdev/playground-ui/PlaygroundRoute";
+} from "@workspace/playground-ui/PlaygroundRoute";
 import {
   BlocksIcon,
   ComponentIcon,

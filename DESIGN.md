@@ -72,7 +72,7 @@ All spacing derives from a 4px base through Tailwind spacing tokens.
 
 ### Playground Index Page
 
-- **Structure**: `PlaygroundIndexPage` from `@hyunsdev/playground-ui/PlaygroundRoute` wraps grouped `PlaygroundRouteIndex` items.
+- **Structure**: `PlaygroundIndexPage` from `@workspace/playground-ui/PlaygroundRoute` wraps grouped `PlaygroundRouteIndex` items.
 - **Variants**: root landing index, nested route hub.
 - **Spacing**: inherited from `NavigationIndexPage`; use `gap-4` for item groups.
 - **States**: shared navigation items handle hover, active press, focus, disabled, and transition state.
