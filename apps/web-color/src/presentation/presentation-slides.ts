@@ -25,6 +25,15 @@ import {
   PerceptualModelsSlide,
 } from "@/presentation/PresentationPerceptualSlides"
 import {
+  ChooseTheToolSlide,
+  OklchBrandPaletteSlide,
+  OklchDarkModeSlide,
+  OklchGradientSlide,
+  OklchLightnessSlide,
+  OklchStateColorsSlide,
+  WhyOklchSlide,
+} from "@/presentation/PresentationOklchPracticeSlides"
+import {
   RgbLimitsSlide,
   RgbModelSlide,
   RgbStrengthsSlide,
@@ -52,6 +61,13 @@ export const PRESENTATION_SLIDE_IDS = [
   "lab-to-oklab",
   "oklch-model",
   "part-1-summary",
+  "why-oklch",
+  "oklch-lightness",
+  "oklch-brand-palette",
+  "oklch-state-colors",
+  "oklch-gradient",
+  "oklch-dark-mode",
+  "choose-the-tool",
 ] as const
 
 export type PresentationSlideId = (typeof PRESENTATION_SLIDE_IDS)[number]
@@ -117,6 +133,33 @@ export const PRESENTATION_SLIDES = [
   { component: LabToOklabSlide, id: "lab-to-oklab", title: "Lab에서 Oklab으로" },
   { component: OklchModelSlide, id: "oklch-model", title: "OKLCH" },
   { component: Part1SummarySlide, id: "part-1-summary", title: "1부 정리" },
+  { component: WhyOklchSlide, id: "why-oklch", title: "HSL으로는 부족한 이유" },
+  {
+    component: OklchLightnessSlide,
+    id: "oklch-lightness",
+    title: "OKLCH는 명도 설계가 쉽다",
+  },
+  {
+    component: OklchBrandPaletteSlide,
+    id: "oklch-brand-palette",
+    title: "브랜드 팔레트를 규칙으로 만들기",
+  },
+  {
+    component: OklchStateColorsSlide,
+    id: "oklch-state-colors",
+    title: "상태 색상을 관계로 만들기",
+  },
+  {
+    component: OklchGradientSlide,
+    id: "oklch-gradient",
+    title: "자연스러운 그라데이션",
+  },
+  {
+    component: OklchDarkModeSlide,
+    id: "oklch-dark-mode",
+    title: "다크모드 설계",
+  },
+  { component: ChooseTheToolSlide, id: "choose-the-tool", title: "도구 선택" },
 ] satisfies readonly PresentationSlide[]
 
 export const FIRST_PRESENTATION_SLIDE_ID = "intro" satisfies PresentationSlideId
