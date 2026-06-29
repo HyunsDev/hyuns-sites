@@ -16,12 +16,14 @@ export type PurposeStep = {
 }
 
 export type GamutChromaSwatch = {
-  readonly color: string
+  readonly renderedColor: string
+  readonly requestedColor: string
   readonly inTarget: boolean
   readonly label: string
 }
 
 export type GamutChromaRow = {
+  readonly edgeLabel: string
   readonly label: string
   readonly swatches: readonly GamutChromaSwatch[]
   readonly targetId: GamutClippingTargetId
@@ -56,24 +58,30 @@ const CHROMA_STEPS = [
 ] as const
 
 export function createGamutChromaRows(): readonly GamutChromaRow[] {
-  return GAMUT_CLIPPING_TARGETS.map((target) => ({
-    label: target.label,
-    targetId: target.id,
-    swatches: CHROMA_STEPS.map((chroma) => {
+  return GAMUT_CLIPPING_TARGETS.map((target) => {
+    const swatches = CHROMA_STEPS.map((chroma) => {
       const result = analyzeGamutClipping({
         targetId: target.id,
         lightness: 68,
         chroma,
-        hue: 305,
+        hue: 150,
       })
 
       return {
-        color: result.sourceHex,
+        renderedColor: result.mappedHex,
+        requestedColor: result.sourceHex,
         inTarget: result.inTarget,
         label: chroma.toFixed(2),
       }
-    }),
-  }))
+    })
+
+    return {
+      edgeLabel: getGamutEdgeLabel(swatches),
+      label: target.label,
+      targetId: target.id,
+      swatches,
+    }
+  })
 }
 
 export function createLabToOklabComparisonRows(): readonly ComparisonRow[] {
@@ -100,4 +108,12 @@ function isLabOrOklchRow(
   row: InterpolationRow
 ): row is InterpolationRow & { readonly label: "Lab" | "OKLCH" } {
   return row.label === "Lab" || row.label === "OKLCH"
+}
+
+function getGamutEdgeLabel(swatches: readonly GamutChromaSwatch[]) {
+  const firstOutOfGamutSwatch = swatches.find((swatch) => !swatch.inTarget)
+
+  return firstOutOfGamutSwatch
+    ? `edge ${firstOutOfGamutSwatch.label}`
+    : "inside"
 }

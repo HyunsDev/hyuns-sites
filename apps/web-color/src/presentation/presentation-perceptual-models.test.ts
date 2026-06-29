@@ -25,16 +25,28 @@ test("PERCEPTUAL_MODEL_STEPS introduces Lab before OKLCH", () => {
 test("createGamutChromaRows includes out-of-gamut swatches for sRGB", () => {
   const rows = createGamutChromaRows()
   const srgbRow = rows.find((row) => row.targetId === "srgb")
+  const displayP3Row = rows.find((row) => row.targetId === "display-p3")
+  const rec2020Row = rows.find((row) => row.targetId === "rec2020")
 
   assert.equal(rows.length, 3)
   assert.ok(srgbRow)
+  assert.ok(displayP3Row)
+  assert.ok(rec2020Row)
 
-  if (!srgbRow) {
-    throw new Error("Expected sRGB gamut row")
+  if (!srgbRow || !displayP3Row || !rec2020Row) {
+    throw new Error("Expected all gamut rows")
   }
 
   assert.equal(srgbRow.swatches.length, 12)
   assert.ok(srgbRow.swatches.some((swatch) => !swatch.inTarget))
+  assert.equal(srgbRow.edgeLabel, "edge 0.20")
+  assert.equal(displayP3Row.edgeLabel, "edge 0.28")
+  assert.equal(rec2020Row.edgeLabel, "edge 0.36")
+  assert.ok(
+    srgbRow.swatches.some(
+      (swatch) => swatch.requestedColor !== swatch.renderedColor
+    )
+  )
 })
 
 test("createLabToOklabComparisonRows returns equal-length comparison rows", () => {
