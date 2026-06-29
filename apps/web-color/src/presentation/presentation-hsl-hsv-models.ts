@@ -15,6 +15,10 @@ import {
 } from "../color-models/color-coordinate-utils.ts"
 
 export type HslHsvModelId = Extract<ColorCoordinateModelId, "hsl" | "hsv">
+export type PresentationControlModelId = Extract<
+  ColorCoordinateModelId,
+  "hsl" | "hsv" | "oklch"
+>
 
 export type PresentationColorSwatch = {
   readonly color: string
@@ -60,7 +64,7 @@ const HUE_STEPS = [0, 36, 72, 108, 144, 180, 216, 252, 288, 324] as const
 const PERCENT_STEPS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100] as const
 
 export function requirePresentationPlane(
-  modelId: HslHsvModelId,
+  modelId: PresentationControlModelId,
   xAxisId: ColorCoordinateAxisId,
   yAxisId: ColorCoordinateAxisId
 ): ColorCoordinatePlane {
@@ -85,8 +89,9 @@ export function formatCoordinateCssOutput(coordinate: ColorCoordinate) {
       return formatCssColor(toCuloriColor(coordinate), "hsl")
     case "hsv":
       return formatCssColor(toCuloriColor(coordinate), "rgb")
-    case "lch":
     case "oklch":
+      return formatCssColor(toCuloriColor(coordinate), "oklch")
+    case "lch":
     case "rgb":
       return formatCssColor(toCuloriColor(coordinate), "rgb")
     default:

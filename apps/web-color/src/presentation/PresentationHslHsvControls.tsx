@@ -18,11 +18,11 @@ import {
   formatCoordinateCssOutput,
   getDisplayColor,
   requirePresentationPlane,
-  type HslHsvModelId,
+  type PresentationControlModelId,
 } from "@/presentation/presentation-hsl-hsv-models"
 
 type ColorCoordinateControlDemoProps = {
-  readonly modelId: HslHsvModelId
+  readonly modelId: PresentationControlModelId
   readonly planeAxisIds: {
     readonly x: ColorCoordinateAxisId
     readonly y: ColorCoordinateAxisId
@@ -121,7 +121,7 @@ function ColorPreviewPanel({ compact = false, coordinate }: ColorPreviewPanelPro
 type CoordinateAxisControlRowProps = {
   readonly axis: ColorCoordinateAxis
   readonly coordinate: ColorCoordinate
-  readonly modelId: HslHsvModelId
+  readonly modelId: PresentationControlModelId
   readonly onChange: (coordinate: ColorCoordinate) => void
 }
 

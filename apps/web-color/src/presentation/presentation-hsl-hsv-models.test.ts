@@ -4,6 +4,7 @@ import test from "node:test"
 import {
   createHslLightnessTrapSwatches,
   createHsvAxisPaletteRows,
+  formatCoordinateCssOutput,
   requirePresentationPlane,
 } from "./presentation-hsl-hsv-models.ts"
 
@@ -57,7 +58,19 @@ test("createHslLightnessTrapSwatches keeps HSL lightness fixed at 50", () => {
   }
 })
 
-test("requirePresentationPlane returns the requested HSL and HSV planes", () => {
+test("requirePresentationPlane returns requested presentation control planes", () => {
   assert.equal(requirePresentationPlane("hsl", "s", "l").label, "S x L")
   assert.equal(requirePresentationPlane("hsv", "s", "v").label, "S x V")
+  assert.equal(requirePresentationPlane("oklch", "c", "l").label, "C x L")
+})
+
+test("formatCoordinateCssOutput keeps OKLCH notation for OKLCH controls", () => {
+  const output = formatCoordinateCssOutput({
+    modelId: "oklch",
+    l: 70,
+    c: 0.18,
+    h: 32,
+  })
+
+  assert.match(output, /^oklch\(/)
 })
