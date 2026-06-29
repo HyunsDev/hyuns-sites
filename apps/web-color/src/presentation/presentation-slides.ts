@@ -3,6 +3,7 @@ import type { ComponentType } from "react"
 import {
   AgendaPresentationSlide,
   IntroPresentationSlide,
+  RgbIntroPresentationSlide,
 } from "@/presentation/PresentationSlides"
 import {
   RgbLimitsSlide,
@@ -13,6 +14,7 @@ import {
 export const PRESENTATION_SLIDE_IDS = [
   "intro",
   "agenda",
+  "rgb-intro",
   "rgb-model",
   "rgb-strengths",
   "rgb-limits",
@@ -47,6 +49,12 @@ const AGENDA_PRESENTATION_SLIDE = {
   title: "오늘의 지도",
 } satisfies PresentationSlide
 
+const RGB_INTRO_PRESENTATION_SLIDE = {
+  component: RgbIntroPresentationSlide,
+  id: "rgb-intro",
+  title: "RGB",
+} satisfies PresentationSlide
+
 const RGB_MODEL_PRESENTATION_SLIDE = {
   component: RgbModelSlide,
   id: "rgb-model",
@@ -68,6 +76,7 @@ const RGB_LIMITS_PRESENTATION_SLIDE = {
 export const PRESENTATION_SLIDES = [
   INTRO_PRESENTATION_SLIDE,
   AGENDA_PRESENTATION_SLIDE,
+  RGB_INTRO_PRESENTATION_SLIDE,
   RGB_MODEL_PRESENTATION_SLIDE,
   RGB_STRENGTHS_PRESENTATION_SLIDE,
   RGB_LIMITS_PRESENTATION_SLIDE,

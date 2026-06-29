@@ -67,6 +67,23 @@ export function AgendaPresentationSlide() {
   )
 }
 
+export function RgbIntroPresentationSlide() {
+  return (
+    <section
+      className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
+      aria-label="RGB: 기계가 좋아하는 색 모델"
+    >
+      <PresentationSolidModelVisual modelId="rgb" variant="section" />
+      <div className="absolute inset-x-[8%] top-[72%] grid justify-items-center gap-[2cqh] text-center">
+        <h1 className="max-w-[34ch] text-[clamp(1.65rem,4.8cqw,3.25rem)] leading-[1.18] font-bold tracking-normal text-balance">
+          <span className="block">RGB</span>
+          <span className="block">기계가 좋아하는 색 모델</span>
+        </h1>
+      </div>
+    </section>
+  )
+}
+
 type AgendaPartProps = {
   readonly index: string
   readonly title: string
