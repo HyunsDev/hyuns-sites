@@ -4,9 +4,11 @@ import {
   CssColorNotationSlide,
   IntroPresentationSlide,
 } from "@/presentation/PresentationSlides"
+import { RgbMachineFriendlySlide } from "@/presentation/PresentationRgbModelSlide"
 
 export const PRESENTATION_SLIDE_IDS = [
   "intro",
+  "rgb-machine-friendly",
   "css-color-notations",
 ] as const
 
@@ -39,8 +41,15 @@ const CSS_COLOR_NOTATION_PRESENTATION_SLIDE = {
   title: "CSS의 다양한 색 표기법",
 } satisfies PresentationSlide
 
+const RGB_MACHINE_FRIENDLY_PRESENTATION_SLIDE = {
+  component: RgbMachineFriendlySlide,
+  id: "rgb-machine-friendly",
+  title: "RGB: 기계가 좋아하는 색 모델",
+} satisfies PresentationSlide
+
 export const PRESENTATION_SLIDES = [
   INTRO_PRESENTATION_SLIDE,
+  RGB_MACHINE_FRIENDLY_PRESENTATION_SLIDE,
   CSS_COLOR_NOTATION_PRESENTATION_SLIDE,
 ] satisfies readonly PresentationSlide[]
 
