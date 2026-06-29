@@ -6,6 +6,16 @@ import {
   RgbIntroPresentationSlide,
 } from "@/presentation/PresentationSlides"
 import {
+  AxisPalettesSlide,
+  HslHsvIntroPresentationSlide,
+  HslLightnessTrapSlide,
+  HslModelSlide,
+  HslVsHsvSlide,
+  HsvModelSlide,
+  HsvPickerSlide,
+  RgbDerivedLimitsSlide,
+} from "@/presentation/PresentationHslHsvSlides"
+import {
   RgbLimitsSlide,
   RgbModelSlide,
   RgbStrengthsSlide,
@@ -18,6 +28,14 @@ export const PRESENTATION_SLIDE_IDS = [
   "rgb-model",
   "rgb-strengths",
   "rgb-limits",
+  "hsl-hsv-intro",
+  "hsl-model",
+  "hsv-model",
+  "hsv-picker",
+  "hsl-vs-hsv",
+  "axis-palettes",
+  "hsl-lightness-trap",
+  "rgb-derived-limits",
 ] as const
 
 export type PresentationSlideId = (typeof PRESENTATION_SLIDE_IDS)[number]
@@ -73,6 +91,54 @@ const RGB_LIMITS_PRESENTATION_SLIDE = {
   title: "RGB의 한계",
 } satisfies PresentationSlide
 
+const HSL_HSV_INTRO_PRESENTATION_SLIDE = {
+  component: HslHsvIntroPresentationSlide,
+  id: "hsl-hsv-intro",
+  title: "HSL과 HSV",
+} satisfies PresentationSlide
+
+const HSL_MODEL_PRESENTATION_SLIDE = {
+  component: HslModelSlide,
+  id: "hsl-model",
+  title: "HSL",
+} satisfies PresentationSlide
+
+const HSV_MODEL_PRESENTATION_SLIDE = {
+  component: HsvModelSlide,
+  id: "hsv-model",
+  title: "HSV",
+} satisfies PresentationSlide
+
+const HSV_PICKER_PRESENTATION_SLIDE = {
+  component: HsvPickerSlide,
+  id: "hsv-picker",
+  title: "HSV Color Picker",
+} satisfies PresentationSlide
+
+const HSL_VS_HSV_PRESENTATION_SLIDE = {
+  component: HslVsHsvSlide,
+  id: "hsl-vs-hsv",
+  title: "HSL vs HSV",
+} satisfies PresentationSlide
+
+const AXIS_PALETTES_PRESENTATION_SLIDE = {
+  component: AxisPalettesSlide,
+  id: "axis-palettes",
+  title: "왜 편리한가",
+} satisfies PresentationSlide
+
+const HSL_LIGHTNESS_TRAP_PRESENTATION_SLIDE = {
+  component: HslLightnessTrapSlide,
+  id: "hsl-lightness-trap",
+  title: "HSL의 함정",
+} satisfies PresentationSlide
+
+const RGB_DERIVED_LIMITS_PRESENTATION_SLIDE = {
+  component: RgbDerivedLimitsSlide,
+  id: "rgb-derived-limits",
+  title: "RGB 기반 색 모델의 한계",
+} satisfies PresentationSlide
+
 export const PRESENTATION_SLIDES = [
   INTRO_PRESENTATION_SLIDE,
   AGENDA_PRESENTATION_SLIDE,
@@ -80,6 +146,14 @@ export const PRESENTATION_SLIDES = [
   RGB_MODEL_PRESENTATION_SLIDE,
   RGB_STRENGTHS_PRESENTATION_SLIDE,
   RGB_LIMITS_PRESENTATION_SLIDE,
+  HSL_HSV_INTRO_PRESENTATION_SLIDE,
+  HSL_MODEL_PRESENTATION_SLIDE,
+  HSV_MODEL_PRESENTATION_SLIDE,
+  HSV_PICKER_PRESENTATION_SLIDE,
+  HSL_VS_HSV_PRESENTATION_SLIDE,
+  AXIS_PALETTES_PRESENTATION_SLIDE,
+  HSL_LIGHTNESS_TRAP_PRESENTATION_SLIDE,
+  RGB_DERIVED_LIMITS_PRESENTATION_SLIDE,
 ] satisfies readonly PresentationSlide[]
 
 export function isPresentationSlideId(

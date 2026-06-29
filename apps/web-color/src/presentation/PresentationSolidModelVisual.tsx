@@ -9,13 +9,16 @@ import { COLOR_SPACE_MODEL_BY_ID } from "@/color-models/color-space-models"
 import type { ColorSpaceModelId } from "@/color-models/color-space-models"
 import { buildSolidColorSpaceMesh } from "@/color-models/color-space-solid-mesh"
 import { SolidColorSpaceModelCanvas } from "@/color-models/SolidColorSpaceModelCanvas"
+import { cn } from "@hyunsdev/ui/lib/utils"
 
 type PresentationSolidModelVisualProps = {
+  readonly className?: string
   readonly modelId?: ColorSpaceModelId
   readonly variant?: "hero" | "section"
 }
 
 export function PresentationSolidModelVisual({
+  className,
   modelId = "oklch",
   variant = "hero",
 }: PresentationSolidModelVisualProps) {
@@ -39,11 +42,12 @@ export function PresentationSolidModelVisual({
 
   return (
     <div
-      className={
+      className={cn(
         variant === "section"
           ? "pointer-events-auto absolute top-[7%] left-1/2 h-[58%] w-[50%] min-w-56 -translate-x-1/2"
-          : "pointer-events-auto absolute top-[-4%] left-1/2 h-[88%] w-[64%] min-w-64 -translate-x-1/2 mask-b-from-78% mask-b-to-92% dark:mask-none"
-      }
+          : "pointer-events-auto absolute top-[-4%] left-1/2 h-[88%] w-[64%] min-w-64 -translate-x-1/2 mask-b-from-78% mask-b-to-92% dark:mask-none",
+        className
+      )}
     >
       <SolidColorSpaceModelCanvas
         autoRotate
