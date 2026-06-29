@@ -1,12 +1,9 @@
-import "@testing-library/jest-dom/vitest";
-import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Button } from ".";
+import * as siteUi from ".";
 
 describe("@workspace/site-ui", () => {
-  it("re-exports the base Button", () => {
-    render(<Button>Open site</Button>);
-
-    expect(screen.getByRole("button", { name: "Open site" })).toBeVisible();
+  it("does not export upstream button primitives", () => {
+    expect(siteUi).not.toHaveProperty("Button");
+    expect(siteUi).not.toHaveProperty("buttonVariants");
   });
 });

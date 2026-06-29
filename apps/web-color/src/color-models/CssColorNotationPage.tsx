@@ -10,6 +10,7 @@ import { formatHex } from "culori"
 
 import { Badge } from "@hyunsdev/ui/components/badge"
 import { Button } from "@hyunsdev/ui/components/button"
+import { ColorNotationInput } from "@/color-models/ColorNotationInput"
 import { getColorGamutChecks } from "@/color-models/color-gamut-analysis"
 import {
   createCssNotationRows,
@@ -17,7 +18,6 @@ import {
   parseCssColorInput,
 } from "@/color-models/css-color-notation-models"
 import type { CssNotationRow } from "@/color-models/css-color-notation-models"
-import { cn } from "@hyunsdev/ui/lib/utils"
 import { PlaygroundTools } from "@/playground/PlaygroundIndexPage"
 import { PlaygroundStage } from "@/playground/PlaygroundRoute"
 
@@ -34,8 +34,6 @@ export function CssColorNotationPage() {
   )
   const gamutChecks =
     parsed.status === "parsed" ? getColorGamutChecks(parsed.color) : []
-  const pickerValue =
-    parsed.status === "parsed" ? formatHex(parsed.color) : "#000000"
 
   function handleCopy(row: CssNotationRow) {
     setCopiedId(row.id)
@@ -76,28 +74,12 @@ export function CssColorNotationPage() {
       }
       topEnd={
         <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
-          <label className="grid gap-1.5 text-xs">
-            <span className="font-medium">CSS color input</span>
-            <span className="grid grid-cols-[2.75rem_1fr] gap-2">
-              <input
-                type="color"
-                value={pickerValue}
-                className="h-10 w-11 rounded-md border border-border bg-transparent p-1"
-                aria-label="CSS color picker"
-                onChange={(event) => setInputValue(event.currentTarget.value)}
-              />
-              <input
-                value={inputValue}
-                className={cn(
-                  "h-10 min-w-0 rounded-md border border-field-border bg-background-primary px-3 font-mono text-xs ring-offset-background-primary transition outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2",
-                  parsed.status === "invalid" &&
-                    "border-border-error text-text-error"
-                )}
-                aria-label="CSS color text input"
-                onChange={(event) => setInputValue(event.currentTarget.value)}
-              />
-            </span>
-          </label>
+          <ColorNotationInput
+            label="CSS color input"
+            value={inputValue}
+            inputAriaLabel="CSS color text input"
+            onChange={setInputValue}
+          />
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
             {CSS_COLOR_PRESETS.map((preset) => (
               <PresetButton

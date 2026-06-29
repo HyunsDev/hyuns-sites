@@ -1,0 +1,15 @@
+{
+  "extends": "@workspace/typescript-config/react-library",
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+    "paths": {
+      "@workspace/playground-ui": ["./src/index.ts"],
+      "@workspace/playground-ui/*": ["./src/*"],
+      "@/*": ["src/*"]
+    }
+  }
+}

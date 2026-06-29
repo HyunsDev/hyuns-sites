@@ -1,5 +1,5 @@
 {
-  "name": "web-color",
+  "name": "site-ui-playground",
   "private": true,
   "version": "0.0.0",
   "license": "AGPL-3.0-only",
@@ -10,25 +10,21 @@
     "dev": "vite --host 0.0.0.0",
     "lint": "eslint src",
     "preview": "vite preview",
-    "test": "node --experimental-strip-types --test \"src/**/*.test.ts\"",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hyunsdev/ui": "^0.2.0",
     "@tanstack/react-router": "^1.170.16",
     "@workspace/playground-ui": "workspace:*",
-    "culori": "^4.0.2",
+    "@workspace/site-ui": "workspace:*",
     "lucide-react": "^1.8.0",
-    "motion": "^12.38.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "three": "^0.184.0"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/router-plugin": "^1.168.18",
-    "@types/culori": "^4.0.1",
-    "@types/three": "^0.184.1",
     "@vitejs/plugin-react": "^4.6.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/test-config": "workspace:*",

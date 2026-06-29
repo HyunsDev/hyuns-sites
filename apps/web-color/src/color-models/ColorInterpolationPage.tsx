@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react"
 import { BlendIcon, MoveRightIcon, RouteIcon } from "lucide-react"
-import { formatHex } from "culori"
 
 import { Badge } from "@hyunsdev/ui/components/badge"
 import { Button } from "@hyunsdev/ui/components/button"
 import { Slider } from "@hyunsdev/ui/components/slider"
+import { ColorNotationInput } from "@/color-models/ColorNotationInput"
 import { ColorInterpolationPathView } from "@/color-models/ColorInterpolationPathView"
 import { ColorInterpolationRowView } from "@/color-models/ColorInterpolationRowView"
 import {
@@ -13,7 +13,6 @@ import {
   parseInterpolationColor,
 } from "@/color-models/color-interpolation-models"
 import type { HueStrategyId } from "@/color-models/color-interpolation-models"
-import { cn } from "@hyunsdev/ui/lib/utils"
 import { PlaygroundTools } from "@/playground/PlaygroundIndexPage"
 import { PlaygroundStage } from "@/playground/PlaygroundRoute"
 
@@ -61,13 +60,19 @@ export function ColorInterpolationPage() {
       topEnd={
         <div className="grid w-full max-w-[min(100%,46rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
           <div className="grid gap-2 sm:grid-cols-[1fr_auto_1fr]">
-            <ColorInput
+            <ColorNotationInput
               label="Start"
               value={startInput}
+              inputAriaLabel="Start CSS color"
               onChange={setStartInput}
             />
             <MoveRightIcon className="mx-auto hidden size-5 self-end text-text-muted sm:block" />
-            <ColorInput label="End" value={endInput} onChange={setEndInput} />
+            <ColorNotationInput
+              label="End"
+              value={endInput}
+              inputAriaLabel="End CSS color"
+              onChange={setEndInput}
+            />
           </div>
           <div className="grid gap-2">
             <div className="flex items-center justify-between gap-3 text-xs">
@@ -138,41 +143,5 @@ export function ColorInterpolationPage() {
         </div>
       </div>
     </PlaygroundStage>
-  )
-}
-
-type ColorInputProps = {
-  readonly label: string
-  readonly onChange: (value: string) => void
-  readonly value: string
-}
-
-function ColorInput({ label, onChange, value }: ColorInputProps) {
-  const parsedColor = parseInterpolationColor(value)
-  const pickerValue = parsedColor ? formatHex(parsedColor) : "#000000"
-
-  return (
-    <label className="grid gap-1.5 text-xs">
-      <span className="font-medium">{label}</span>
-      <span className="grid grid-cols-[2.75rem_1fr] gap-2">
-        <input
-          type="color"
-          value={pickerValue}
-          className="h-10 w-11 rounded-md border border-border bg-transparent p-1"
-          aria-label={`${label} color picker`}
-          onChange={(event) => onChange(event.currentTarget.value)}
-        />
-        <input
-          type="text"
-          value={value}
-          className={cn(
-            "h-10 min-w-0 rounded-md border border-field-border bg-background-primary px-3 font-mono text-xs ring-offset-background-primary transition outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2",
-            !parsedColor && "border-border-error text-text-error"
-          )}
-          aria-label={`${label} CSS color`}
-          onChange={(event) => onChange(event.currentTarget.value)}
-        />
-      </span>
-    </label>
   )
 }
