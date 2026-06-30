@@ -6,6 +6,7 @@ import { inGamut, parse } from "culori"
 import {
   COLOR_MODEL_DECISION_ROWS,
   createGradientComparisonRows,
+  createHslOklchPaletteComparisonGroups,
   createHslOklchPaletteComparisonRows,
   createOklchLightnessScale,
   createOklchPaletteScale,
@@ -26,6 +27,32 @@ test("createHslOklchPaletteComparisonRows compares HSL and OKLCH rows", () => {
   assert.equal(rows[0]?.swatches.length, 10)
   assert.equal(rows[1]?.swatches.at(-1)?.label, "900")
   assertEverySwatchSrgb(rows.flatMap((row) => row.swatches))
+})
+
+test("createHslOklchPaletteComparisonGroups compares three color families", () => {
+  const groups = createHslOklchPaletteComparisonGroups()
+
+  assert.deepEqual(
+    groups.map((group) => group.id),
+    ["violet", "amber", "green"]
+  )
+
+  for (const group of groups) {
+    assert.deepEqual(
+      group.rows.map((row) => row.id),
+      ["hsl", "oklch"]
+    )
+    assert.equal(group.rows[0]?.swatches.length, 10)
+    assert.equal(group.rows[1]?.swatches.length, 10)
+    assert.ok(group.rows[0]?.swatches.every((swatch) => swatch.css.startsWith("hsl(")))
+    assert.ok(
+      group.rows[1]?.swatches.every((swatch) => swatch.css.startsWith("oklch("))
+    )
+  }
+
+  assertEverySwatchSrgb(groups.flatMap((group) =>
+    group.rows.flatMap((row) => row.swatches)
+  ))
 })
 
 test("createOklchLightnessScale returns token-like lightness stops", () => {

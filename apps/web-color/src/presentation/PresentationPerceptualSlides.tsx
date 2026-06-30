@@ -7,13 +7,13 @@ import {
 } from "@/presentation/PresentationSlideLayout"
 import { CieRgbGamutCanvas } from "@/color-models/CieRgbGamutCanvas"
 import type { CieXyzGamutId } from "@/color-models/cie-xyz-gamut-data"
+import { LabToOklabComparison } from "@/presentation/PresentationLabToOklabComparison"
 import { LabGamutPlaneCanvas } from "@/presentation/PresentationLabGamutPlaneCanvas"
 import {
   ColorModelPurposeMap,
   GamutCautionDiagram,
-  LabToOklabComparison,
 } from "@/presentation/PresentationPerceptualVisuals"
-import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelViewer"
+import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelSlide"
 
 const MACADAM_ELLIPSE_SOURCE_URL =
   "https://fujiwaratko.sakura.ne.jp/infosci/lab_e.html"
@@ -39,24 +39,17 @@ export function PerceptualModelsSlide() {
       ariaLabel="지각 기반 색 모델의 대두"
       title="지각 기반 색 모델"
     >
-      <SlideTwoColumn variant="visualWide">
-        <SlideKeywords>
-          <SlideKeyword>같은 색으로 느끼는 범위</SlideKeyword>
-          <SlideKeyword>xy에서는 위치마다 크기가 다르다</SlideKeyword>
-          <SlideKeyword>Lab은 그 차이를 줄이려는 공간이다</SlideKeyword>
-        </SlideKeywords>
-        <SlideVisualStage className="grid min-h-0 content-center">
-          <MacAdamEllipseComparison />
-        </SlideVisualStage>
-      </SlideTwoColumn>
+      <SlideVisualStage className="grid min-h-0 content-center">
+        <MacAdamEllipseComparison />
+      </SlideVisualStage>
     </PresentationSlideShell>
   )
 }
 
 function MacAdamEllipseComparison() {
   return (
-    <div className="relative grid min-h-0 justify-items-center gap-[1.5cqh] pb-[2.2cqh]">
-      <div className="grid w-full max-w-[48cqw] grid-cols-2 place-items-center gap-[2cqw]">
+    <div className="relative grid w-full min-h-0 justify-items-center gap-[1.6cqh] pb-[3cqh]">
+      <div className="grid w-full max-w-[86cqw] grid-cols-2 place-items-center gap-[2.8cqw]">
         <MacAdamFigure
           alt="MacAdam ellipses on the xy chromaticity diagram"
           caption="xy chromaticity"
@@ -68,7 +61,7 @@ function MacAdamEllipseComparison() {
           src={MACADAM_LAB_IMAGE_URL}
         />
       </div>
-      <p className="max-w-[48cqw] text-center text-[clamp(0.68rem,1.02cqw,0.86rem)] leading-snug font-medium text-text-muted text-balance">
+      <p className="max-w-[56cqw] text-center text-[clamp(0.76rem,1.12cqw,0.98rem)] leading-snug font-medium text-text-muted text-balance">
         MacAdam ellipse는 사람이 거의 같은 색으로 느끼는 범위다. 타원 크기와 방향의 차이가
         줄어든다는 것은 좌표상의 거리와 사람이 느끼는 색 차이가 더 비슷해진다는 뜻이다.
       </p>
@@ -94,13 +87,19 @@ function MacAdamFigure({
   readonly src: string
 }) {
   return (
-    <figure className="grid min-w-0 justify-items-center gap-[0.7cqh]">
-      <div className="grid aspect-[29/32] w-full max-w-[min(19rem,23cqw)] place-items-center overflow-hidden rounded-md border border-border bg-background-primary/84 p-[0.55cqw]">
+    <figure className="grid w-full min-w-0 justify-items-center gap-[0.75cqh]">
+      <div className="grid aspect-square w-full max-w-[min(25rem,40cqw)] place-items-center overflow-hidden rounded-md border border-border bg-background-primary/84 p-[0.65cqw]">
         <img
           alt={alt}
-          className="block size-full object-contain"
+          className="block aspect-square h-full w-full object-contain"
           draggable={false}
           src={src}
+          style={{
+            aspectRatio: "1 / 1",
+            height: "100%",
+            objectFit: "contain",
+            width: "100%",
+          }}
         />
       </div>
       <figcaption className="font-mono text-[clamp(0.56rem,0.86cqw,0.72rem)] leading-none font-bold text-text-muted">
@@ -117,6 +116,7 @@ export function LabModelSlide() {
       baseModelId="lab"
       showCubeSwitch={false}
       showGamutSelect
+      targetCssColor="lab(64 55 42)"
       title="Lab"
     />
   )
@@ -128,6 +128,7 @@ export function LchModelSlide() {
       ariaLabel="LCH"
       baseModelId="lch"
       showGamutSelect
+      targetCssColor="lch(64% none 38)"
       title="LCH"
     />
   )
@@ -222,16 +223,11 @@ export function PerceptualGamutShapeSlide() {
 export function LabToOklabSlide() {
   return (
     <PresentationSlideShell ariaLabel="Lab에서 Oklab으로" title="Lab에서 Oklab으로">
-      <SlideTwoColumn variant="visualWide">
-        <SlideKeywords>
-          <SlideKeyword>같은 두 색도 경로가 달라진다</SlideKeyword>
-          <SlideKeyword>Lab: muted middle</SlideKeyword>
-          <SlideKeyword>OKLCH: clearer chroma path</SlideKeyword>
-        </SlideKeywords>
-        <SlideVisualStage className="grid content-center">
+      <SlideVisualStage className="grid min-h-0 content-center">
+        <div className="grid min-h-0 content-center">
           <LabToOklabComparison />
-        </SlideVisualStage>
-      </SlideTwoColumn>
+        </div>
+      </SlideVisualStage>
     </PresentationSlideShell>
   )
 }
@@ -242,6 +238,7 @@ export function OklchModelSlide() {
       ariaLabel="OKLCH"
       baseModelId="oklch"
       showGamutSelect
+      targetCssColor="oklch(70% none none)"
       title="OKLCH"
     />
   )

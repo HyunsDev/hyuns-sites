@@ -32,7 +32,9 @@ const MODEL_ICONS = {
   rgb: PaletteIcon,
   hsl: CircleDotIcon,
   hsv: ConeIcon,
+  lab: CrosshairIcon,
   lch: CylinderIcon,
+  oklab: GaugeIcon,
   oklch: GaugeIcon,
 } satisfies Record<ColorCoordinateModelId, ElementType>
 
@@ -74,7 +76,7 @@ export function ColorCoordinatePlanesPage() {
       }
       topEnd={
         <div className="grid w-full max-w-[min(100%,42rem)] gap-3 rounded-md border border-border bg-background-primary/90 p-3 shadow-sm backdrop-blur">
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-7">
             {COLOR_COORDINATE_MODELS.map((model) => {
               const ModelIcon = MODEL_ICONS[model.id]
               const isSelected = model.id === selectedModelId

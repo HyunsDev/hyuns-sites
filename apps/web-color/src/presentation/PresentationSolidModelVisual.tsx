@@ -5,8 +5,10 @@ import {
   resolveColorGamutRendering,
 } from "@/color-models/color-gamut"
 import type { ColorGamutCapabilities } from "@/color-models/color-gamut"
+import { createColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
 import { COLOR_SPACE_MODEL_BY_ID } from "@/color-models/color-space-models"
 import type { ColorSpaceModelId } from "@/color-models/color-space-models"
+import { createSolidColorSpaceHighlight } from "@/color-models/color-space-solid-highlight"
 import { buildSolidColorSpaceMesh } from "@/color-models/color-space-solid-mesh"
 import { SolidColorSpaceModelCanvas } from "@/color-models/SolidColorSpaceModelCanvas"
 import { cn } from "@hyunsdev/ui/lib/utils"
@@ -14,12 +16,14 @@ import { cn } from "@hyunsdev/ui/lib/utils"
 type PresentationSolidModelVisualProps = {
   readonly className?: string
   readonly modelId?: ColorSpaceModelId
+  readonly targetCssColor?: string
   readonly variant?: "hero" | "section"
 }
 
 export function PresentationSolidModelVisual({
   className,
   modelId = "oklch",
+  targetCssColor,
   variant = "hero",
 }: PresentationSolidModelVisualProps) {
   const [gamutCapabilities] = useState<ColorGamutCapabilities>(() =>
@@ -30,6 +34,14 @@ export function PresentationSolidModelVisual({
     () => resolveColorGamutRendering("srgb", gamutCapabilities),
     [gamutCapabilities]
   )
+  const sampleRenderOptions = useMemo(
+    () =>
+      createColorSampleRenderOptions(
+        gamutRendering.mode.id,
+        gamutRendering.actualOutput.id
+      ),
+    [gamutRendering.actualOutput.id, gamutRendering.mode.id]
+  )
   const mesh = useMemo(
     () =>
       buildSolidColorSpaceMesh(
@@ -39,6 +51,19 @@ export function PresentationSolidModelVisual({
       ),
     [gamutRendering.actualOutput.id, gamutRendering.mode.id, model.id]
   )
+  const highlight = useMemo(() => {
+    if (!targetCssColor) {
+      return null
+    }
+
+    const result = createSolidColorSpaceHighlight({
+      modelId: model.id,
+      options: sampleRenderOptions,
+      value: targetCssColor,
+    })
+
+    return result.status === "ready" ? result.highlight : null
+  }, [model.id, sampleRenderOptions, targetCssColor])
 
   return (
     <div
@@ -52,6 +77,7 @@ export function PresentationSolidModelVisual({
       <SolidColorSpaceModelCanvas
         autoRotate
         gamutRendering={gamutRendering}
+        highlight={highlight}
         mesh={mesh}
         model={model}
         showGuides={false}

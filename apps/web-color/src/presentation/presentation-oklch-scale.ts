@@ -1,7 +1,10 @@
 import { formatHex, toGamut } from "culori"
 import type { Color, Oklch } from "culori"
 
-import { formatCssColor } from "../color-models/color-css-format.ts"
+import {
+  formatCssColor,
+  type CssColorNotation,
+} from "../color-models/color-css-format.ts"
 import { isColorInGamut } from "../color-models/color-gamut-analysis.ts"
 import { PALETTE_STOPS, type PaletteSwatch } from "./presentation-oklch-practice-data.ts"
 
@@ -29,6 +32,7 @@ export function createOklchScale(input: {
 
 export function createPaletteSwatch(input: {
   readonly color: Color
+  readonly cssNotation?: CssColorNotation
   readonly label: string
   readonly lightness: number
 }): PaletteSwatch {
@@ -37,7 +41,7 @@ export function createPaletteSwatch(input: {
 
   return {
     color: formatHex(displayColor),
-    css: formatCssColor(input.color, "oklch"),
+    css: formatCssColor(input.color, input.cssNotation ?? "oklch"),
     inSrgb,
     label: input.label,
     lightness: input.lightness,

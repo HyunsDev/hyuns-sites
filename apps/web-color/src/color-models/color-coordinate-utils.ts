@@ -18,7 +18,9 @@ export type {
   ColorCoordinateUnit,
   HslCoordinate,
   HsvCoordinate,
+  LabCoordinate,
   LchCoordinate,
+  OklabCoordinate,
   OklchCoordinate,
   RgbCoordinate,
 } from "./color-coordinate-types.ts"
@@ -37,8 +39,12 @@ export function createDefaultColorCoordinate(
       return { modelId, h: 24, s: 90, l: 58 }
     case "hsv":
       return { modelId, h: 24, s: 90, v: 100 }
+    case "lab":
+      return { modelId, l: 62, a: 42, b: 58 }
     case "lch":
       return { modelId, l: 62, c: 74, h: 32 }
+    case "oklab":
+      return { modelId, l: 70, a: 0.12, b: 0.14 }
     case "oklch":
       return { modelId, l: 70, c: 0.18, h: 32 }
     default:
@@ -69,12 +75,26 @@ export function toCuloriColor(coordinate: ColorCoordinate): Color {
         s: coordinate.s / 100,
         v: coordinate.v / 100,
       }
+    case "lab":
+      return {
+        mode: "lab",
+        l: coordinate.l,
+        a: coordinate.a,
+        b: coordinate.b,
+      }
     case "lch":
       return {
         mode: "lch",
         l: coordinate.l,
         c: coordinate.c,
         h: coordinate.h,
+      }
+    case "oklab":
+      return {
+        mode: "oklab",
+        l: coordinate.l / 100,
+        a: coordinate.a,
+        b: coordinate.b,
       }
     case "oklch":
       return {

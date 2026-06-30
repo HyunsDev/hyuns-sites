@@ -16,6 +16,7 @@ import {
   HsvPickerSlide,
   RgbDerivedLimitsSlide,
 } from "@/presentation/PresentationHslHsvSlides"
+import { HslOklchSolidComparisonSlide } from "@/presentation/PresentationHslOklchSolidComparisonSlide"
 import {
   GamutConceptSlide,
   LabModelSlide,
@@ -69,6 +70,7 @@ export const PRESENTATION_SLIDE_IDS = [
   "gamut-concept",
   "rgb-gamut-cube",
   "perceptual-gamut-shape",
+  "hsl-oklch-solid-comparison",
   "part-1-summary",
   "part-2-intro",
   "why-oklch",
@@ -157,6 +159,11 @@ export const PRESENTATION_SLIDES = [
     component: PerceptualGamutShapeSlide,
     id: "perceptual-gamut-shape",
     title: "Lab 단면에서는 경계가 휘어진다",
+  },
+  {
+    component: HslOklchSolidComparisonSlide,
+    id: "hsl-oklch-solid-comparison",
+    title: "HSL vs OKLCH",
   },
   { component: Part1SummarySlide, id: "part-1-summary", title: "1부 정리" },
   { component: Part2IntroSlide, id: "part-2-intro", title: "2부" },

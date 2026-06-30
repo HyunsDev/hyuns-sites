@@ -3,6 +3,7 @@ import test from "node:test"
 
 import {
   createGamutChromaRows,
+  createLabToOklabComparisonPalettes,
   createLabToOklabComparisonRows,
   PART_1_PURPOSE_STEPS,
   PERCEPTUAL_MODEL_STEPS,
@@ -58,7 +59,31 @@ test("createLabToOklabComparisonRows returns equal-length comparison rows", () =
   )
 
   for (const row of rows) {
-    assert.equal(row.swatches.length, 7)
+    assert.equal(row.swatches.length, 11)
+    assert.ok(row.startCss)
+    assert.ok(row.endCss)
+  }
+})
+
+test("createLabToOklabComparisonPalettes returns three model comparison palettes", () => {
+  const palettes = createLabToOklabComparisonPalettes()
+
+  assert.deepEqual(
+    palettes.map((palette) => palette.id),
+    ["violet-amber", "cyan-rose", "mint-sky"]
+  )
+
+  for (const palette of palettes) {
+    assert.equal(palette.rows.length, 2)
+    assert.deepEqual(
+      palette.rows.map((row) => row.label),
+      ["Lab", "OKLCH"]
+    )
+
+    for (const row of palette.rows) {
+      assert.equal(row.swatches.length, 11)
+      assert.ok(row.swatches.every((swatch) => swatch.inSrgb))
+    }
   }
 })
 
@@ -74,10 +99,22 @@ test("createLabToOklabComparisonRows marks the middle path comparison", () => {
     throw new Error("Expected Lab and OKLCH comparison rows")
   }
 
-  assert.equal(labRow.note, "muted midpoint")
-  assert.equal(oklchRow.note, "clearer chroma path")
-  assert.equal(labRow.swatches[3]?.emphasisLabel, "muted middle")
-  assert.equal(oklchRow.swatches[3]?.emphasisLabel, "cleaner middle")
+  assert.equal(labRow.note, "탁한 중간")
+  assert.equal(oklchRow.note, "선명한 중간")
+  assert.equal(labRow.swatches[5]?.emphasisLabel, "탁한 중간")
+  assert.equal(oklchRow.swatches[5]?.emphasisLabel, "선명한 중간")
+  assert.match(labRow.startCss, /^lab\(/)
+  assert.match(labRow.endCss, /^lab\(/)
+  assert.match(oklchRow.startCss, /^oklch\(/)
+  assert.match(oklchRow.endCss, /^oklch\(/)
+  assert.equal(labRow.swatches[0]?.label, "0%")
+  assert.equal(labRow.swatches[10]?.label, "100%")
+  assert.ok(labRow.swatches.every((swatch) => swatch.css.startsWith("lab(")))
+  assert.ok(
+    oklchRow.swatches.every((swatch) => swatch.css.startsWith("oklch("))
+  )
+  assert.ok(labRow.swatches.every((swatch) => swatch.metrics.length > 0))
+  assert.ok(oklchRow.swatches.every((swatch) => swatch.metrics.length > 0))
   assert.ok(labRow.swatches.every((swatch) => swatch.inSrgb))
   assert.ok(oklchRow.swatches.every((swatch) => swatch.inSrgb))
 })

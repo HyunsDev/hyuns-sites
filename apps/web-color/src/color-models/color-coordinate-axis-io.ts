@@ -14,6 +14,9 @@ export function readColorCoordinateAxis(
       return readHslAxis(coordinate, axisId)
     case "hsv":
       return readHsvAxis(coordinate, axisId)
+    case "lab":
+    case "oklab":
+      return readCartesianLabAxis(coordinate, axisId)
     case "lch":
     case "oklch":
       return readCylindricalAxis(coordinate, axisId)
@@ -34,8 +37,12 @@ export function setColorCoordinateAxis(
       return setHslAxis(coordinate, axisId, value)
     case "hsv":
       return setHsvAxis(coordinate, axisId, value)
+    case "lab":
+      return setLabAxis(coordinate, axisId, value)
     case "lch":
       return setLchAxis(coordinate, axisId, value)
+    case "oklab":
+      return setOklabAxis(coordinate, axisId, value)
     case "oklch":
       return setOklchAxis(coordinate, axisId, value)
     default:
@@ -54,6 +61,7 @@ function readRgbAxis(
       return coordinate.g
     case "b":
       return coordinate.b
+    case "a":
     case "c":
     case "h":
     case "l":
@@ -76,6 +84,7 @@ function readHslAxis(
       return coordinate.s
     case "l":
       return coordinate.l
+    case "a":
     case "b":
     case "c":
     case "g":
@@ -98,11 +107,35 @@ function readHsvAxis(
       return coordinate.s
     case "v":
       return coordinate.v
+    case "a":
     case "b":
     case "c":
     case "g":
     case "l":
     case "r":
+      return 0
+    default:
+      return assertNeverAxis(axisId)
+  }
+}
+
+function readCartesianLabAxis(
+  coordinate: Extract<ColorCoordinate, { readonly modelId: "lab" | "oklab" }>,
+  axisId: ColorCoordinateAxisId
+) {
+  switch (axisId) {
+    case "l":
+      return coordinate.l
+    case "a":
+      return coordinate.a
+    case "b":
+      return coordinate.b
+    case "c":
+    case "g":
+    case "h":
+    case "r":
+    case "s":
+    case "v":
       return 0
     default:
       return assertNeverAxis(axisId)
@@ -120,6 +153,7 @@ function readCylindricalAxis(
       return coordinate.c
     case "h":
       return coordinate.h
+    case "a":
     case "b":
     case "g":
     case "r":
@@ -182,6 +216,23 @@ function setHsvAxis(
   }
 }
 
+function setLabAxis(
+  coordinate: Extract<ColorCoordinate, { readonly modelId: "lab" }>,
+  axisId: ColorCoordinateAxisId,
+  value: number
+): ColorCoordinate {
+  switch (axisId) {
+    case "l":
+      return { ...coordinate, l: value }
+    case "a":
+      return { ...coordinate, a: value }
+    case "b":
+      return { ...coordinate, b: value }
+    default:
+      return coordinate
+  }
+}
+
 function setLchAxis(
   coordinate: Extract<ColorCoordinate, { readonly modelId: "lch" }>,
   axisId: ColorCoordinateAxisId,
@@ -194,6 +245,23 @@ function setLchAxis(
       return { ...coordinate, c: value }
     case "h":
       return { ...coordinate, h: value }
+    default:
+      return coordinate
+  }
+}
+
+function setOklabAxis(
+  coordinate: Extract<ColorCoordinate, { readonly modelId: "oklab" }>,
+  axisId: ColorCoordinateAxisId,
+  value: number
+): ColorCoordinate {
+  switch (axisId) {
+    case "l":
+      return { ...coordinate, l: value }
+    case "a":
+      return { ...coordinate, a: value }
+    case "b":
+      return { ...coordinate, b: value }
     default:
       return coordinate
   }

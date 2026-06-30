@@ -4,14 +4,10 @@ import { ColorSpaceSolidCubeSwitch } from "@/color-models/ColorSpaceSolidCubeSwi
 import { ColorSpaceSolidSliceControls } from "@/color-models/ColorSpaceSolidSliceControls"
 import { createColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
 import {
-  COLOR_GAMUT_MODE_BY_ID,
   detectColorGamutCapabilities,
   resolveColorGamutRendering,
 } from "@/color-models/color-gamut"
-import type {
-  ColorGamutCapabilities,
-  ColorGamutModeId,
-} from "@/color-models/color-gamut"
+import type { ColorGamutCapabilities } from "@/color-models/color-gamut"
 import {
   COLOR_SPACE_MODEL_BY_ID,
   type BaseColorSpaceModelId,
@@ -21,6 +17,7 @@ import {
   getSolidHueCubeModelId,
   resolveSolidHueCubeModelId,
 } from "@/color-models/color-space-solid-cube-models"
+import { createSolidColorSpaceHighlight } from "@/color-models/color-space-solid-highlight"
 import { buildSolidColorSpaceMesh } from "@/color-models/color-space-solid-mesh"
 import {
   buildSolidSliceMesh,
@@ -30,60 +27,38 @@ import {
 } from "@/color-models/color-space-solid-slice"
 import { SolidColorSpaceModelCanvas } from "@/color-models/SolidColorSpaceModelCanvas"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@hyunsdev/ui/components/select"
+  PresentationGamutSelect,
+  PresentationSolidModelTargetInput,
+  type PresentationGamutModeId,
+} from "@/presentation/PresentationSolidModelControls"
 import { Switch } from "@hyunsdev/ui/components/switch"
+import { cn } from "@hyunsdev/ui/lib/utils"
 
-type PresentationSolidModelBaseId = Extract<
+export type PresentationSolidModelBaseId = Extract<
   BaseColorSpaceModelId,
   "rgb" | "hsl" | "hsv" | "lab" | "lch" | "oklch"
 >
 
-type PresentationGamutModeId = Extract<ColorGamutModeId, "srgb" | "display-p3">
-
-type PresentationSolidModelViewerProps = {
+export type PresentationSolidModelViewerProps = {
   readonly baseModelId: PresentationSolidModelBaseId
   readonly showCubeSwitch?: boolean
   readonly showGamutSelect?: boolean
-}
-
-type PresentationSolidModelSlideProps = PresentationSolidModelViewerProps & {
-  readonly ariaLabel: string
-  readonly title: string
-}
-
-export function PresentationSolidModelSlide({
-  ariaLabel,
-  baseModelId,
-  showCubeSwitch,
-  showGamutSelect,
-  title,
-}: PresentationSolidModelSlideProps) {
-  return (
-    <section
-      className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
-      aria-label={ariaLabel}
-    >
-      <h1 className="pointer-events-none absolute top-[7.2cqh] left-[6.8cqw] z-10 max-w-[24ch] text-[clamp(1.35rem,3cqw,2.65rem)] leading-[1.12] font-bold tracking-normal text-balance max-md:top-[10%] max-md:left-[5cqw] max-md:max-w-[20ch] max-md:text-[0.82rem]">
-        {title}
-      </h1>
-      <PresentationSolidModelViewer
-        baseModelId={baseModelId}
-        showCubeSwitch={showCubeSwitch}
-        showGamutSelect={showGamutSelect}
-      />
-    </section>
-  )
+  readonly showSliceControls?: boolean
+  readonly solidModelClassName?: string
+  readonly showTargetControls?: boolean
+  readonly targetControlsPlacement?: "bottom" | "slice-panel"
+  readonly targetCssColor?: string
 }
 
 export function PresentationSolidModelViewer({
   baseModelId,
   showCubeSwitch = true,
   showGamutSelect = false,
+  showSliceControls = true,
+  solidModelClassName,
+  showTargetControls = showSliceControls,
+  targetControlsPlacement = "slice-panel",
+  targetCssColor,
 }: PresentationSolidModelViewerProps) {
   const [cubeEnabled, setCubeEnabled] = useState(false)
   const [gamutModeId, setGamutModeId] =
@@ -98,9 +73,21 @@ export function PresentationSolidModelViewer({
     createPresentationSliceState(modelId)
   )
   const [sliceEnabled, setSliceEnabled] = useState(false)
+  const [targetEnabled, setTargetEnabled] = useState(false)
+  const [targetInput, setTargetInput] = useState(() =>
+    createPresentationTargetInput(modelId, targetCssColor)
+  )
   const gamutRendering = useMemo(
     () => resolveColorGamutRendering(gamutModeId, gamutCapabilities),
     [gamutCapabilities, gamutModeId]
+  )
+  const sampleRenderOptions = useMemo(
+    () =>
+      createColorSampleRenderOptions(
+        gamutRendering.mode.id,
+        gamutRendering.actualOutput.id
+      ),
+    [gamutRendering.actualOutput.id, gamutRendering.mode.id]
   )
   const mesh = useMemo(
     () =>
@@ -119,30 +106,70 @@ export function PresentationSolidModelViewer({
     return buildSolidSliceMesh(
       model.id,
       slice,
-      createColorSampleRenderOptions(
-        gamutRendering.mode.id,
-        gamutRendering.actualOutput.id
-      )
+      sampleRenderOptions
     )
-  }, [
-    gamutRendering.actualOutput.id,
-    gamutRendering.mode.id,
-    model.id,
-    slice,
-    sliceEnabled,
-  ])
+  }, [model.id, sampleRenderOptions, slice, sliceEnabled])
+  const highlight = useMemo(() => {
+    if (!targetEnabled) {
+      return null
+    }
+
+    const result = createSolidColorSpaceHighlight({
+      modelId: model.id,
+      options: sampleRenderOptions,
+      value: targetInput,
+    })
+
+    return result.status === "ready" ? result.highlight : null
+  }, [model.id, sampleRenderOptions, targetEnabled, targetInput])
+  const targetResult = useMemo(
+    () =>
+      createSolidColorSpaceHighlight({
+        modelId: model.id,
+        options: sampleRenderOptions,
+        value: targetInput,
+      }),
+    [model.id, sampleRenderOptions, targetInput]
+  )
   const hasControls = showGamutSelect || (showCubeSwitch && cubeSupported)
+  const showTargetInSlicePanel =
+    showTargetControls && targetControlsPlacement === "slice-panel"
+  const showTargetInBottomPanel =
+    showTargetControls && targetControlsPlacement === "bottom"
 
   useEffect(() => {
     setSlice(createPresentationSliceState(modelId))
     setSliceEnabled(false)
+    setTargetEnabled(false)
   }, [modelId])
+
+  useEffect(() => {
+    setTargetInput(createPresentationTargetInput(modelId, targetCssColor))
+    setTargetEnabled(false)
+  }, [modelId, targetCssColor])
+
+  function changeSliceEnabled(enabled: boolean) {
+    setSliceEnabled(enabled)
+
+    if (enabled) {
+      setTargetEnabled(false)
+    }
+  }
+
+  function changeTargetEnabled(enabled: boolean) {
+    setTargetEnabled(enabled)
+
+    if (enabled) {
+      setSliceEnabled(false)
+    }
+  }
 
   return (
     <div className="relative size-full min-h-0">
       <SolidColorSpaceModelCanvas
         autoRotate
         gamutRendering={gamutRendering}
+        highlight={highlight}
         mesh={mesh}
         model={model}
         sliceMesh={sliceMesh}
@@ -150,16 +177,16 @@ export function PresentationSolidModelViewer({
         showStats={false}
         showWireframe
         surface="transparent"
-        className="size-full min-h-0 md:min-h-0"
+        className={cn("size-full min-h-0 md:min-h-0", solidModelClassName)}
       />
-      {slice ? (
+      {showSliceControls && slice ? (
         <div className="absolute bottom-[7.2cqh] left-[2cqw] z-20 grid w-[clamp(15.5rem,24cqw,19.5rem)] gap-2 rounded-md border border-border bg-background-primary/90 p-3 text-xs shadow-sm backdrop-blur max-md:bottom-[18%] max-md:left-[5cqw] max-md:w-[min(11rem,48cqw)] max-md:gap-1 max-md:p-1.5 max-md:text-[0.62rem]">
           <label className="grid grid-cols-[6.25rem_minmax(0,1fr)] items-center gap-2 max-md:grid-cols-[4rem_minmax(0,1fr)] max-md:gap-1">
             <span className="font-medium text-text-muted">Slice</span>
             <Switch
               size="sm"
               checked={sliceEnabled}
-              onCheckedChange={setSliceEnabled}
+              onCheckedChange={changeSliceEnabled}
               aria-label="Toggle solid model slice"
               className="justify-self-end"
             />
@@ -170,6 +197,29 @@ export function PresentationSolidModelViewer({
             slice={slice}
             sliceEnabled={sliceEnabled}
             onSliceChange={setSlice}
+          />
+          {showTargetInSlicePanel ? (
+            <PresentationSolidModelTargetInput
+              className="border-t border-border pt-2 max-md:pt-1"
+              enabled={targetEnabled}
+              modelId={model.id}
+              result={targetResult}
+              value={targetInput}
+              onChange={setTargetInput}
+              onEnabledChange={changeTargetEnabled}
+            />
+          ) : null}
+        </div>
+      ) : null}
+      {showTargetInBottomPanel ? (
+        <div className="absolute bottom-[1.2cqh] left-1/2 z-20 grid w-[min(22rem,82%)] -translate-x-1/2 p-2 text-xs max-md:w-[min(11rem,48cqw)] max-md:p-1.5 max-md:text-[0.58rem]">
+          <PresentationSolidModelTargetInput
+            enabled={targetEnabled}
+            modelId={model.id}
+            result={targetResult}
+            value={targetInput}
+            onChange={setTargetInput}
+            onEnabledChange={changeTargetEnabled}
           />
         </div>
       ) : null}
@@ -199,58 +249,9 @@ function createPresentationSliceState(
   return isSolidSliceModel(modelId) ? createDefaultSolidSliceState(modelId) : null
 }
 
-const PRESENTATION_GAMUT_MODE_IDS = [
-  "srgb",
-  "display-p3",
-] as const satisfies readonly PresentationGamutModeId[]
-
-function PresentationGamutSelect({
-  onChange,
-  value,
-}: {
-  readonly onChange: (value: PresentationGamutModeId) => void
-  readonly value: PresentationGamutModeId
-}) {
-  const selectedMode = COLOR_GAMUT_MODE_BY_ID[value]
-
-  return (
-    <label className="grid grid-cols-[6.25rem_minmax(0,1fr)] items-center gap-2">
-      <span className="font-medium text-text-muted">표시 색영역</span>
-      <Select
-        value={value}
-        onValueChange={(nextValue) => {
-          if (isPresentationGamutModeId(nextValue)) {
-            onChange(nextValue)
-          }
-        }}
-      >
-        <SelectTrigger
-          size="sm"
-          className="w-full justify-between bg-background-primary/75"
-          aria-label="표시 색영역 선택"
-        >
-          <SelectValue aria-label={selectedMode.label}>
-            {selectedMode.shortLabel}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent position="popper">
-          {PRESENTATION_GAMUT_MODE_IDS.map((modeId) => {
-            const mode = COLOR_GAMUT_MODE_BY_ID[modeId]
-
-            return (
-              <SelectItem key={mode.id} value={mode.id}>
-                {mode.shortLabel}
-              </SelectItem>
-            )
-          })}
-        </SelectContent>
-      </Select>
-    </label>
-  )
-}
-
-function isPresentationGamutModeId(
-  value: string
-): value is PresentationGamutModeId {
-  return PRESENTATION_GAMUT_MODE_IDS.some((modeId) => modeId === value)
+function createPresentationTargetInput(
+  modelId: ColorSpaceModelId,
+  targetCssColor: string | undefined
+) {
+  return targetCssColor ?? COLOR_SPACE_MODEL_BY_ID[modelId].notation
 }

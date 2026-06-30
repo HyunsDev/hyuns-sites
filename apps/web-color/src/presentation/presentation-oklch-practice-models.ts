@@ -7,9 +7,11 @@ import { createInterpolationRows } from "../color-models/color-interpolation-mod
 import {
   COLOR_MODEL_DECISION_ROWS,
   DEFAULT_OKLCH_COLOR,
+  HSL_OKLCH_PALETTE_FAMILIES,
   OKLCH_USE_CASES,
   PALETTE_STOPS,
   type GradientComparisonRow,
+  type PaletteComparisonGroup,
   type PaletteComparisonRow,
   type PaletteScaleResult,
   type PaletteSwatch,
@@ -26,6 +28,7 @@ const mapToSrgb = toGamut("rgb", "oklch")
 export { COLOR_MODEL_DECISION_ROWS, OKLCH_USE_CASES }
 export type {
   GradientComparisonRow,
+  PaletteComparisonGroup,
   PaletteComparisonRow,
   PaletteScaleResult,
   PaletteSwatch,
@@ -36,6 +39,20 @@ export type {
 }
 
 export function createHslOklchPaletteComparisonRows(): readonly PaletteComparisonRow[] {
+  return createHslOklchPaletteComparisonGroups()[0]?.rows ?? []
+}
+
+export function createHslOklchPaletteComparisonGroups(): readonly PaletteComparisonGroup[] {
+  return HSL_OKLCH_PALETTE_FAMILIES.map((family) => ({
+    id: family.id,
+    label: family.label,
+    rows: createHslOklchPaletteComparisonRowsForFamily(family),
+  }))
+}
+
+function createHslOklchPaletteComparisonRowsForFamily(
+  family: (typeof HSL_OKLCH_PALETTE_FAMILIES)[number]
+): readonly PaletteComparisonRow[] {
   return [
     {
       id: "hsl",
@@ -44,10 +61,11 @@ export function createHslOklchPaletteComparisonRows(): readonly PaletteCompariso
         createPaletteSwatch({
           color: {
             mode: "hsl",
-            h: 260,
-            s: 0.72,
+            h: family.hslHue,
+            s: family.hslSaturation,
             l: stop.lightness / 100,
           },
+          cssNotation: "hsl",
           label: stop.label,
           lightness: stop.lightness,
         })
@@ -56,7 +74,10 @@ export function createHslOklchPaletteComparisonRows(): readonly PaletteCompariso
     {
       id: "oklch",
       label: "OKLCH",
-      swatches: createOklchLightnessScale(),
+      swatches: createOklchScale({
+        chroma: family.oklchChroma,
+        hue: family.oklchHue,
+      }),
     },
   ]
 }

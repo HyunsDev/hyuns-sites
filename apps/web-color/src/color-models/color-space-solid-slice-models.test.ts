@@ -6,6 +6,11 @@ import {
   getSolidSliceAxes,
   isSolidSliceModel,
 } from "./color-space-solid-slice-models.ts"
+import {
+  createSolidSliceCoordinate,
+  getSolidSliceCoordinateModelId,
+  toSolidSliceValue,
+} from "./color-space-solid-slice-coordinate.ts"
 
 test("solid slice support includes Lab axes", () => {
   assert.equal(isSolidSliceModel("lab"), true)
@@ -68,4 +73,26 @@ test("solid slice axes expose presentation coordinate labels", () => {
       ["Y axis", "Lightness", "#64748b"],
     ]
   )
+})
+
+test("solid slice coordinates adapt normalized slice values to axis bars", () => {
+  assert.equal(getSolidSliceCoordinateModelId("hsl-cube"), "hsl")
+  assert.deepEqual(
+    createSolidSliceCoordinate({
+      modelId: "rgb",
+      axisId: "r",
+      value: 0.5,
+    }),
+    {
+      modelId: "rgb",
+      r: 127.5,
+      g: 127.5,
+      b: 127.5,
+    }
+  )
+
+  const lightnessAxis = getSolidSliceAxes("oklch")[2]
+
+  assert.ok(lightnessAxis)
+  assert.equal(toSolidSliceValue(lightnessAxis, 70), 0.7)
 })

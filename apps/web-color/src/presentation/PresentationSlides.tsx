@@ -96,7 +96,7 @@ export function IntroPresentationSlide() {
       className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
       aria-label="RGB부터 OKLCH까지"
     >
-      <PresentationSolidModelVisual />
+      <PresentationSolidModelVisual targetCssColor="oklch(70% 0.18 32)" />
       <div className="absolute inset-x-[8%] top-[72%] grid justify-items-center gap-[2cqh] text-center">
         <h1 className="max-w-[34ch] text-[clamp(1.65rem,4.8cqw,3.25rem)] leading-[1.18] font-bold tracking-normal text-balance">
           <span className="block">RGB부터 OKLCH까지</span>
@@ -149,7 +149,11 @@ export function RgbIntroPresentationSlide() {
       className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
       aria-label="RGB: 기계가 좋아하는 색 모델"
     >
-      <PresentationSolidModelVisual modelId="rgb" variant="section" />
+      <PresentationSolidModelVisual
+        modelId="rgb"
+        targetCssColor="rgb(255 90 61)"
+        variant="section"
+      />
       <div className="absolute inset-x-[8%] top-[72%] grid justify-items-center gap-[2cqh] text-center">
         <h1 className="max-w-[34ch] text-[clamp(1.65rem,4.8cqw,3.25rem)] leading-[1.18] font-bold tracking-normal text-balance">
           <span className="block">RGB</span>

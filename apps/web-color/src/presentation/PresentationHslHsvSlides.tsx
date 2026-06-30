@@ -15,7 +15,7 @@ import {
   LightnessComparisonGrid,
   ModelFamilyBridge,
 } from "@/presentation/PresentationHslHsvVisuals"
-import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelViewer"
+import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelSlide"
 
 export function HslHsvIntroPresentationSlide() {
   return (
@@ -36,13 +36,23 @@ export function HslHsvIntroPresentationSlide() {
 
 export function HslModelSlide() {
   return (
-    <PresentationSolidModelSlide ariaLabel="HSL" baseModelId="hsl" title="HSL" />
+    <PresentationSolidModelSlide
+      ariaLabel="HSL"
+      baseModelId="hsl"
+      targetCssColor="hsl(24 95% 58%)"
+      title="HSL"
+    />
   )
 }
 
 export function HsvModelSlide() {
   return (
-    <PresentationSolidModelSlide ariaLabel="HSV" baseModelId="hsv" title="HSV" />
+    <PresentationSolidModelSlide
+      ariaLabel="HSV"
+      baseModelId="hsv"
+      targetCssColor="hsl(24 95% 58%)"
+      title="HSV"
+    />
   )
 }
 

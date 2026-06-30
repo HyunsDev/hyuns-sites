@@ -113,12 +113,19 @@ function SwatchRow({ dense = false, label, swatches }: SwatchRowProps) {
       <span className="text-[clamp(0.72rem,1.15cqw,1rem)] leading-none font-bold">
         {label}
       </span>
-      <div className={cn("grid grid-cols-10 gap-[0.5cqw]", dense && "gap-[0.42cqw]")}>
-        {swatches.map((swatch) => (
+      <div className={cn("grid grid-cols-10 gap-[0.5cqw]", dense && "gap-0")}>
+        {swatches.map((swatch, index) => (
           <div key={`${label}-${swatch.label}`} className="grid gap-[0.5cqh]">
             <div
               className={cn(
-                "rounded-sm border border-border",
+                "border border-border",
+                dense
+                  ? [
+                      index === swatches.length - 1 ? "border-r" : "border-r-0",
+                      index === 0 && "rounded-l-sm",
+                      index === swatches.length - 1 && "rounded-r-sm",
+                    ]
+                  : "rounded-sm",
                 dense ? "h-[4.45cqw]" : "aspect-square"
               )}
               style={{ backgroundColor: swatch.color }}

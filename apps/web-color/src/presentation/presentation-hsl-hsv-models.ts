@@ -105,8 +105,12 @@ export function formatCoordinateCssOutput(coordinate: ColorCoordinate) {
       return formatCssColor(toCuloriColor(coordinate), "hsl")
     case "hsv":
       return formatCssColor(toCuloriColor(coordinate), "rgb")
+    case "lab":
+      return formatCssColor(toCuloriColor(coordinate), "lab")
     case "oklch":
       return formatCssColor(toCuloriColor(coordinate), "oklch")
+    case "oklab":
+      return formatCssColor(toCuloriColor(coordinate), "oklab")
     case "lch":
     case "rgb":
       return formatCssColor(toCuloriColor(coordinate), "rgb")

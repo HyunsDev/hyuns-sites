@@ -111,7 +111,7 @@ export function PresentationDeckPage({
   return (
     <div className="bg-dot-grid flex min-h-svh flex-col bg-background-primary text-text-normal">
       <main className="flex min-h-0 flex-1 items-center justify-center px-3 pt-3 sm:px-4 sm:pt-4">
-        <div className="@container/slide-frame relative aspect-video w-full max-w-[min(calc(100vw-1.5rem),calc((100svh-5.25rem)*16/9))] overflow-hidden rounded-md border border-border bg-background-secondary shadow-sm sm:max-w-[min(calc(100vw-2rem),calc((100svh-5.5rem)*16/9))]">
+        <div className="@container/slide-frame relative aspect-[9/16] w-full max-w-[min(calc(100vw-1.5rem),calc((100svh-5.25rem)*9/16))] overflow-hidden rounded-md border border-border bg-background-secondary shadow-sm sm:aspect-video sm:max-w-[min(calc(100vw-2rem),calc((100svh-5.5rem)*16/9))]">
           <SlideComponent />
           {slideFooterModel ? <PresentationSlideFooter model={slideFooterModel} /> : null}
         </div>

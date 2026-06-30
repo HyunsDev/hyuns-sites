@@ -14,6 +14,7 @@ import { SolidColorSpaceStatsOverlay } from "@/color-models/SolidColorSpaceStats
 import { getResponsiveCameraScale } from "@/color-models/color-space-camera"
 import { createAxisLabelProjector } from "@/color-models/color-space-axis-label-projection"
 import { getColorSpaceAxisLabels } from "@/color-models/color-space-axis-labels"
+import type { SolidColorSpaceHighlight } from "@/color-models/color-space-solid-highlight"
 import type { SolidColorSpaceMesh } from "@/color-models/color-space-solid-mesh"
 import type { ColorGamutRendering } from "@/color-models/color-gamut"
 import type { ColorSpaceModelDefinition } from "@/color-models/color-space-models"
@@ -23,6 +24,7 @@ import {
   registerWideGamutColorSpaces,
 } from "@/color-models/three-color-spaces"
 import { createModelFrame } from "@/color-models/three-frame"
+import { createSolidColorSpaceHighlightObject } from "@/color-models/three-solid-highlight-scene"
 import { createSolidColorSpaceObject } from "@/color-models/three-solid-scene"
 import { disposeObjectTree } from "@/color-models/three-scene"
 import {
@@ -41,6 +43,7 @@ export function SolidColorSpaceModelCanvas({
   autoRotate,
   className,
   gamutRendering,
+  highlight,
   mesh,
   model,
   showStats = true,
@@ -52,6 +55,7 @@ export function SolidColorSpaceModelCanvas({
   readonly autoRotate: boolean
   readonly className?: string
   readonly gamutRendering: ColorGamutRendering
+  readonly highlight?: SolidColorSpaceHighlight | null
   readonly mesh: SolidColorSpaceMesh
   readonly model: ColorSpaceModelDefinition
   readonly showStats?: boolean
@@ -121,7 +125,7 @@ export function SolidColorSpaceModelCanvas({
     const solid = createSolidColorSpaceObject({
       mesh,
       showWireframe,
-      surfaceOpacity: sliceMesh ? 0.22 : 1,
+      surfaceOpacity: highlight ? 0.16 : sliceMesh ? 0.22 : 1,
       theme: resolvedTheme,
     })
     const slice = sliceMesh
@@ -131,6 +135,9 @@ export function SolidColorSpaceModelCanvas({
           theme: resolvedTheme,
         })
       : null
+    const highlightObject = highlight
+      ? createSolidColorSpaceHighlightObject(highlight)
+      : null
     const keyLight = new DirectionalLight("#ffffff", 1.2)
     keyLight.position.set(3, 4, 5)
     scene.add(keyLight)
@@ -139,6 +146,9 @@ export function SolidColorSpaceModelCanvas({
     scene.add(solid)
     if (slice) {
       scene.add(slice)
+    }
+    if (highlightObject) {
+      scene.add(highlightObject)
     }
 
     const updateAxisLabels = createAxisLabelProjector(labelLayer, axisLabels, {
@@ -216,12 +226,16 @@ export function SolidColorSpaceModelCanvas({
       if (slice) {
         disposeObjectTree(slice)
       }
+      if (highlightObject) {
+        disposeObjectTree(highlightObject)
+      }
       renderer.dispose()
       ColorManagement.workingColorSpace = previousWorkingColorSpace
     }
   }, [
     gamutRendering.actualOutput.id,
     axisLabels,
+    highlight,
     mesh,
     model.id,
     resolvedTheme,

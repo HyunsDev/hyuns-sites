@@ -12,6 +12,46 @@ export type PaletteComparisonRow = {
   readonly swatches: readonly PaletteSwatch[]
 }
 
+export type PaletteComparisonGroup = {
+  readonly id: "amber" | "green" | "violet"
+  readonly label: string
+  readonly rows: readonly PaletteComparisonRow[]
+}
+
+export const HSL_OKLCH_PALETTE_FAMILIES = [
+  {
+    hslHue: 260,
+    hslSaturation: 0.72,
+    id: "violet",
+    label: "Violet",
+    oklchChroma: 0.1,
+    oklchHue: 270,
+  },
+  {
+    hslHue: 82,
+    hslSaturation: 0.76,
+    id: "amber",
+    label: "Amber",
+    oklchChroma: 0.112,
+    oklchHue: 92,
+  },
+  {
+    hslHue: 172,
+    hslSaturation: 0.68,
+    id: "green",
+    label: "Green",
+    oklchChroma: 0.096,
+    oklchHue: 176,
+  },
+] as const satisfies readonly {
+  readonly hslHue: number
+  readonly hslSaturation: number
+  readonly id: PaletteComparisonGroup["id"]
+  readonly label: string
+  readonly oklchChroma: number
+  readonly oklchHue: number
+}[]
+
 export type PaletteScaleResult = {
   readonly baseColor: string
   readonly status: "invalid" | "parsed"

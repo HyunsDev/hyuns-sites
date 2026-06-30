@@ -26,7 +26,7 @@ import {
   type RgbAxisId,
   type RgbDerivedMetrics,
 } from "@/presentation/presentation-rgb-models"
-import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelViewer"
+import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelSlide"
 
 const SAMSUNG_DISPLAY_EYE_SPECTRUM_IMAGE_URL = new URL(
   "./assets/samsung-display-rgb-eye-spectrum.png",
@@ -58,7 +58,7 @@ export function RgbStrengthsSlide() {
 
 function RgbStrengthImages() {
   return (
-    <div className="relative grid min-h-0 content-center gap-[1.2cqh] pb-[2.1cqh]">
+    <div className="relative grid min-h-0 content-center justify-items-center gap-[1.2cqh] pb-[2.6cqh]">
       <div className="grid min-h-0 grid-cols-[minmax(0,0.98fr)_minmax(0,1fr)] items-center gap-[1.3cqw]">
         <RgbStrengthImage
           alt="Visible light spectrum and RGB cone response ranges"
@@ -69,6 +69,9 @@ function RgbStrengthImages() {
           src={SAMSUNG_DISPLAY_RGB_PIXELS_IMAGE_URL}
         />
       </div>
+      <p className="max-w-[72cqw] text-center text-[clamp(0.78rem,1.28cqw,1.08rem)] leading-snug font-bold text-text-normal text-balance">
+        디스플레이는 RGB 빛을 섞어 색을 만들고, 눈은 세 종류의 원추세포 반응으로 그 빛을 받아들인다.
+      </p>
       <span className="absolute right-0 bottom-0 font-mono text-[clamp(0.48rem,0.72cqw,0.62rem)] leading-none text-text-muted">
         출처: 삼성디스플레이 뉴스룸
       </span>
