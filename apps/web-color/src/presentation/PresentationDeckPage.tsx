@@ -5,9 +5,10 @@ import { useNavigate } from "@tanstack/react-router"
 import {
   buildPresentationSlideHref,
   FIRST_PRESENTATION_SLIDE_ID,
+  getPresentationAppendixSlides,
   getPresentationNavigation,
   getPresentationSlide,
-  PRESENTATION_SLIDE_IDS,
+  PRESENTATION_MAIN_SLIDE_IDS,
   resolvePresentationSlideId,
   type PresentationSlideId,
 } from "@/presentation/presentation-slides"
@@ -26,7 +27,7 @@ type PresentationSlideFooterProps = {
 }
 
 const PART_TWO_FIRST_SLIDE_INDEX =
-  PRESENTATION_SLIDE_IDS.indexOf("part-2-intro")
+  PRESENTATION_MAIN_SLIDE_IDS.indexOf("part-2-intro")
 
 function isEditableKeyTarget(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) {
@@ -64,9 +65,10 @@ export function PresentationDeckPage({
   const slideId = resolvePresentationSlideId(requestedSlideId)
   const slide = getPresentationSlide(slideId)
   const SlideComponent = slide.component
-  const navigation = getPresentationNavigation(slide.id)
+  const navigation = getPresentationNavigation(slide)
   const slideFooterModel = getPresentationFooterModel({
     currentIndex: navigation.currentIndex,
+    isAppendix: slide.kind === "appendix",
     isPartTwo: navigation.currentIndex >= PART_TWO_FIRST_SLIDE_INDEX,
     isTitleSlide: slide.id === FIRST_PRESENTATION_SLIDE_ID,
   })
@@ -118,7 +120,10 @@ export function PresentationDeckPage({
       </main>
       <footer className="flex shrink-0 items-center justify-center px-3 py-3">
         <PresentationTools
+          appendixSlides={getPresentationAppendixSlides()}
           currentIndex={navigation.currentIndex}
+          currentSlideId={slide.id}
+          returnSlideId={slide.kind === "appendix" ? slide.appendixFor : null}
           nextSlideId={navigation.nextSlideId}
           previousSlideId={navigation.previousSlideId}
           slideCount={navigation.slideCount}

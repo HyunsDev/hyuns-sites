@@ -24,6 +24,24 @@ test("solid highlight creates an OKLCH point for a fully specified CSS color", (
   assert.equal(Math.round(result.highlight.position.y * 1000) / 1000, 0.4)
 })
 
+test("solid highlight maps OKLCH cube chroma to the vertical axis", () => {
+  const result = createSolidColorSpaceHighlight({
+    modelId: "oklch-cube",
+    options: renderOptions,
+    value: "oklch(70% 0.24 32)",
+  })
+
+  assert.equal(result.status, "ready")
+  assert.equal(result.highlight.kind, "point")
+
+  if (result.highlight.kind !== "point") {
+    throw new TypeError("Expected point highlight")
+  }
+
+  assert.equal(result.highlight.position.y, 0)
+  assert.equal(Math.round(result.highlight.position.z * 1000) / 1000, 0.4)
+})
+
 test("solid highlight treats CSS none channels as free OKLCH axes", () => {
   const lineResult = createSolidColorSpaceHighlight({
     modelId: "oklch",

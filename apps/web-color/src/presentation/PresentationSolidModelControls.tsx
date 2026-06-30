@@ -29,6 +29,7 @@ export function PresentationSolidModelTargetInput({
   onChange,
   onEnabledChange,
   result,
+  showSwitch,
   value,
 }: ComponentProps<typeof ColorSpaceSolidTargetInput>) {
   return (
@@ -39,6 +40,7 @@ export function PresentationSolidModelTargetInput({
       )}
       enabled={enabled}
       modelId={modelId}
+      showSwitch={showSwitch}
       value={value}
       result={result}
       onEnabledChange={onEnabledChange}

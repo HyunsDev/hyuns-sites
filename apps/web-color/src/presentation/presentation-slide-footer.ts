@@ -5,6 +5,7 @@ export type PresentationFooterModel = {
 
 type PresentationFooterModelInput = {
   readonly currentIndex: number
+  readonly isAppendix: boolean
   readonly isPartTwo: boolean
   readonly isTitleSlide: boolean
 }
@@ -16,6 +17,7 @@ const PRESENTATION_PART_LABELS = {
 
 export function getPresentationFooterModel({
   currentIndex,
+  isAppendix,
   isPartTwo,
   isTitleSlide,
 }: PresentationFooterModelInput): PresentationFooterModel | null {
@@ -24,9 +26,11 @@ export function getPresentationFooterModel({
   }
 
   return {
-    partLabel: isPartTwo
-      ? PRESENTATION_PART_LABELS.part2
-      : PRESENTATION_PART_LABELS.part1,
+    partLabel: isAppendix
+      ? "부록"
+      : isPartTwo
+        ? PRESENTATION_PART_LABELS.part2
+        : PRESENTATION_PART_LABELS.part1,
     slideNumber: formatPresentationSlideNumber(currentIndex),
   }
 }

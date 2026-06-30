@@ -2,7 +2,7 @@ import type { Color } from "culori"
 
 import type { ColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
 import { toColorSampleRenderColor } from "@/color-models/color-sample-rendering"
-import { hueCubeToPoint } from "@/color-models/color-space-hue-cube"
+import { hueChromaCubeToPoint } from "@/color-models/color-space-hue-cube"
 import {
   appendGridSurface,
   appendVertex,
@@ -122,7 +122,7 @@ function getPerceptualPoint(
     }
     case "lch-cube":
     case "oklch-cube":
-      return hueCubeToPoint(hue, lightness, chroma / upperChroma)
+      return hueChromaCubeToPoint(hue, chroma / upperChroma, lightness)
     default:
       return assertNeverPerceptualModel(modelId)
   }

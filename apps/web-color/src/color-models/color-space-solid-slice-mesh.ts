@@ -1,7 +1,10 @@
 import type { Color } from "culori"
 
 import type { ColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
-import { hueCubeToPoint } from "@/color-models/color-space-hue-cube"
+import {
+  hueChromaCubeToPoint,
+  hueCubeToPoint,
+} from "@/color-models/color-space-hue-cube"
 import { buildLabSlice } from "@/color-models/color-space-solid-lab-slice-mesh"
 import {
   appendGridSurface,
@@ -80,7 +83,7 @@ function buildPerceptualSlice(
       return appendVertex(
         builder,
         shape === "cube"
-          ? hueCubeToPoint(h, l, c / maxChroma)
+          ? hueChromaCubeToPoint(h, c / maxChroma, l)
           : polarToPoint(h, c / maxChroma, normalizeUnit(l)),
         color,
         options

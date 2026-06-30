@@ -29,6 +29,7 @@ type ColorSpaceSolidTargetInputProps = {
   readonly onChange: (value: string) => void
   readonly onEnabledChange: (enabled: boolean) => void
   readonly result: SolidColorSpaceHighlightResult
+  readonly showSwitch?: boolean
   readonly value: string
 }
 
@@ -48,6 +49,7 @@ export function ColorSpaceSolidTargetInput({
   onChange,
   onEnabledChange,
   result,
+  showSwitch = true,
   value,
 }: ColorSpaceSolidTargetInputProps) {
   const coordinateResult = useMemo(
@@ -66,15 +68,24 @@ export function ColorSpaceSolidTargetInput({
 
   return (
     <div className={cn("grid gap-1.5 text-xs", className)}>
-      <label className="grid grid-cols-[6.25rem_minmax(0,1fr)] items-center gap-2">
+      <label
+        className={cn(
+          "grid items-center gap-2",
+          showSwitch
+            ? "grid-cols-[6.25rem_minmax(0,1fr)]"
+            : "grid-cols-1"
+        )}
+      >
         <span className="font-medium text-text-muted">CSS Target</span>
-        <Switch
-          size="sm"
-          checked={enabled}
-          onCheckedChange={onEnabledChange}
-          aria-label="Toggle CSS target"
-          className="justify-self-end"
-        />
+        {showSwitch ? (
+          <Switch
+            size="sm"
+            checked={enabled}
+            onCheckedChange={onEnabledChange}
+            aria-label="Toggle CSS target"
+            className="justify-self-end"
+          />
+        ) : null}
       </label>
       {enabled ? (
         <div className="grid gap-1.5">

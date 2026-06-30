@@ -11,11 +11,14 @@ type PresentationSolidModelSlideProps = PresentationSolidModelViewerProps & {
 export function PresentationSolidModelSlide({
   ariaLabel,
   baseModelId,
+  cubeDefaultEnabled,
   showCubeSwitch,
   showGamutSelect,
   showSliceControls,
   solidModelClassName,
+  targetDefaultEnabled,
   showTargetControls,
+  showTargetSwitch,
   targetControlsPlacement,
   targetCssColor,
   title,
@@ -30,11 +33,14 @@ export function PresentationSolidModelSlide({
       </h1>
       <PresentationSolidModelViewer
         baseModelId={baseModelId}
+        cubeDefaultEnabled={cubeDefaultEnabled}
         showCubeSwitch={showCubeSwitch}
         showGamutSelect={showGamutSelect}
         showSliceControls={showSliceControls}
         solidModelClassName={solidModelClassName}
+        targetDefaultEnabled={targetDefaultEnabled}
         showTargetControls={showTargetControls}
+        showTargetSwitch={showTargetSwitch}
         targetControlsPlacement={targetControlsPlacement}
         targetCssColor={targetCssColor}
       />

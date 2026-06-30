@@ -238,7 +238,7 @@ export function OklchModelSlide() {
       ariaLabel="OKLCH"
       baseModelId="oklch"
       showGamutSelect
-      targetCssColor="oklch(70% none none)"
+      targetCssColor="oklch(70% 0.18 32)"
       title="OKLCH"
     />
   )

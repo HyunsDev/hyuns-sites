@@ -15,3 +15,15 @@ export function hueCubeToPoint(
     z: normalizeUnit(zUnit),
   }
 }
+
+export function hueChromaCubeToPoint(
+  hue: number,
+  chromaUnit: number,
+  lightnessUnit: number
+): Vector3Point {
+  return {
+    x: normalizeUnit(hue / 360),
+    y: normalizeUnit(chromaUnit),
+    z: normalizeUnit(lightnessUnit),
+  }
+}

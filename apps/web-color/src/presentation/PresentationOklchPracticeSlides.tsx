@@ -8,15 +8,17 @@ import {
   SlideExplanationRail,
 } from "@/presentation/PresentationOklchExplanation"
 import {
+  HyunsUiAccentFamilyDemo,
+  HyunsUiLightnessRoleDemo,
+  HyunsUiStateSpecimen,
+  HyunsUiThemeTokenMap,
+} from "@/presentation/PresentationHyunsUiOklchVisuals"
+import {
   GradientInterpolationComparison,
   HslOklchPaletteComparison,
-  OklchBrandPaletteGenerator,
-  OklchLightnessSystemDemo,
 } from "@/presentation/PresentationOklchPaletteVisuals"
 import {
   ColorModelDecisionTable,
-  StateColorRelationDemo,
-  ThemeTokenLightnessMap,
 } from "@/presentation/PresentationOklchSystemVisuals"
 
 export function Part2IntroSlide() {
@@ -82,23 +84,23 @@ export function OklchLightnessSlide() {
     >
       <SlideTwoColumn variant="visualWide">
         <SlideExplanationRail
-          claim="토큰 스케일의 뼈대는 hue가 아니라 lightness다"
+          claim="Hyuns UI의 surface 계층도 결국 lightness 차이로 읽힌다"
           rules={[
-            "background, surface, border, text는 밝기 차이로 읽힌다",
-            "hue는 브랜드 방향이고 L은 UI 계층 구조다",
-            "대비 조정은 색상 변경보다 L 조정으로 시작한다",
+            "background, surface, border, text가 모두 역할별 L 값을 가진다",
+            "컴포넌트는 raw color가 아니라 semantic token을 사용한다",
+            "대비 조정은 hue 변경보다 역할별 L 재배치에서 시작한다",
           ]}
           formulas={[
             {
-              expression: "50 -> 100 -> ... -> 900",
-              label: "scale",
-              note: "역할별 밝기 단계",
+              expression: "--background-* / --text-* / --border",
+              label: "tokens",
+              note: "Hyuns UI globals.css",
             },
           ]}
-          badges={["lightness", "contrast", "token"]}
+          badges={["lightness", "surface", "component"]}
         />
         <SlideVisualStage className="grid content-center">
-          <OklchLightnessSystemDemo />
+          <HyunsUiLightnessRoleDemo />
         </SlideVisualStage>
       </SlideTwoColumn>
     </PresentationSlideShell>
@@ -113,22 +115,22 @@ export function OklchBrandPaletteSlide() {
     >
       <SlideTwoColumn variant="visualWide">
         <SlideExplanationRail
-          claim="브랜드 색 하나를 팔레트 규칙으로 확장한다"
+          claim="Hyuns UI의 accent는 L, C, H 세 값으로 교체 가능한 브랜드 축이다"
           rules={[
-            "H는 브랜드 색상 방향을 고정한다",
-            "C는 색의 강도를 일정한 범위로 제한한다",
-            "L은 50-900 단계 전체를 만든다",
+            "blue, green, yellow 같은 accent가 모두 L/C/H 변수로 선언된다",
+            "data-accent는 컴포넌트를 바꾸지 않고 accent 축만 바꾼다",
+            "같은 Button이 accent token만 바꿔 다른 브랜드 색을 얻는다",
           ]}
           formulas={[
-            { expression: "H = identity", label: "Hue" },
-            { expression: "C = intensity", label: "Chroma" },
-            { expression: "L = scale", label: "Lightness" },
+            { expression: "--accent-l", label: "L" },
+            { expression: "--accent-c", label: "C" },
+            { expression: "--accent-h", label: "H" },
           ]}
-          badges={["brand", "palette", "gamut"]}
-          caption="입력 색을 바꾸면 같은 규칙으로 전체 scale이 다시 계산된다."
+          badges={["data-accent", "Button", "token"]}
+          caption="예시는 hyuns-ui/packages/ui/src/styles/globals.css의 실제 accent 값이다."
         />
         <SlideVisualStage className="grid content-center">
-          <OklchBrandPaletteGenerator />
+          <HyunsUiAccentFamilyDemo />
         </SlideVisualStage>
       </SlideTwoColumn>
     </PresentationSlideShell>
@@ -143,21 +145,21 @@ export function OklchStateColorsSlide() {
     >
       <SlideTwoColumn variant="visualWide">
         <SlideExplanationRail
-          claim="상태 색상은 새 색이 아니라 base color의 delta다"
+          claim="Hyuns UI의 상태 색상은 component마다 새로 찍지 않고 accent에서 파생된다"
           rules={[
-            "hover는 더 가볍고 덜 강하게 만든다",
-            "active는 더 눌린 밝기 관계를 만든다",
-            "disabled는 chroma를 크게 줄여 상태를 분리한다",
+            "Button, Switch, Slider가 interactive-accent 계열을 공유한다",
+            "hover와 active는 --accent-1, --accent-3으로 연결된다",
+            "light와 dark에서는 같은 관계를 유지하되 L delta 방향이 바뀐다",
           ]}
           formulas={[
-            { expression: "L + 5, C - 0.02", label: "hover" },
-            { expression: "L - 7, C - 0.03", label: "active" },
-            { expression: "C * 0.16", label: "disabled" },
+            { expression: "L + .03, C + .005", label: "hover" },
+            { expression: "L + .09, C + .005", label: "active" },
+            { expression: "L - .03 / -.09", label: "dark" },
           ]}
-          badges={["base", "hover", "active", "disabled"]}
+          badges={["Button", "Switch", "Slider", "state"]}
         />
         <SlideVisualStage className="grid content-center">
-          <StateColorRelationDemo />
+          <HyunsUiStateSpecimen />
         </SlideVisualStage>
       </SlideTwoColumn>
     </PresentationSlideShell>
@@ -197,21 +199,21 @@ export function OklchDarkModeSlide() {
     >
       <SlideTwoColumn variant="visualWide">
         <SlideExplanationRail
-          claim="다크모드는 색을 뒤집는 것이 아니라 역할의 밝기 관계를 다시 짜는 것이다"
+          claim="Hyuns UI의 다크모드는 역할별 OKLCH lightness map을 다시 배치한다"
           rules={[
-            "background와 surface는 낮은 L 영역에서 다시 배치한다",
+            "background와 surface는 낮은 L 영역으로 이동한다",
             "text는 높은 L로 올라가고 border는 중간 완충 역할을 한다",
-            "accent는 theme 안에서 인식되는 강조축을 유지한다",
+            "선택한 accent는 theme별 L/C/H 프리셋으로 대비를 맞춘다",
           ]}
           formulas={[
-            { expression: "L 98 -> L 14", label: "background" },
-            { expression: "L 18 -> L 92", label: "text" },
-            { expression: "L 66 -> L 72", label: "accent" },
+            { expression: "1.00 -> .24", label: "background" },
+            { expression: ".145 -> .95", label: "text" },
+            { expression: "light -> dark", label: "accent" },
           ]}
           badges={["background", "surface", "text", "accent"]}
         />
         <SlideVisualStage className="grid content-center">
-          <ThemeTokenLightnessMap />
+          <HyunsUiThemeTokenMap />
         </SlideVisualStage>
       </SlideTwoColumn>
     </PresentationSlideShell>

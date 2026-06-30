@@ -299,7 +299,7 @@ export const COLOR_SPACE_MODEL_BY_ID = {
     id: "lch-cube",
     name: "LCH Cube",
     title: "LCH Coordinate Cube",
-    geometry: "Hue width + chroma depth + lightness height",
+    geometry: "Hue width + chroma height + lightness depth",
     coordinate: "L, C, H",
     notation: "lch(62% 74 32)",
     summary:
@@ -308,8 +308,8 @@ export const COLOR_SPACE_MODEL_BY_ID = {
     accent: "#10b981",
     axes: [
       { label: "X", value: "Hue", color: "#f59e0b" },
-      { label: "Y", value: "Lightness", color: "#64748b" },
-      { label: "Z", value: "Chroma", color: "#10b981" },
+      { label: "Y", value: "Chroma", color: "#10b981" },
+      { label: "Z", value: "Lightness", color: "#64748b" },
     ],
     notes: [
       "Hue의 양끝은 같은 빨강 계열이지만 펼친 좌표에서는 경계선으로 보입니다.",
@@ -362,7 +362,7 @@ export const COLOR_SPACE_MODEL_BY_ID = {
     id: "oklch-cube",
     name: "OKLCH Cube",
     title: "OKLCH Coordinate Cube",
-    geometry: "Hue width + chroma depth + OK lightness height",
+    geometry: "Hue width + chroma height + OK lightness depth",
     coordinate: "OKL, C, H",
     notation: "oklch(70% 0.18 32)",
     summary:
@@ -371,8 +371,8 @@ export const COLOR_SPACE_MODEL_BY_ID = {
     accent: "#e11d48",
     axes: [
       { label: "X", value: "Hue", color: "#f59e0b" },
-      { label: "Y", value: "OK Lightness", color: "#64748b" },
-      { label: "Z", value: "Chroma", color: "#e11d48" },
+      { label: "Y", value: "Chroma", color: "#e11d48" },
+      { label: "Z", value: "OK Lightness", color: "#64748b" },
     ],
     notes: [
       "CSS `oklch()`의 세 축을 토큰 설계용 좌표처럼 분리해서 읽을 수 있습니다.",

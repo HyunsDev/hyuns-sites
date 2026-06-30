@@ -1,6 +1,7 @@
 import { converter } from "culori"
 import type { Color } from "culori"
 
+import { hueChromaCubeToPoint } from "./color-space-hue-cube.ts"
 import type { ColorSpaceModelId } from "./color-space-models.ts"
 import type { Vector3Point } from "./color-space-samples.ts"
 
@@ -187,10 +188,10 @@ function toLchPoint(color: Color): Vector3Point {
 function toLchCubePoint(color: Color): Vector3Point {
   const lch = toLch(color)
 
-  return hueCubeToPoint(
+  return hueChromaCubeToPoint(
     normalizeHue(lch.h),
-    lch.l / 100,
-    lch.c / LAB_CHROMA_MAX
+    lch.c / LAB_CHROMA_MAX,
+    lch.l / 100
   )
 }
 
@@ -217,10 +218,10 @@ function toOklchPoint(color: Color): Vector3Point {
 function toOklchCubePoint(color: Color): Vector3Point {
   const oklch = toOklch(color)
 
-  return hueCubeToPoint(
+  return hueChromaCubeToPoint(
     normalizeHue(oklch.h),
-    oklch.l,
-    oklch.c / OKLAB_CHROMA_MAX
+    oklch.c / OKLAB_CHROMA_MAX,
+    oklch.l
   )
 }
 

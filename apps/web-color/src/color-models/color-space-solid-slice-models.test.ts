@@ -69,8 +69,8 @@ test("solid slice axes expose presentation coordinate labels", () => {
     ]),
     [
       ["X axis", "Hue", "#f59e0b"],
-      ["Z axis", "Chroma", "#10b981"],
-      ["Y axis", "Lightness", "#64748b"],
+      ["Y axis", "Chroma", "#10b981"],
+      ["Z axis", "Lightness", "#64748b"],
     ]
   )
 })

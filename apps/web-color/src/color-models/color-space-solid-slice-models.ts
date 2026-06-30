@@ -302,7 +302,7 @@ const SLICE_AXES_BY_MODEL = {
     {
       id: "c",
       color: "#10b981",
-      coordinateLabel: "Z axis",
+      coordinateLabel: "Y axis",
       label: "Chroma",
       min: 0,
       max: 150,
@@ -313,7 +313,7 @@ const SLICE_AXES_BY_MODEL = {
     {
       id: "l",
       color: "#64748b",
-      coordinateLabel: "Y axis",
+      coordinateLabel: "Z axis",
       label: "Lightness",
       min: 0,
       max: 1,
@@ -372,7 +372,7 @@ const SLICE_AXES_BY_MODEL = {
     {
       id: "c",
       color: "#e11d48",
-      coordinateLabel: "Z axis",
+      coordinateLabel: "Y axis",
       label: "Chroma",
       min: 0,
       max: 0.4,
@@ -383,7 +383,7 @@ const SLICE_AXES_BY_MODEL = {
     {
       id: "l",
       color: "#64748b",
-      coordinateLabel: "Y axis",
+      coordinateLabel: "Z axis",
       label: "Lightness",
       min: 0,
       max: 1,

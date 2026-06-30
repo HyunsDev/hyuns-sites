@@ -41,26 +41,32 @@ export type PresentationSolidModelBaseId = Extract<
 
 export type PresentationSolidModelViewerProps = {
   readonly baseModelId: PresentationSolidModelBaseId
+  readonly cubeDefaultEnabled?: boolean
   readonly showCubeSwitch?: boolean
   readonly showGamutSelect?: boolean
   readonly showSliceControls?: boolean
   readonly solidModelClassName?: string
+  readonly targetDefaultEnabled?: boolean
   readonly showTargetControls?: boolean
+  readonly showTargetSwitch?: boolean
   readonly targetControlsPlacement?: "bottom" | "slice-panel"
   readonly targetCssColor?: string
 }
 
 export function PresentationSolidModelViewer({
   baseModelId,
+  cubeDefaultEnabled = false,
   showCubeSwitch = true,
   showGamutSelect = false,
   showSliceControls = true,
   solidModelClassName,
+  targetDefaultEnabled = false,
   showTargetControls = showSliceControls,
+  showTargetSwitch = true,
   targetControlsPlacement = "slice-panel",
   targetCssColor,
 }: PresentationSolidModelViewerProps) {
-  const [cubeEnabled, setCubeEnabled] = useState(false)
+  const [cubeEnabled, setCubeEnabled] = useState(cubeDefaultEnabled)
   const [gamutModeId, setGamutModeId] =
     useState<PresentationGamutModeId>("srgb")
   const [gamutCapabilities] = useState<ColorGamutCapabilities>(() =>
@@ -73,7 +79,7 @@ export function PresentationSolidModelViewer({
     createPresentationSliceState(modelId)
   )
   const [sliceEnabled, setSliceEnabled] = useState(false)
-  const [targetEnabled, setTargetEnabled] = useState(false)
+  const [targetEnabled, setTargetEnabled] = useState(targetDefaultEnabled)
   const [targetInput, setTargetInput] = useState(() =>
     createPresentationTargetInput(modelId, targetCssColor)
   )
@@ -138,15 +144,19 @@ export function PresentationSolidModelViewer({
     showTargetControls && targetControlsPlacement === "bottom"
 
   useEffect(() => {
+    setCubeEnabled(cubeDefaultEnabled)
+  }, [baseModelId, cubeDefaultEnabled])
+
+  useEffect(() => {
     setSlice(createPresentationSliceState(modelId))
     setSliceEnabled(false)
-    setTargetEnabled(false)
-  }, [modelId])
+    setTargetEnabled(targetDefaultEnabled)
+  }, [modelId, targetDefaultEnabled])
 
   useEffect(() => {
     setTargetInput(createPresentationTargetInput(modelId, targetCssColor))
-    setTargetEnabled(false)
-  }, [modelId, targetCssColor])
+    setTargetEnabled(targetDefaultEnabled)
+  }, [modelId, targetCssColor, targetDefaultEnabled])
 
   function changeSliceEnabled(enabled: boolean) {
     setSliceEnabled(enabled)
@@ -204,6 +214,7 @@ export function PresentationSolidModelViewer({
               enabled={targetEnabled}
               modelId={model.id}
               result={targetResult}
+              showSwitch={showTargetSwitch}
               value={targetInput}
               onChange={setTargetInput}
               onEnabledChange={changeTargetEnabled}
@@ -217,6 +228,7 @@ export function PresentationSolidModelViewer({
             enabled={targetEnabled}
             modelId={model.id}
             result={targetResult}
+            showSwitch={showTargetSwitch}
             value={targetInput}
             onChange={setTargetInput}
             onEnabledChange={changeTargetEnabled}

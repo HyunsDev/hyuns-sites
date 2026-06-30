@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
+import { ACCENT_PRESETS } from "@hyunsdev/ui/lib/theme"
 import { inGamut, parse } from "culori"
 
 import {
@@ -14,6 +15,11 @@ import {
   createThemeLightnessRows,
   type PaletteSwatch,
 } from "./presentation-oklch-practice-models.ts"
+import {
+  createHyunsUiAccentRows,
+  createHyunsUiInteractiveAccentRows,
+  createHyunsUiThemeLightnessRows,
+} from "./presentation-hyuns-ui-oklch-models.ts"
 
 const isInSrgb = inGamut("rgb")
 
@@ -85,6 +91,36 @@ test("createStateColorRelations keeps state colors tied to a base color", () => 
   assert.match(result.cssExample, /color-mix\(in oklch/)
 })
 
+test("createHyunsUiAccentRows mirrors Hyuns UI accent OKLCH variables", () => {
+  const rows = createHyunsUiAccentRows()
+
+  assert.deepEqual(
+    rows.map((row) => row.id),
+    [...ACCENT_PRESETS]
+  )
+  assert.equal(rows[0]?.token, "--accent-default")
+  assert.equal(rows[0]?.color, "oklch(0.205 0 0)")
+  assert.equal(rows[1]?.token, "--accent-blue")
+  assert.equal(rows[1]?.color, "oklch(0.624 0.2529 253.376)")
+})
+
+test("createHyunsUiInteractiveAccentRows derives component state tokens", () => {
+  const lightRows = createHyunsUiInteractiveAccentRows("light", "blue")
+  const darkRows = createHyunsUiInteractiveAccentRows("dark", "blue")
+
+  assert.deepEqual(
+    lightRows.map((row) => row.token),
+    [
+      "--interactive-accent",
+      "--interactive-accent-hover",
+      "--interactive-accent-active-hover",
+      "--interactive-accent-disabled",
+    ]
+  )
+  assert.equal(lightRows[1]?.coordinate.lightness, 0.654)
+  assert.equal(darkRows[1]?.coordinate.lightness, 0.677)
+})
+
 test("createThemeLightnessRows returns light and dark role maps", () => {
   const rows = createThemeLightnessRows()
 
@@ -94,6 +130,23 @@ test("createThemeLightnessRows returns light and dark role maps", () => {
   )
   assert.equal(rows[0]?.tokens.length, 5)
   assert.notEqual(rows[0]?.tokens[0]?.lightness, rows[1]?.tokens[0]?.lightness)
+})
+
+test("createHyunsUiThemeLightnessRows uses the selected Hyuns UI accent", () => {
+  const rows = createHyunsUiThemeLightnessRows("purple")
+
+  assert.deepEqual(
+    rows.map((row) => row.id),
+    ["light", "dark"]
+  )
+  assert.equal(rows[0]?.tokens[0]?.token, "--background-primary")
+  assert.equal(rows[0]?.tokens[0]?.coordinate.lightness, 1)
+  assert.equal(rows[1]?.tokens[3]?.token, "--text-color")
+  assert.equal(rows[1]?.tokens[3]?.coordinate.lightness, 0.95)
+  assert.equal(rows[0]?.tokens[4]?.token, "--accent-purple")
+  assert.equal(rows[0]?.tokens[4]?.coordinate.lightness, 0.496)
+  assert.equal(rows[1]?.tokens[4]?.token, "--accent-purple")
+  assert.equal(rows[1]?.tokens[4]?.coordinate.lightness, 0.714)
 })
 
 test("createGradientComparisonRows returns RGB HSL and OKLCH interpolation", () => {

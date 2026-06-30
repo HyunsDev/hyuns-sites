@@ -1,4 +1,5 @@
 import assert from "node:assert/strict"
+import { readFileSync } from "node:fs"
 import test from "node:test"
 
 import {
@@ -8,6 +9,11 @@ import {
   PART_1_PURPOSE_STEPS,
   PERCEPTUAL_MODEL_STEPS,
 } from "./presentation-perceptual-models.ts"
+
+const PRESENTATION_PERCEPTUAL_SLIDES_SOURCE = readFileSync(
+  new URL("./PresentationPerceptualSlides.tsx", import.meta.url),
+  "utf8"
+)
 
 test("PART_1_PURPOSE_STEPS keeps the four-part color model map", () => {
   assert.deepEqual(
@@ -20,6 +26,17 @@ test("PERCEPTUAL_MODEL_STEPS introduces Lab before OKLCH", () => {
   assert.deepEqual(
     PERCEPTUAL_MODEL_STEPS.map((step) => step.label),
     ["RGB/HSL", "Lab/LCH", "Oklab/OKLCH"]
+  )
+})
+
+test("OKLCH model slide uses a complete CSS target for editable axis bars", () => {
+  assert.match(
+    PRESENTATION_PERCEPTUAL_SLIDES_SOURCE,
+    /targetCssColor="oklch\(70% 0\.18 32\)"/
+  )
+  assert.doesNotMatch(
+    PRESENTATION_PERCEPTUAL_SLIDES_SOURCE,
+    /targetCssColor="oklch\(70% none none\)"/
   )
 })
 
