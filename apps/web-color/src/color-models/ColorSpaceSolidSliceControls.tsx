@@ -29,7 +29,7 @@ export function ColorSpaceSolidSliceControls({
   slice,
   sliceEnabled,
 }: ColorSpaceSolidSliceControlsProps) {
-  if (!sliceEnabled || !isSolidSliceModel(modelId)) {
+  if (!isSolidSliceModel(modelId)) {
     return null
   }
 
@@ -39,6 +39,7 @@ export function ColorSpaceSolidSliceControls({
       modelId={modelId}
       axisId={slice.axisId}
       value={slice.value}
+      sliceEnabled={sliceEnabled}
       onSliceChange={onSliceChange}
     />
   )
@@ -46,11 +47,13 @@ export function ColorSpaceSolidSliceControls({
 
 function AxisSliceSlider({
   axis,
+  disabled,
   isActive,
   onSliceChange,
   value,
 }: {
   readonly axis: ReturnType<typeof getSolidSliceAxes>[number]
+  readonly disabled: boolean
   readonly isActive: boolean
   readonly onSliceChange: (slice: SolidSliceState) => void
   readonly value: number
@@ -60,20 +63,28 @@ function AxisSliceSlider({
   return (
     <div
       className={cn(
-        "grid grid-cols-[6.25rem_minmax(0,1fr)] items-center gap-2 text-xs",
-        !isActive && "opacity-70"
+        "grid grid-cols-[8rem_minmax(0,1fr)] items-center gap-2 text-xs",
+        !disabled && !isActive && "opacity-70"
       )}
     >
       <span
         className={cn(
-          "min-w-0 truncate font-medium",
+          "flex min-w-0 items-center gap-1.5 truncate font-medium",
           isActive ? "text-text-normal" : "text-text-muted"
         )}
+        style={{ color: axis.color }}
       >
-        {axis.label}
+        <span
+          className="size-1.5 shrink-0 rounded-full bg-current"
+          aria-hidden="true"
+        />
+        <span className="min-w-0 truncate">
+          {axis.coordinateLabel}: {axis.label}
+        </span>
       </span>
       <div className="grid min-w-0 grid-cols-[minmax(5rem,1fr)_3.75rem] items-center gap-2">
         <LabeledSlider
+          disabled={disabled}
           min={axis.min}
           max={axis.max}
           step={axis.step}
@@ -82,7 +93,7 @@ function AxisSliceSlider({
           onValueChange={(values) => {
             const nextValue = values[0]
 
-            if (nextValue !== undefined) {
+            if (!disabled && nextValue !== undefined) {
               onSliceChange({ axisId: axis.id, value: nextValue })
             }
           }}
@@ -97,6 +108,7 @@ function AxisSliceSlider({
 
 function LabeledSlider({
   ariaLabel,
+  disabled,
   max,
   min,
   onValueChange,
@@ -104,6 +116,7 @@ function LabeledSlider({
   value,
 }: {
   readonly ariaLabel: string
+  readonly disabled: boolean
   readonly max: number
   readonly min: number
   readonly onValueChange: (value: readonly number[]) => void
@@ -126,11 +139,22 @@ function LabeledSlider({
     }
 
     sliderThumb.setAttribute("aria-label", ariaLabel)
-  }, [ariaLabel])
+
+    if (disabled) {
+      sliderThumb.setAttribute("aria-disabled", "true")
+    } else {
+      sliderThumb.removeAttribute("aria-disabled")
+    }
+  }, [ariaLabel, disabled])
 
   return (
-    <div ref={sliderHostRef}>
+    <div
+      ref={sliderHostRef}
+      aria-disabled={disabled}
+      className={cn(disabled && "pointer-events-none")}
+    >
       <Slider
+        disabled={disabled}
         min={min}
         max={max}
         step={step}
@@ -146,12 +170,14 @@ function SupportedSliceControls({
   axisId,
   modelId,
   onSliceChange,
+  sliceEnabled,
   value,
 }: {
   readonly className?: string
   readonly axisId: SolidSliceAxisId
   readonly modelId: SolidSliceModelId
   readonly onSliceChange: (slice: SolidSliceState) => void
+  readonly sliceEnabled: boolean
   readonly value: number
 }) {
   const axes = getSolidSliceAxes(modelId)
@@ -167,7 +193,8 @@ function SupportedSliceControls({
         <AxisSliceSlider
           key={axis.id}
           axis={axis}
-          isActive={axis.id === activeAxis.id}
+          disabled={!sliceEnabled}
+          isActive={sliceEnabled && axis.id === activeAxis.id}
           value={axis.id === activeAxis.id ? value : axis.defaultValue}
           onSliceChange={onSliceChange}
         />

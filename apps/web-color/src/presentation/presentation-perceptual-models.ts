@@ -1,5 +1,3 @@
-import type { Color } from "culori"
-
 import {
   analyzeGamutClipping,
   GAMUT_CLIPPING_TARGETS,
@@ -31,12 +29,14 @@ export type GamutChromaRow = {
 
 export type ComparisonSwatch = {
   readonly color: string
+  readonly emphasisLabel: string | null
   readonly inSrgb: boolean
   readonly label: string
 }
 
 export type ComparisonRow = {
   readonly label: "Lab" | "OKLCH"
+  readonly note: string
   readonly swatches: readonly ComparisonSwatch[]
 }
 
@@ -86,8 +86,8 @@ export function createGamutChromaRows(): readonly GamutChromaRow[] {
 
 export function createLabToOklabComparisonRows(): readonly ComparisonRow[] {
   const rows = createInterpolationRows({
-    startColor: { mode: "rgb", r: 0.08, g: 0.18, b: 1 } satisfies Color,
-    endColor: { mode: "rgb", r: 1, g: 0.18, b: 0.82 } satisfies Color,
+    startColor: "#6366f1",
+    endColor: "#f97316",
     hueStrategyId: "shorter",
     stepCount: 7,
   })
@@ -96,8 +96,10 @@ export function createLabToOklabComparisonRows(): readonly ComparisonRow[] {
     .filter(isLabOrOklchRow)
     .map((row) => ({
       label: row.label,
+      note: row.label === "Lab" ? "muted midpoint" : "clearer chroma path",
       swatches: row.steps.map((step) => ({
         color: step.hex,
+        emphasisLabel: getComparisonEmphasisLabel(row.label, step.position),
         inSrgb: step.inSrgb,
         label: `${Math.round(step.position * 100)}%`,
       })),
@@ -108,6 +110,17 @@ function isLabOrOklchRow(
   row: InterpolationRow
 ): row is InterpolationRow & { readonly label: "Lab" | "OKLCH" } {
   return row.label === "Lab" || row.label === "OKLCH"
+}
+
+function getComparisonEmphasisLabel(
+  label: "Lab" | "OKLCH",
+  position: number
+) {
+  if (position !== 0.5) {
+    return null
+  }
+
+  return label === "Lab" ? "muted middle" : "cleaner middle"
 }
 
 function getGamutEdgeLabel(swatches: readonly GamutChromaSwatch[]) {

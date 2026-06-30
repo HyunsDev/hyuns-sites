@@ -1,4 +1,5 @@
 import { Switch } from "@hyunsdev/ui/components/switch"
+import { ColorSpaceSolidCubeSwitch } from "@/color-models/ColorSpaceSolidCubeSwitch"
 import {
   GamutModeSelect,
   SolidBaseModelSelect,
@@ -79,9 +80,7 @@ export function ColorSpaceSolidSettingsPanel({
         selectedBaseModelId={selectedBaseModelId}
         onSelect={onModelSelect}
       />
-      <SettingsSwitchRow
-        label="Cube로 표시"
-        ariaLabel="Toggle cube coordinate model"
+      <ColorSpaceSolidCubeSwitch
         checked={cubeEnabled}
         disabled={!cubeSupported}
         onCheckedChange={onCubeEnabledChange}

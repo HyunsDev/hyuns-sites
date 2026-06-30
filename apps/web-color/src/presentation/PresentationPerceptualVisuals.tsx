@@ -114,9 +114,14 @@ function GamutChromaChip({ swatch }: GamutChromaChipProps) {
 
 export function LabToOklabComparison() {
   return (
-    <div className="grid gap-[2.2cqw]">
+    <div className="grid gap-[1.25cqw]">
       {createLabToOklabComparisonRows().map((row) => (
-        <ComparisonRow key={row.label} label={row.label} swatches={row.swatches} />
+        <ComparisonRow
+          key={row.label}
+          label={row.label}
+          note={row.note}
+          swatches={row.swatches}
+        />
       ))}
     </div>
   )
@@ -219,25 +224,53 @@ function MetricTile({ active = false, label, value }: MetricTileProps) {
 
 type ComparisonRowProps = {
   readonly label: string
+  readonly note: string
   readonly swatches: readonly ComparisonSwatch[]
 }
 
-function ComparisonRow({ label, swatches }: ComparisonRowProps) {
+function ComparisonRow({ label, note, swatches }: ComparisonRowProps) {
   return (
-    <div className="grid gap-[0.65cqw]">
-      <span className="font-mono text-[clamp(0.68rem,1.1cqw,0.9rem)] leading-none font-bold text-text-muted">
-        {label}
-      </span>
-      <div className="grid grid-cols-7 overflow-hidden rounded-sm border border-border">
+    <div className="grid gap-[0.75cqw] rounded-md border border-border bg-background-primary/84 p-[1cqw]">
+      <div className="flex items-center justify-between gap-[1cqw]">
+        <span className="font-mono text-[clamp(0.68rem,1.1cqw,0.9rem)] leading-none font-bold">
+          {label}
+        </span>
+        <span className="font-mono text-[clamp(0.56rem,0.92cqw,0.74rem)] leading-none font-bold text-text-muted">
+          {note}
+        </span>
+      </div>
+      <div className="grid grid-cols-7 gap-[0.28cqw]">
         {swatches.map((swatch) => (
-          <div
-            key={`${label}-${swatch.label}`}
-            className="h-[5.2cqw] min-h-7"
-            style={{ backgroundColor: swatch.color }}
-            title={`${label} ${swatch.label}`}
-          />
+          <ComparisonSwatchChip key={`${label}-${swatch.label}`} swatch={swatch} />
         ))}
       </div>
+    </div>
+  )
+}
+
+type ComparisonSwatchChipProps = {
+  readonly swatch: ComparisonSwatch
+}
+
+function ComparisonSwatchChip({ swatch }: ComparisonSwatchChipProps) {
+  return (
+    <div className="grid gap-[0.35cqw]">
+      <div
+        className={cn(
+          "h-[5.2cqw] min-h-7 rounded-sm border border-border",
+          swatch.emphasisLabel && "border-text-normal ring-2 ring-text-normal/30"
+        )}
+        style={{ backgroundColor: swatch.color }}
+        title={swatch.emphasisLabel ?? swatch.label}
+      />
+      <code
+        className={cn(
+          "truncate text-center text-[clamp(0.45rem,0.72cqw,0.62rem)] leading-none text-text-muted",
+          swatch.emphasisLabel && "font-bold text-text-normal"
+        )}
+      >
+        {swatch.emphasisLabel ?? swatch.label}
+      </code>
     </div>
   )
 }

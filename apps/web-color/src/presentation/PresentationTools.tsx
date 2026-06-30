@@ -5,6 +5,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   FullscreenIcon,
+  HouseIcon,
   MinimizeIcon,
 } from "lucide-react"
 
@@ -43,6 +44,7 @@ export function PresentationTools({
   const [fullscreenEnabled, setFullscreenEnabled] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const slideLabel = `${currentIndex + 1} / ${slideCount}`
+  const homeLabel = "Go to home"
   const fullscreenLabel = isFullscreen ? "Exit fullscreen" : "Enter fullscreen"
 
   const syncFullscreenState = useCallback(() => {
@@ -65,6 +67,10 @@ export function PresentationTools({
     }
 
     void navigate({ href: buildPresentationSlideHref(slideId) })
+  }
+
+  function navigateToHome() {
+    void navigate({ href: "/" })
   }
 
   async function toggleFullscreen() {
@@ -119,6 +125,17 @@ export function PresentationTools({
           onClick={() => navigateToSlide(nextSlideId)}
         >
           <ArrowRightIcon />
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button
+          type="button"
+          size="icon-sm"
+          aria-label={homeLabel}
+          title={homeLabel}
+          onClick={navigateToHome}
+        >
+          <HouseIcon />
         </Button>
       </ButtonGroup>
       <ButtonGroup>

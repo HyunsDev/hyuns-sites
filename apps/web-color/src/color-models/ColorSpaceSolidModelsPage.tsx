@@ -20,56 +20,22 @@ import { COLOR_SPACE_MODEL_BY_ID } from "@/color-models/color-space-models"
 import { ColorSpaceSolidSettingsPanel } from "@/color-models/ColorSpaceSolidSettingsPanel"
 import { ColorSpaceSolidOverlayTools } from "@/color-models/ColorSpaceSolidOverlayTools"
 import { getSolidModelKeyboardAction } from "@/color-models/color-space-solid-keyboard"
-import type {
-  BaseColorSpaceModelId,
-  ColorSpaceModelId,
-  HueCubeBaseModelId,
-  HueCubeModelId,
-} from "@/color-models/color-space-models"
+import type { ColorSpaceModelId } from "@/color-models/color-space-models"
 import {
   getBaseColorSpaceModelId,
   isHueCubeModelId,
 } from "@/color-models/color-space-models"
+import {
+  getSolidHueCubeModelId,
+  resolveSolidHueCubeModelId,
+} from "@/color-models/color-space-solid-cube-models"
 import { SolidColorSpaceModelCanvas } from "@/color-models/SolidColorSpaceModelCanvas"
 import { PlaygroundStage } from "@/playground/PlaygroundRoute"
 
 const CIE_REFERENCE_MODEL_IDS = ["xyz", "xyy"] as const
 
-type SolidHueCubeBaseModelId = Exclude<HueCubeBaseModelId, "hwb">
-
-const CUBE_MODEL_BY_BASE_ID = {
-  hsl: "hsl-cube",
-  hsv: "hsv-cube",
-  lch: "lch-cube",
-  oklch: "oklch-cube",
-} as const satisfies Record<SolidHueCubeBaseModelId, HueCubeModelId>
-
 function isCieReferenceModel(modelId: ColorSpaceModelId) {
   return CIE_REFERENCE_MODEL_IDS.some((item) => item === modelId)
-}
-
-function isHueCubeBaseModelId(
-  modelId: BaseColorSpaceModelId
-): modelId is SolidHueCubeBaseModelId {
-  return (
-    modelId === "hsl" ||
-    modelId === "hsv" ||
-    modelId === "lch" ||
-    modelId === "oklch"
-  )
-}
-
-function getCubeModelId(modelId: BaseColorSpaceModelId) {
-  return isHueCubeBaseModelId(modelId) ? CUBE_MODEL_BY_BASE_ID[modelId] : null
-}
-
-function resolveSolidModelId(
-  modelId: BaseColorSpaceModelId,
-  cubeEnabled: boolean
-) {
-  const cubeModelId = getCubeModelId(modelId)
-
-  return cubeEnabled && cubeModelId ? cubeModelId : modelId
 }
 
 function isSolidGamutModeSupported(
@@ -97,7 +63,7 @@ export function ColorSpaceSolidModelsPage() {
   )
   const selectedModel = COLOR_SPACE_MODEL_BY_ID[selectedModelId]
   const selectedBaseModelId = getBaseColorSpaceModelId(selectedModel.id)
-  const cubeModelId = getCubeModelId(selectedBaseModelId)
+  const cubeModelId = getSolidHueCubeModelId(selectedBaseModelId)
   const cubeSupported = cubeModelId !== null
   const cubeEnabled = isHueCubeModelId(selectedModel.id)
   const gamutRendering = useMemo(
@@ -192,10 +158,12 @@ export function ColorSpaceSolidModelsPage() {
         slice={slice}
         onGamutSelect={setSelectedGamutId}
         onModelSelect={(modelId) => {
-          selectSolidModel(resolveSolidModelId(modelId, cubeEnabled))
+          selectSolidModel(resolveSolidHueCubeModelId(modelId, cubeEnabled))
         }}
         onCubeEnabledChange={(enabled) => {
-          selectSolidModel(resolveSolidModelId(selectedBaseModelId, enabled))
+          selectSolidModel(
+            resolveSolidHueCubeModelId(selectedBaseModelId, enabled)
+          )
         }}
         onGuidesEnabledChange={setShowGuides}
         onWireframeChange={setShowWireframe}

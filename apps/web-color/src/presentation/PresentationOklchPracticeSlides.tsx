@@ -5,6 +5,7 @@ import {
   SlideTwoColumn,
   SlideVisualStage,
 } from "@/presentation/PresentationSlideLayout"
+import { PresentationSolidModelVisual } from "@/presentation/PresentationSolidModelVisual"
 import {
   GradientInterpolationComparison,
   HslOklchPaletteComparison,
@@ -17,6 +18,26 @@ import {
   StateColorRelationDemo,
   ThemeTokenLightnessMap,
 } from "@/presentation/PresentationOklchSystemVisuals"
+
+export function Part2IntroSlide() {
+  return (
+    <section
+      className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
+      aria-label="2부: 당신이 OKLCH를 사용해야 하는 이유"
+    >
+      <PresentationSolidModelVisual />
+      <div className="absolute inset-x-[8%] top-[72%] grid justify-items-center gap-[2cqh] text-center">
+        <p className="font-mono text-[clamp(0.72rem,1.25cqw,1.05rem)] leading-none font-bold tracking-normal text-text-muted">
+          2부
+        </p>
+        <h1 className="max-w-[34ch] text-[clamp(1.65rem,4.8cqw,3.25rem)] leading-[1.18] font-bold tracking-normal text-balance">
+          <span className="block">OKLCH</span>
+          <span className="block">색을 시스템으로 설계하기</span>
+        </h1>
+      </div>
+    </section>
+  )
+}
 
 export function WhyOklchSlide() {
   return (

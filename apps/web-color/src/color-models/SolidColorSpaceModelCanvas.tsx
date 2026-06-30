@@ -10,14 +10,12 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 
 import { ColorSpaceAxisLabelLayer } from "@/color-models/ColorSpaceAxisLabelLayer"
+import { SolidColorSpaceStatsOverlay } from "@/color-models/SolidColorSpaceStatsOverlay"
 import { getResponsiveCameraScale } from "@/color-models/color-space-camera"
 import { createAxisLabelProjector } from "@/color-models/color-space-axis-label-projection"
 import { getColorSpaceAxisLabels } from "@/color-models/color-space-axis-labels"
 import type { SolidColorSpaceMesh } from "@/color-models/color-space-solid-mesh"
-import {
-  getColorGamutRenderLabel,
-  type ColorGamutRendering,
-} from "@/color-models/color-gamut"
+import type { ColorGamutRendering } from "@/color-models/color-gamut"
 import type { ColorSpaceModelDefinition } from "@/color-models/color-space-models"
 import {
   getThreeOutputColorSpace,
@@ -45,18 +43,22 @@ export function SolidColorSpaceModelCanvas({
   gamutRendering,
   mesh,
   model,
+  showStats = true,
   sliceMesh,
   showGuides,
   showWireframe,
+  surface = "panel",
 }: {
   readonly autoRotate: boolean
   readonly className?: string
   readonly gamutRendering: ColorGamutRendering
   readonly mesh: SolidColorSpaceMesh
   readonly model: ColorSpaceModelDefinition
+  readonly showStats?: boolean
   readonly sliceMesh?: SolidColorSpaceMesh | null
   readonly showGuides: boolean
   readonly showWireframe: boolean
+  readonly surface?: "panel" | "transparent"
 }) {
   const { resolvedTheme } = useTheme()
   const hostRef = useRef<HTMLDivElement | null>(null)
@@ -69,7 +71,6 @@ export function SolidColorSpaceModelCanvas({
     () => getColorSpaceAxisLabels(model.id),
     [model.id]
   )
-  const gamutRenderLabel = getColorGamutRenderLabel(gamutRendering)
 
   useEffect(() => {
     autoRotateRef.current = autoRotate
@@ -232,7 +233,10 @@ export function SolidColorSpaceModelCanvas({
     <div
       ref={hostRef}
       className={cn(
-        "relative min-h-[320px] overflow-hidden rounded-md border border-border bg-background-primary shadow-sm md:min-h-[520px]",
+        "relative min-h-[320px] overflow-hidden md:min-h-[520px]",
+        surface === "panel"
+          ? "rounded-md border border-border bg-background-primary shadow-sm"
+          : "bg-transparent",
         className
       )}
     >
@@ -246,24 +250,13 @@ export function SolidColorSpaceModelCanvas({
         labels={axisLabels}
         className={!showGuides ? "hidden" : undefined}
       />
-      {showGuides && (
-        <div className="pointer-events-none absolute top-3 left-3 hidden max-w-[calc(100%-1.5rem)] flex-wrap items-center gap-2 lg:flex">
-          <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-normal shadow-sm backdrop-blur">
-            {mesh.vertexCount.toLocaleString()} vertices
-          </span>
-          <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-normal shadow-sm backdrop-blur">
-            {mesh.triangleCount.toLocaleString()} triangles
-          </span>
-          <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
-            {gamutRenderLabel}
-          </span>
-          {sliceMesh && (
-            <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
-              {sliceMesh.shapeLabel}
-            </span>
-          )}
-        </div>
-      )}
+      {showGuides && showStats ? (
+        <SolidColorSpaceStatsOverlay
+          gamutRendering={gamutRendering}
+          mesh={mesh}
+          sliceMesh={sliceMesh}
+        />
+      ) : null}
     </div>
   )
 }

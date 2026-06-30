@@ -61,3 +61,23 @@ test("createLabToOklabComparisonRows returns equal-length comparison rows", () =
     assert.equal(row.swatches.length, 7)
   }
 })
+
+test("createLabToOklabComparisonRows marks the middle path comparison", () => {
+  const rows = createLabToOklabComparisonRows()
+  const labRow = rows.find((row) => row.label === "Lab")
+  const oklchRow = rows.find((row) => row.label === "OKLCH")
+
+  assert.ok(labRow)
+  assert.ok(oklchRow)
+
+  if (!labRow || !oklchRow) {
+    throw new Error("Expected Lab and OKLCH comparison rows")
+  }
+
+  assert.equal(labRow.note, "muted midpoint")
+  assert.equal(oklchRow.note, "clearer chroma path")
+  assert.equal(labRow.swatches[3]?.emphasisLabel, "muted middle")
+  assert.equal(oklchRow.swatches[3]?.emphasisLabel, "cleaner middle")
+  assert.ok(labRow.swatches.every((swatch) => swatch.inSrgb))
+  assert.ok(oklchRow.swatches.every((swatch) => swatch.inSrgb))
+})

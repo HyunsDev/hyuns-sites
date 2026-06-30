@@ -6,15 +6,27 @@ export type SolidSliceModelId = Extract<
   | "hsl-cube"
   | "hsv"
   | "hsv-cube"
+  | "lab"
   | "lch"
   | "lch-cube"
   | "oklch"
   | "oklch-cube"
   | "rgb"
 >
-export type SolidSliceAxisId = "b" | "c" | "g" | "h" | "l" | "r" | "s" | "v"
+export type SolidSliceAxisId =
+  | "a"
+  | "b"
+  | "c"
+  | "g"
+  | "h"
+  | "l"
+  | "r"
+  | "s"
+  | "v"
 
 export type SolidSliceAxis = {
+  readonly color: string
+  readonly coordinateLabel: string
   readonly defaultValue: number
   readonly id: SolidSliceAxisId
   readonly label: string
@@ -33,6 +45,8 @@ const SLICE_AXES_BY_MODEL = {
   rgb: [
     {
       id: "r",
+      color: "#ef4444",
+      coordinateLabel: "X axis",
       label: "Red",
       min: 0,
       max: 1,
@@ -42,6 +56,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "g",
+      color: "#22c55e",
+      coordinateLabel: "Y axis",
       label: "Green",
       min: 0,
       max: 1,
@@ -51,6 +67,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "b",
+      color: "#3b82f6",
+      coordinateLabel: "Z axis",
       label: "Blue",
       min: 0,
       max: 1,
@@ -62,6 +80,8 @@ const SLICE_AXES_BY_MODEL = {
   hsl: [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "Angle",
       label: "Hue",
       min: 0,
       max: 360,
@@ -71,6 +91,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "s",
+      color: "#06b6d4",
+      coordinateLabel: "Radius",
       label: "Saturation",
       min: 0,
       max: 1,
@@ -80,6 +102,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "l",
+      color: "#64748b",
+      coordinateLabel: "Vertical axis",
       label: "Lightness",
       min: 0,
       max: 1,
@@ -91,6 +115,8 @@ const SLICE_AXES_BY_MODEL = {
   "hsl-cube": [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "X axis",
       label: "Hue",
       min: 0,
       max: 360,
@@ -100,6 +126,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "s",
+      color: "#06b6d4",
+      coordinateLabel: "Z axis",
       label: "Saturation",
       min: 0,
       max: 1,
@@ -109,6 +137,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "l",
+      color: "#64748b",
+      coordinateLabel: "Y axis",
       label: "Lightness",
       min: 0,
       max: 1,
@@ -120,6 +150,8 @@ const SLICE_AXES_BY_MODEL = {
   hsv: [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "Angle",
       label: "Hue",
       min: 0,
       max: 360,
@@ -129,6 +161,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "s",
+      color: "#a855f7",
+      coordinateLabel: "Radius",
       label: "Saturation",
       min: 0,
       max: 1,
@@ -138,6 +172,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "v",
+      color: "#64748b",
+      coordinateLabel: "Vertical axis",
       label: "Value",
       min: 0,
       max: 1,
@@ -149,6 +185,8 @@ const SLICE_AXES_BY_MODEL = {
   "hsv-cube": [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "X axis",
       label: "Hue",
       min: 0,
       max: 360,
@@ -158,6 +196,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "s",
+      color: "#a855f7",
+      coordinateLabel: "Z axis",
       label: "Saturation",
       min: 0,
       max: 1,
@@ -167,6 +207,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "v",
+      color: "#64748b",
+      coordinateLabel: "Y axis",
       label: "Value",
       min: 0,
       max: 1,
@@ -175,9 +217,46 @@ const SLICE_AXES_BY_MODEL = {
       unit: "percent",
     },
   ],
+  lab: [
+    {
+      id: "l",
+      color: "#64748b",
+      coordinateLabel: "Vertical axis",
+      label: "Lightness",
+      min: 0,
+      max: 1,
+      step: 0.01,
+      defaultValue: 0.62,
+      unit: "percent",
+    },
+    {
+      id: "a",
+      color: "#db2777",
+      coordinateLabel: "a axis",
+      label: "Green - Red",
+      min: -200,
+      max: 200,
+      step: 1,
+      defaultValue: 0,
+      unit: "number",
+    },
+    {
+      id: "b",
+      color: "#eab308",
+      coordinateLabel: "b axis",
+      label: "Blue - Yellow",
+      min: -200,
+      max: 200,
+      step: 1,
+      defaultValue: 0,
+      unit: "number",
+    },
+  ],
   lch: [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "Angle",
       label: "Hue",
       min: 0,
       max: 360,
@@ -187,6 +266,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "c",
+      color: "#10b981",
+      coordinateLabel: "Radius",
       label: "Chroma",
       min: 0,
       max: 150,
@@ -196,6 +277,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "l",
+      color: "#64748b",
+      coordinateLabel: "Vertical axis",
       label: "Lightness",
       min: 0,
       max: 1,
@@ -207,6 +290,8 @@ const SLICE_AXES_BY_MODEL = {
   "lch-cube": [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "X axis",
       label: "Hue",
       min: 0,
       max: 360,
@@ -216,6 +301,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "c",
+      color: "#10b981",
+      coordinateLabel: "Z axis",
       label: "Chroma",
       min: 0,
       max: 150,
@@ -225,6 +312,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "l",
+      color: "#64748b",
+      coordinateLabel: "Y axis",
       label: "Lightness",
       min: 0,
       max: 1,
@@ -236,6 +325,8 @@ const SLICE_AXES_BY_MODEL = {
   oklch: [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "Angle",
       label: "Hue",
       min: 0,
       max: 360,
@@ -245,6 +336,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "c",
+      color: "#e11d48",
+      coordinateLabel: "Radius",
       label: "Chroma",
       min: 0,
       max: 0.4,
@@ -254,6 +347,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "l",
+      color: "#64748b",
+      coordinateLabel: "Vertical axis",
       label: "Lightness",
       min: 0,
       max: 1,
@@ -265,6 +360,8 @@ const SLICE_AXES_BY_MODEL = {
   "oklch-cube": [
     {
       id: "h",
+      color: "#f59e0b",
+      coordinateLabel: "X axis",
       label: "Hue",
       min: 0,
       max: 360,
@@ -274,6 +371,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "c",
+      color: "#e11d48",
+      coordinateLabel: "Z axis",
       label: "Chroma",
       min: 0,
       max: 0.4,
@@ -283,6 +382,8 @@ const SLICE_AXES_BY_MODEL = {
     },
     {
       id: "l",
+      color: "#64748b",
+      coordinateLabel: "Y axis",
       label: "Lightness",
       min: 0,
       max: 1,
@@ -302,6 +403,7 @@ export function isSolidSliceModel(
     modelId === "hsl-cube" ||
     modelId === "hsv" ||
     modelId === "hsv-cube" ||
+    modelId === "lab" ||
     modelId === "lch" ||
     modelId === "lch-cube" ||
     modelId === "oklch" ||

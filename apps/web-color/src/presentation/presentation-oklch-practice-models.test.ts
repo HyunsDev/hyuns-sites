@@ -1,6 +1,8 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
+import { inGamut, parse } from "culori"
+
 import {
   COLOR_MODEL_DECISION_ROWS,
   createGradientComparisonRows,
@@ -9,7 +11,10 @@ import {
   createOklchPaletteScale,
   createStateColorRelations,
   createThemeLightnessRows,
+  type PaletteSwatch,
 } from "./presentation-oklch-practice-models.ts"
+
+const isInSrgb = inGamut("rgb")
 
 test("createHslOklchPaletteComparisonRows compares HSL and OKLCH rows", () => {
   const rows = createHslOklchPaletteComparisonRows()
@@ -20,6 +25,7 @@ test("createHslOklchPaletteComparisonRows compares HSL and OKLCH rows", () => {
   )
   assert.equal(rows[0]?.swatches.length, 10)
   assert.equal(rows[1]?.swatches.at(-1)?.label, "900")
+  assertEverySwatchSrgb(rows.flatMap((row) => row.swatches))
 })
 
 test("createOklchLightnessScale returns token-like lightness stops", () => {
@@ -30,6 +36,7 @@ test("createOklchLightnessScale returns token-like lightness stops", () => {
     ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900"]
   )
   assert.ok((scale[0]?.lightness ?? 0) > (scale.at(-1)?.lightness ?? 0))
+  assertEverySwatchSrgb(scale)
 })
 
 test("createOklchPaletteScale derives hue and chroma from a CSS color", () => {
@@ -38,6 +45,7 @@ test("createOklchPaletteScale derives hue and chroma from a CSS color", () => {
   assert.equal(result.status, "parsed")
   assert.equal(result.swatches.length, 10)
   assert.ok(result.swatches.some((swatch) => swatch.css.startsWith("oklch(")))
+  assertEverySwatchSrgb(result.swatches)
 })
 
 test("createStateColorRelations keeps state colors tied to a base color", () => {
@@ -77,3 +85,13 @@ test("COLOR_MODEL_DECISION_ROWS closes the talk with three tool choices", () => 
     ["RGB", "HSL/HSV", "OKLCH"]
   )
 })
+
+function assertEverySwatchSrgb(swatches: readonly PaletteSwatch[]): void {
+  for (const swatch of swatches) {
+    const parsed = parse(swatch.css)
+
+    assert.ok(swatch.inSrgb, swatch.css)
+    assert.ok(parsed, swatch.css)
+    assert.ok(isInSrgb(parsed), swatch.css)
+  }
+}

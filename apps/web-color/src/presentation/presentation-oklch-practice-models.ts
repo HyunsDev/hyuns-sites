@@ -1,5 +1,5 @@
 import { converter, formatHex, parse, toGamut } from "culori"
-import type { Color, Oklch } from "culori"
+import type { Oklch } from "culori"
 
 import { formatCssColor } from "../color-models/color-css-format.ts"
 import { isColorInGamut } from "../color-models/color-gamut-analysis.ts"
@@ -18,6 +18,7 @@ import {
   type ThemeToken,
   type ThemeTokenRow,
 } from "./presentation-oklch-practice-data.ts"
+import { createOklchScale, createPaletteSwatch } from "./presentation-oklch-scale.ts"
 
 const toOklch = converter("oklch")
 const mapToSrgb = toGamut("rgb", "oklch")
@@ -161,41 +162,6 @@ export function createGradientComparisonRows(): readonly GradientComparisonRow[]
         label: `${Math.round(step.position * 100)}%`,
       })),
     }))
-}
-
-function createOklchScale(input: {
-  readonly chroma: number
-  readonly hue: number
-}): readonly PaletteSwatch[] {
-  return PALETTE_STOPS.map((stop) =>
-    createPaletteSwatch({
-      color: {
-        mode: "oklch",
-        c: input.chroma,
-        h: input.hue,
-        l: stop.lightness / 100,
-      },
-      label: stop.label,
-      lightness: stop.lightness,
-    })
-  )
-}
-
-function createPaletteSwatch(input: {
-  readonly color: Color
-  readonly label: string
-  readonly lightness: number
-}): PaletteSwatch {
-  const inSrgb = isColorInGamut(input.color, "rgb")
-  const displayColor = inSrgb ? input.color : mapToSrgb(input.color)
-
-  return {
-    color: formatHex(displayColor),
-    css: formatCssColor(input.color, "oklch"),
-    inSrgb,
-    label: input.label,
-    lightness: input.lightness,
-  }
 }
 
 function parseBaseOklch(input: string): Oklch | null {

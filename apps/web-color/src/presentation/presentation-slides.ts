@@ -2,6 +2,7 @@ import type { ComponentType } from "react"
 
 import {
   AgendaPresentationSlide,
+  ColorModelIntroPresentationSlide,
   IntroPresentationSlide,
   RgbIntroPresentationSlide,
 } from "@/presentation/PresentationSlides"
@@ -16,13 +17,16 @@ import {
   RgbDerivedLimitsSlide,
 } from "@/presentation/PresentationHslHsvSlides"
 import {
+  GamutConceptSlide,
   LabModelSlide,
   LabToOklabSlide,
   LchModelSlide,
   OklchModelSlide,
   OutOfGamutSlide,
   Part1SummarySlide,
+  PerceptualGamutShapeSlide,
   PerceptualModelsSlide,
+  RgbGamutCubeSlide,
 } from "@/presentation/PresentationPerceptualSlides"
 import {
   ChooseTheToolSlide,
@@ -31,6 +35,7 @@ import {
   OklchGradientSlide,
   OklchLightnessSlide,
   OklchStateColorsSlide,
+  Part2IntroSlide,
   WhyOklchSlide,
 } from "@/presentation/PresentationOklchPracticeSlides"
 import {
@@ -42,6 +47,7 @@ import {
 export const PRESENTATION_SLIDE_IDS = [
   "intro",
   "agenda",
+  "color-models",
   "rgb-intro",
   "rgb-model",
   "rgb-strengths",
@@ -57,10 +63,14 @@ export const PRESENTATION_SLIDE_IDS = [
   "perceptual-models",
   "lab-model",
   "lch-model",
-  "out-of-gamut",
   "lab-to-oklab",
   "oklch-model",
+  "out-of-gamut",
+  "gamut-concept",
+  "rgb-gamut-cube",
+  "perceptual-gamut-shape",
   "part-1-summary",
+  "part-2-intro",
   "why-oklch",
   "oklch-lightness",
   "oklch-brand-palette",
@@ -94,6 +104,11 @@ const FALLBACK_PRESENTATION_SLIDE = {
 export const PRESENTATION_SLIDES = [
   FALLBACK_PRESENTATION_SLIDE,
   { component: AgendaPresentationSlide, id: "agenda", title: "오늘의 지도" },
+  {
+    component: ColorModelIntroPresentationSlide,
+    id: "color-models",
+    title: "색 모델",
+  },
   { component: RgbIntroPresentationSlide, id: "rgb-intro", title: "RGB" },
   {
     component: RgbModelSlide,
@@ -129,10 +144,22 @@ export const PRESENTATION_SLIDES = [
   },
   { component: LabModelSlide, id: "lab-model", title: "Lab" },
   { component: LchModelSlide, id: "lch-model", title: "LCH" },
-  { component: OutOfGamutSlide, id: "out-of-gamut", title: "Out of gamut" },
   { component: LabToOklabSlide, id: "lab-to-oklab", title: "Lab에서 Oklab으로" },
   { component: OklchModelSlide, id: "oklch-model", title: "OKLCH" },
+  { component: OutOfGamutSlide, id: "out-of-gamut", title: "Out of gamut" },
+  { component: GamutConceptSlide, id: "gamut-concept", title: "색역" },
+  {
+    component: RgbGamutCubeSlide,
+    id: "rgb-gamut-cube",
+    title: "sRGB는 xy에서 삼각형이다",
+  },
+  {
+    component: PerceptualGamutShapeSlide,
+    id: "perceptual-gamut-shape",
+    title: "Lab 단면에서는 경계가 휘어진다",
+  },
   { component: Part1SummarySlide, id: "part-1-summary", title: "1부 정리" },
+  { component: Part2IntroSlide, id: "part-2-intro", title: "2부" },
   { component: WhyOklchSlide, id: "why-oklch", title: "HSL으로는 부족한 이유" },
   {
     component: OklchLightnessSlide,
