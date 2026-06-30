@@ -5,3 +5,5 @@ coverage
 .turbo
 .tanstack
 .DS_Store
+tmp/
+.pnpm-store/
