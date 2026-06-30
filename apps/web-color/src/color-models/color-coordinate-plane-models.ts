@@ -35,10 +35,20 @@ const PLANE_IDS_BY_MODEL = {
     ["h", "v", "s", "H x V"],
     ["s", "v", "h", "S x V"],
   ],
+  lab: [
+    ["a", "b", "l", "a x b"],
+    ["a", "l", "b", "a x L"],
+    ["b", "l", "a", "b x L"],
+  ],
   lch: [
     ["h", "c", "l", "H x C"],
     ["h", "l", "c", "H x L"],
     ["c", "l", "h", "C x L"],
+  ],
+  oklab: [
+    ["a", "b", "l", "a x b"],
+    ["a", "l", "b", "a x L"],
+    ["b", "l", "a", "b x L"],
   ],
   oklch: [
     ["h", "c", "l", "H x C"],

@@ -1,7 +1,11 @@
 import type { Color } from "culori"
 
 import type { ColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
-import { hueCubeToPoint } from "@/color-models/color-space-hue-cube"
+import {
+  hueChromaCubeToPoint,
+  hueCubeToPoint,
+} from "@/color-models/color-space-hue-cube"
+import { buildLabSlice } from "@/color-models/color-space-solid-lab-slice-mesh"
 import {
   appendGridSurface,
   appendVertex,
@@ -36,6 +40,8 @@ export function buildSolidSliceMesh(
       return buildHsvSlice(slice, options)
     case "hsv-cube":
       return buildHsvCubeSlice(slice, options)
+    case "lab":
+      return buildLabSlice(slice, options)
     case "lch":
       return buildPerceptualSlice(slice, options, "lch", 150)
     case "lch-cube":
@@ -77,7 +83,7 @@ function buildPerceptualSlice(
       return appendVertex(
         builder,
         shape === "cube"
-          ? hueCubeToPoint(h, l, c / maxChroma)
+          ? hueChromaCubeToPoint(h, c / maxChroma, l)
           : polarToPoint(h, c / maxChroma, normalizeUnit(l)),
         color,
         options

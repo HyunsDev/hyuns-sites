@@ -2,6 +2,7 @@ import assert from "node:assert/strict"
 import test from "node:test"
 
 import {
+  createHslHsvComparisonRows,
   createHslLightnessTrapSwatches,
   createHsvAxisPaletteRows,
   formatCoordinateCssOutput,
@@ -47,6 +48,16 @@ test("createHsvAxisPaletteRows changes only one HSV axis per row", () => {
   assert.equal(valueRow.swatches[0]?.coordinate.s, 90)
 })
 
+test("createHslHsvComparisonRows returns ten swatches for each model", () => {
+  const rows = createHslHsvComparisonRows()
+
+  assert.equal(rows.length, 2)
+
+  for (const row of rows) {
+    assert.equal(row.swatches.length, 10)
+  }
+})
+
 test("createHslLightnessTrapSwatches keeps HSL lightness fixed at 50", () => {
   const swatches = createHslLightnessTrapSwatches()
 
@@ -56,6 +67,20 @@ test("createHslLightnessTrapSwatches keeps HSL lightness fixed at 50", () => {
     assert.equal(swatch.coordinate.modelId, "hsl")
     assert.equal(swatch.coordinate.l, 50)
   }
+})
+
+test("createHslLightnessTrapSwatches exposes uneven perceived brightness", () => {
+  const swatches = createHslLightnessTrapSwatches()
+
+  assert.deepEqual(
+    swatches.map((swatch) => swatch.label),
+    ["Yellow", "Green", "Red", "Blue"]
+  )
+  assert.deepEqual(
+    swatches.map((swatch) => swatch.relativeLuminancePercent),
+    [93, 72, 21, 7]
+  )
+  assert.ok((swatches[0]?.relativeLuminance ?? 0) > (swatches[3]?.relativeLuminance ?? 1))
 })
 
 test("requirePresentationPlane returns requested presentation control planes", () => {

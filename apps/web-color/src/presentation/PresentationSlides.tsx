@@ -1,12 +1,33 @@
+import { useMemo, useState } from "react"
+
 import { cn } from "@hyunsdev/ui/lib/utils"
 
+import {
+  detectColorGamutCapabilities,
+  resolveColorGamutRendering,
+} from "@/color-models/color-gamut"
+import type { ColorGamutCapabilities } from "@/color-models/color-gamut"
+import {
+  COLOR_SPACE_MODEL_BY_ID,
+  type ColorSpaceModelId,
+} from "@/color-models/color-space-models"
+import { buildSolidColorSpaceMesh } from "@/color-models/color-space-solid-mesh"
+import { SolidColorSpaceModelCanvas } from "@/color-models/SolidColorSpaceModelCanvas"
 import {
   PresentationSlideShell,
   SlideKeyword,
   SlideKeywords,
   SlideTwoColumn,
+  SlideVisualStage,
 } from "@/presentation/PresentationSlideLayout"
 import { PresentationSolidModelVisual } from "@/presentation/PresentationSolidModelVisual"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@hyunsdev/ui/components/select"
 
 const COLOR_MODEL_TIMELINE_STEPS = [
   {
@@ -26,6 +47,48 @@ const COLOR_MODEL_TIMELINE_STEPS = [
     caption: "설계",
   },
 ] as const
+
+const COLOR_MODEL_OVERVIEW_OPTIONS = [
+  {
+    id: "rgb",
+    role: "display",
+    summary: "화면이 출력하기 쉬운 세 채널 좌표",
+  },
+  {
+    id: "hsl",
+    role: "selection",
+    summary: "Hue, saturation, lightness로 색을 고르기 쉬운 좌표",
+  },
+  {
+    id: "hsv",
+    role: "picker",
+    summary: "컬러 피커의 saturation/value 평면과 잘 맞는 좌표",
+  },
+  {
+    id: "lab",
+    role: "perception",
+    summary: "사람이 느끼는 색 차이에 가까워지려는 좌표",
+  },
+  {
+    id: "lch",
+    role: "polar",
+    summary: "Lab을 lightness, chroma, hue로 다시 읽는 좌표",
+  },
+  {
+    id: "oklch",
+    role: "design",
+    summary: "현대 UI 팔레트와 상태 색 설계에 다루기 좋은 좌표",
+  },
+] as const satisfies readonly {
+  readonly id: ColorModelOverviewId
+  readonly role: string
+  readonly summary: string
+}[]
+
+type ColorModelOverviewId = Extract<
+  ColorSpaceModelId,
+  "hsl" | "hsv" | "lab" | "lch" | "oklch" | "rgb"
+>
 
 export function IntroPresentationSlide() {
   return (
@@ -67,13 +130,29 @@ export function AgendaPresentationSlide() {
   )
 }
 
+export function ColorModelIntroPresentationSlide() {
+  return (
+    <PresentationSlideShell ariaLabel="색 모델" title="색 모델">
+      <SlideTwoColumn variant="visualWide">
+        <ColorModelIntroCopy />
+        <SlideVisualStage className="min-h-0">
+          <ColorModelOverviewSelector />
+        </SlideVisualStage>
+      </SlideTwoColumn>
+    </PresentationSlideShell>
+  )
+}
+
 export function RgbIntroPresentationSlide() {
   return (
     <section
       className="@container/slide relative size-full overflow-hidden bg-background-secondary text-text-normal"
       aria-label="RGB: 기계가 좋아하는 색 모델"
     >
-      <PresentationSolidModelVisual modelId="rgb" variant="section" />
+      <PresentationSolidModelVisual
+        modelId="rgb"
+        variant="section"
+      />
       <div className="absolute inset-x-[8%] top-[72%] grid justify-items-center gap-[2cqh] text-center">
         <h1 className="max-w-[34ch] text-[clamp(1.65rem,4.8cqw,3.25rem)] leading-[1.18] font-bold tracking-normal text-balance">
           <span className="block">RGB</span>
@@ -81,6 +160,103 @@ export function RgbIntroPresentationSlide() {
         </h1>
       </div>
     </section>
+  )
+}
+
+function ColorModelIntroCopy() {
+  return (
+    <div className="grid content-center gap-[3.4cqh]">
+      <p className="max-w-[20ch] text-[clamp(1.12rem,2.45cqw,2.08rem)] leading-[1.12] font-bold tracking-normal text-balance">
+        색 모델은 색을 좌표로 읽는 방법이다.
+      </p>
+      <SlideKeywords className="gap-[1.7cqh]">
+        <SlideKeyword>어떤 축으로 나눌까</SlideKeyword>
+        <SlideKeyword>어떤 조작이 쉬울까</SlideKeyword>
+        <SlideKeyword>어떤 문제를 해결할까</SlideKeyword>
+      </SlideKeywords>
+    </div>
+  )
+}
+
+function ColorModelOverviewSelector() {
+  const [selectedModelId, setSelectedModelId] =
+    useState<ColorModelOverviewId>("rgb")
+  const [gamutCapabilities] = useState<ColorGamutCapabilities>(() =>
+    detectColorGamutCapabilities()
+  )
+  const model = COLOR_SPACE_MODEL_BY_ID[selectedModelId]
+  const selectedOption = getColorModelOverviewOption(selectedModelId)
+  const gamutRendering = useMemo(
+    () => resolveColorGamutRendering("srgb", gamutCapabilities),
+    [gamutCapabilities]
+  )
+  const mesh = useMemo(
+    () =>
+      buildSolidColorSpaceMesh(
+        model.id,
+        gamutRendering.mode.id,
+        gamutRendering.actualOutput.id
+      ),
+    [gamutRendering.actualOutput.id, gamutRendering.mode.id, model.id]
+  )
+
+  return (
+    <div className="relative h-full min-h-[36cqh]">
+      <SolidColorSpaceModelCanvas
+        autoRotate
+        gamutRendering={gamutRendering}
+        mesh={mesh}
+        model={model}
+        showGuides
+        showStats={false}
+        showWireframe
+        surface="transparent"
+        className="size-full min-h-0 scale-[1.08] md:min-h-0"
+      />
+      <div className="absolute right-0 bottom-0 z-10 grid w-[min(18rem,42cqw)] gap-2 rounded-md border border-border bg-background-primary/90 p-3 text-xs shadow-sm backdrop-blur">
+        <label className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-2">
+          <span className="font-medium text-text-muted">Model</span>
+          <Select
+            value={selectedModelId}
+            onValueChange={(value) => {
+              if (isColorModelOverviewId(value)) {
+                setSelectedModelId(value)
+              }
+            }}
+          >
+            <SelectTrigger
+              size="sm"
+              className="w-full justify-between bg-background-primary/75"
+              aria-label="Select color model"
+            >
+              <SelectValue aria-label={model.name}>{model.name}</SelectValue>
+            </SelectTrigger>
+            <SelectContent position="popper">
+              {COLOR_MODEL_OVERVIEW_OPTIONS.map((option) => {
+                const optionModel = COLOR_SPACE_MODEL_BY_ID[option.id]
+
+                return (
+                  <SelectItem key={option.id} value={option.id}>
+                    {optionModel.name}
+                  </SelectItem>
+                )
+              })}
+            </SelectContent>
+          </Select>
+        </label>
+        <div className="grid gap-1 border-t border-border pt-2">
+          <span className="font-mono text-[clamp(0.56rem,0.92cqw,0.74rem)] leading-none font-bold text-text-muted">
+            {selectedOption.role}
+          </span>
+          <span className="text-[clamp(0.72rem,1.08cqw,0.9rem)] leading-snug font-semibold text-balance">
+            {selectedOption.summary}
+          </span>
+          <code className="mt-1 text-[clamp(0.58rem,0.9cqw,0.74rem)] leading-none text-text-muted">
+            {model.coordinate}
+          </code>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -137,4 +313,18 @@ function ColorModelTimeline({ className }: ColorModelTimelineProps) {
       ))}
     </ol>
   )
+}
+
+function getColorModelOverviewOption(modelId: ColorModelOverviewId) {
+  const option = COLOR_MODEL_OVERVIEW_OPTIONS.find((item) => item.id === modelId)
+
+  if (!option) {
+    throw new RangeError(`Missing color model overview option for ${modelId}`)
+  }
+
+  return option
+}
+
+function isColorModelOverviewId(value: string): value is ColorModelOverviewId {
+  return COLOR_MODEL_OVERVIEW_OPTIONS.some((option) => option.id === value)
 }

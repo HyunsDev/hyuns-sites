@@ -6,7 +6,6 @@ import {
   SlideVisualStage,
 } from "@/presentation/PresentationSlideLayout"
 import {
-  ColorCoordinateControlDemo,
   HsvColorPickerDemo,
 } from "@/presentation/PresentationHslHsvControls"
 import {
@@ -16,6 +15,7 @@ import {
   LightnessComparisonGrid,
   ModelFamilyBridge,
 } from "@/presentation/PresentationHslHsvVisuals"
+import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelSlide"
 
 export function HslHsvIntroPresentationSlide() {
   return (
@@ -36,47 +36,39 @@ export function HslHsvIntroPresentationSlide() {
 
 export function HslModelSlide() {
   return (
-    <PresentationSlideShell ariaLabel="HSL" title="HSL">
-      <SlideTwoColumn variant="visualWide">
-        <SlideKeywords>
-          <SlideKeyword>H: Hue</SlideKeyword>
-          <SlideKeyword>S: Saturation</SlideKeyword>
-          <SlideKeyword>L: Lightness</SlideKeyword>
-        </SlideKeywords>
-        <SlideVisualStage>
-          <ColorCoordinateControlDemo modelId="hsl" planeAxisIds={{ x: "s", y: "l" }} />
-        </SlideVisualStage>
-      </SlideTwoColumn>
-    </PresentationSlideShell>
+    <PresentationSolidModelSlide
+      ariaLabel="HSL"
+      baseModelId="hsl"
+      targetCssColor="hsl(24 95% 58%)"
+      title="HSL"
+    />
   )
 }
 
 export function HsvModelSlide() {
   return (
-    <PresentationSlideShell ariaLabel="HSV" title="HSV">
-      <SlideTwoColumn variant="visualWide">
-        <SlideKeywords>
-          <SlideKeyword>H: Hue</SlideKeyword>
-          <SlideKeyword>S: Saturation</SlideKeyword>
-          <SlideKeyword>V: Value</SlideKeyword>
-        </SlideKeywords>
-        <SlideVisualStage>
-          <ColorCoordinateControlDemo modelId="hsv" planeAxisIds={{ x: "s", y: "v" }} />
-        </SlideVisualStage>
-      </SlideTwoColumn>
-    </PresentationSlideShell>
+    <PresentationSolidModelSlide
+      ariaLabel="HSV"
+      baseModelId="hsv"
+      targetCssColor="hsl(24 95% 58%)"
+      title="HSV"
+    />
   )
 }
 
 export function HsvPickerSlide() {
   return (
-    <PresentationSlideShell ariaLabel="HSV Color Picker" title="Color Picker는 왜 이렇게 생겼을까?">
-      <SlideTwoColumn variant="visualWide">
-        <SlideKeywords>
+    <PresentationSlideShell ariaLabel="HSL / HSV Color Picker" title="Color Picker는 왜 이렇게 생겼을까?">
+      <SlideTwoColumn
+        variant="visualWide"
+        className="max-md:grid-cols-[minmax(0,0.58fr)_minmax(0,1.42fr)] max-md:gap-[1cqw]"
+      >
+        <SlideKeywords className="max-md:gap-[0.8cqh] max-md:[&_p]:grid-cols-[0.18rem_minmax(0,1fr)] max-md:[&_p]:gap-[0.5cqw] max-md:[&_p]:text-[0.52rem] max-md:[&_p]:leading-[1.05]">
           <SlideKeyword>Hue</SlideKeyword>
-          <SlideKeyword>Saturation x Value</SlideKeyword>
+          <SlideKeyword>HSV: Saturation x Value</SlideKeyword>
+          <SlideKeyword>HSL: Saturation x Lightness</SlideKeyword>
         </SlideKeywords>
-        <SlideVisualStage>
+        <SlideVisualStage className="max-md:origin-center max-md:scale-[0.62]">
           <HsvColorPickerDemo />
         </SlideVisualStage>
       </SlideTwoColumn>

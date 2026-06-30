@@ -1,4 +1,4 @@
-import { formatHex } from "culori"
+import { converter, formatHex } from "culori"
 
 import { formatCssColor } from "../color-models/color-css-format.ts"
 import {
@@ -24,6 +24,11 @@ export type PresentationColorSwatch = {
   readonly color: string
   readonly coordinate: ColorCoordinate
   readonly label: string
+}
+
+export type HslLightnessTrapSwatch = PresentationColorSwatch & {
+  readonly relativeLuminance: number
+  readonly relativeLuminancePercent: number
 }
 
 export type HsvPresentationColorSwatch = {
@@ -62,6 +67,17 @@ export const HSL_HSV_SECTION_MODELS = [
 
 const HUE_STEPS = [0, 36, 72, 108, 144, 180, 216, 252, 288, 324] as const
 const PERCENT_STEPS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100] as const
+const toRgb = converter("rgb")
+
+const HSL_LIGHTNESS_TRAP_COORDINATES = [
+  { coordinate: { modelId: "hsl", h: 60, s: 100, l: 50 }, label: "Yellow" },
+  { coordinate: { modelId: "hsl", h: 120, s: 100, l: 50 }, label: "Green" },
+  { coordinate: { modelId: "hsl", h: 0, s: 100, l: 50 }, label: "Red" },
+  { coordinate: { modelId: "hsl", h: 240, s: 100, l: 50 }, label: "Blue" },
+] as const satisfies readonly {
+  readonly coordinate: HslCoordinate
+  readonly label: string
+}[]
 
 export function requirePresentationPlane(
   modelId: PresentationControlModelId,
@@ -89,8 +105,12 @@ export function formatCoordinateCssOutput(coordinate: ColorCoordinate) {
       return formatCssColor(toCuloriColor(coordinate), "hsl")
     case "hsv":
       return formatCssColor(toCuloriColor(coordinate), "rgb")
+    case "lab":
+      return formatCssColor(toCuloriColor(coordinate), "lab")
     case "oklch":
       return formatCssColor(toCuloriColor(coordinate), "oklch")
+    case "oklab":
+      return formatCssColor(toCuloriColor(coordinate), "oklab")
     case "lch":
     case "rgb":
       return formatCssColor(toCuloriColor(coordinate), "rgb")
@@ -134,7 +154,7 @@ export function createHslHsvComparisonRows(): readonly HslHsvComparisonRow[] {
   return [
     {
       label: "HSL Lightness",
-      swatches: [15, 30, 45, 60, 75].map((lightness) =>
+      swatches: PERCENT_STEPS.map((lightness) =>
         createSwatch(`${lightness}%`, {
           modelId: "hsl",
           h: 220,
@@ -145,20 +165,17 @@ export function createHslHsvComparisonRows(): readonly HslHsvComparisonRow[] {
     },
     {
       label: "HSV Value",
-      swatches: [20, 40, 60, 80, 100].map((value) =>
+      swatches: PERCENT_STEPS.map((value) =>
         createSwatch(`${value}%`, { modelId: "hsv", h: 220, s: 90, v: value })
       ),
     },
   ]
 }
 
-export function createHslLightnessTrapSwatches() {
-  return [
-    createSwatch("Blue", { modelId: "hsl", h: 240, s: 100, l: 50 }),
-    createSwatch("Yellow", { modelId: "hsl", h: 60, s: 100, l: 50 }),
-    createSwatch("Red", { modelId: "hsl", h: 0, s: 100, l: 50 }),
-    createSwatch("Green", { modelId: "hsl", h: 120, s: 100, l: 50 }),
-  ]
+export function createHslLightnessTrapSwatches(): readonly HslLightnessTrapSwatch[] {
+  return HSL_LIGHTNESS_TRAP_COORDINATES.map(({ coordinate, label }) =>
+    createHslLightnessTrapSwatch(label, coordinate)
+  )
 }
 
 function createSwatch(
@@ -181,6 +198,37 @@ function createHsvSwatch(
     coordinate,
     label,
   }
+}
+
+function createHslLightnessTrapSwatch(
+  label: string,
+  coordinate: HslCoordinate
+): HslLightnessTrapSwatch {
+  const relativeLuminance = getRelativeLuminance(coordinate)
+
+  return {
+    ...createSwatch(label, coordinate),
+    relativeLuminance,
+    relativeLuminancePercent: Math.round(relativeLuminance * 100),
+  }
+}
+
+function getRelativeLuminance(coordinate: HslCoordinate) {
+  const color = toRgb(toCuloriColor(coordinate))
+
+  return (
+    0.2126 * toLinearRgbChannel(color.r) +
+    0.7152 * toLinearRgbChannel(color.g) +
+    0.0722 * toLinearRgbChannel(color.b)
+  )
+}
+
+function toLinearRgbChannel(channel: number) {
+  if (channel <= 0.03928) {
+    return channel / 12.92
+  }
+
+  return ((channel + 0.055) / 1.055) ** 2.4
 }
 
 function assertNeverCoordinate(coordinate: never): never {

@@ -3,10 +3,9 @@ import { cn } from "@hyunsdev/ui/lib/utils"
 import { PresentationSolidModelVisual } from "@/presentation/PresentationSolidModelVisual"
 import {
   createGamutChromaRows,
-  createLabToOklabComparisonRows,
   PART_1_PURPOSE_STEPS,
   PERCEPTUAL_MODEL_STEPS,
-  type ComparisonSwatch,
+  type GamutChromaSwatch,
   type PurposeStep,
 } from "@/presentation/presentation-perceptual-models"
 
@@ -60,23 +59,22 @@ export function LchPolarDiagram() {
 
 export function GamutCautionDiagram() {
   return (
-    <div className="grid gap-[1.15cqw]">
+    <div className="grid gap-[1.25cqw]">
       {createGamutChromaRows().map((row) => (
-        <div key={row.targetId} className="grid gap-[0.45cqw]">
-          <span className="font-mono text-[clamp(0.58rem,1cqw,0.86rem)] leading-none font-bold text-text-muted">
-            {row.label}
-          </span>
-          <div className="grid grid-cols-12 overflow-hidden rounded-sm border border-border">
+        <div key={row.targetId} className="grid gap-[0.55cqw]">
+          <div className="flex items-center justify-between gap-[1cqw]">
+            <span className="font-mono text-[clamp(0.62rem,1.05cqw,0.88rem)] leading-none font-bold text-text-normal">
+              {row.label}
+            </span>
+            <code className="text-[clamp(0.52rem,0.82cqw,0.68rem)] leading-none font-bold text-text-muted">
+              {row.edgeLabel}
+            </code>
+          </div>
+          <div className="grid grid-cols-12 overflow-hidden rounded-md border border-border bg-background-primary/84">
             {row.swatches.map((swatch) => (
-              <div
+              <GamutChromaChip
                 key={`${row.targetId}-${swatch.label}`}
-                className="h-[3.6cqw] min-h-5"
-                style={{
-                  backgroundColor: swatch.color,
-                  backgroundImage: swatch.inTarget
-                    ? "none"
-                    : "repeating-linear-gradient(135deg, rgba(255,255,255,.4) 0 5px, rgba(0,0,0,.22) 5px 10px)",
-                }}
+                swatch={swatch}
               />
             ))}
           </div>
@@ -86,12 +84,28 @@ export function GamutCautionDiagram() {
   )
 }
 
-export function LabToOklabComparison() {
+type GamutChromaChipProps = {
+  readonly swatch: GamutChromaSwatch
+}
+
+function GamutChromaChip({ swatch }: GamutChromaChipProps) {
   return (
-    <div className="grid gap-[2.2cqw]">
-      {createLabToOklabComparisonRows().map((row) => (
-        <ComparisonRow key={row.label} label={row.label} swatches={row.swatches} />
-      ))}
+    <div
+      className={cn(
+        "grid h-[5.4cqw] min-h-9 grid-rows-[0.36fr_1fr] border-r border-border last:border-r-0",
+        !swatch.inTarget && "ring-1 ring-inset ring-text-normal/45"
+      )}
+      title={`${swatch.label} ${swatch.inTarget ? "inside" : "mapped"}`}
+    >
+      <div style={{ backgroundColor: swatch.requestedColor }} />
+      <div
+        className="relative"
+        style={{ backgroundColor: swatch.renderedColor }}
+      >
+        {!swatch.inTarget && (
+          <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,.42)_0_4px,rgba(0,0,0,.2)_4px_8px)]" />
+        )}
+      </div>
     </div>
   )
 }
@@ -187,31 +201,6 @@ function MetricTile({ active = false, label, value }: MetricTileProps) {
       <span className="mt-[0.8cqw] text-[clamp(0.72rem,1.2cqw,1rem)] leading-tight text-text-muted">
         {label}
       </span>
-    </div>
-  )
-}
-
-type ComparisonRowProps = {
-  readonly label: string
-  readonly swatches: readonly ComparisonSwatch[]
-}
-
-function ComparisonRow({ label, swatches }: ComparisonRowProps) {
-  return (
-    <div className="grid gap-[0.65cqw]">
-      <span className="font-mono text-[clamp(0.68rem,1.1cqw,0.9rem)] leading-none font-bold text-text-muted">
-        {label}
-      </span>
-      <div className="grid grid-cols-7 overflow-hidden rounded-sm border border-border">
-        {swatches.map((swatch) => (
-          <div
-            key={`${label}-${swatch.label}`}
-            className="h-[5.2cqw] min-h-7"
-            style={{ backgroundColor: swatch.color }}
-            title={`${label} ${swatch.label}`}
-          />
-        ))}
-      </div>
     </div>
   )
 }

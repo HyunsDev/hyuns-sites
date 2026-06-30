@@ -1,9 +1,17 @@
 import { useState } from "react"
 
 import { Input } from "@hyunsdev/ui/components/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@hyunsdev/ui/components/select"
 import { cn } from "@hyunsdev/ui/lib/utils"
 
 import { ColorAxisBarCanvas } from "@/color-models/ColorAxisBarCanvas"
+import { ColorNotationInput } from "@/color-models/ColorNotationInput"
 import { ColorPlaneCanvas } from "@/color-models/ColorPlaneCanvas"
 import { COLOR_COORDINATE_MODEL_BY_ID } from "@/color-models/color-coordinate-utils"
 import {
@@ -20,6 +28,22 @@ import {
   requirePresentationPlane,
   type PresentationControlModelId,
 } from "@/presentation/presentation-hsl-hsv-models"
+import {
+  createDefaultColorPickerCoordinate,
+  parseColorPickerColorInput,
+  requireColorPickerCoordinate,
+  type ColorPickerCoordinate,
+  type ColorPickerModelId,
+} from "@/presentation/presentation-hsv-picker-models"
+
+const COLOR_PICKER_MODEL_OPTIONS = [
+  { id: "hsv", label: "HSV", planeLabel: "Saturation x Value" },
+  { id: "hsl", label: "HSL", planeLabel: "Saturation x Lightness" },
+] as const satisfies readonly {
+  readonly id: ColorPickerModelId
+  readonly label: string
+  readonly planeLabel: string
+}[]
 
 type ColorCoordinateControlDemoProps = {
   readonly modelId: PresentationControlModelId
@@ -66,33 +90,113 @@ export function ColorCoordinateControlDemo({
 }
 
 export function HsvColorPickerDemo() {
-  const [coordinate, setCoordinate] = useState<ColorCoordinate>(() =>
-    createDefaultColorCoordinate("hsv")
+  const [modelId, setModelId] = useState<ColorPickerModelId>("hsv")
+  const [coordinate, setCoordinate] = useState<ColorPickerCoordinate>(() =>
+    createDefaultColorPickerCoordinate("hsv")
   )
-  const plane = requirePresentationPlane("hsv", "s", "v")
+  const [colorInputValue, setColorInputValue] = useState(() =>
+    formatCoordinateCssOutput(createDefaultColorPickerCoordinate("hsv"))
+  )
+  const selectedModel = getColorPickerModelOption(modelId)
+  const plane = requirePresentationPlane(
+    modelId,
+    "s",
+    modelId === "hsl" ? "l" : "v"
+  )
+
+  const changeCoordinate = (nextCoordinate: ColorCoordinate) => {
+    const colorPickerCoordinate = requireColorPickerCoordinate(nextCoordinate)
+
+    setCoordinate(colorPickerCoordinate)
+    setColorInputValue(formatCoordinateCssOutput(colorPickerCoordinate))
+  }
+
+  const changeColorInputValue = (nextValue: string) => {
+    setColorInputValue(nextValue)
+
+    const nextCoordinate = parseColorPickerColorInput(
+      nextValue,
+      modelId,
+      coordinate.h
+    )
+
+    if (nextCoordinate) {
+      setCoordinate(nextCoordinate)
+    }
+  }
+
+  const changeModelId = (nextModelId: ColorPickerModelId) => {
+    const nextCoordinate =
+      parseColorPickerColorInput(colorInputValue, nextModelId, coordinate.h) ??
+      createDefaultColorPickerCoordinate(nextModelId)
+
+    setModelId(nextModelId)
+    setCoordinate(nextCoordinate)
+    setColorInputValue(formatCoordinateCssOutput(nextCoordinate))
+  }
 
   return (
     <div className="grid min-h-0 grid-cols-[minmax(0,1fr)_minmax(2rem,3.2cqw)] gap-[1cqw]">
+      <div className="col-span-2 grid grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] items-end gap-[1cqw]">
+        <label className="grid gap-1.5 text-xs">
+          <span className="font-medium">Color model</span>
+          <Select
+            value={modelId}
+            onValueChange={(nextValue) => {
+              if (isColorPickerModelId(nextValue)) {
+                changeModelId(nextValue)
+              }
+            }}
+          >
+            <SelectTrigger
+              size="sm"
+              className="w-full justify-between bg-background-primary/75"
+              aria-label="Color picker model"
+            >
+              <SelectValue aria-label={selectedModel.label}>
+                {selectedModel.label}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent position="popper">
+              {COLOR_PICKER_MODEL_OPTIONS.map((option) => (
+                <SelectItem key={option.id} value={option.id}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </label>
+        <p className="pb-1 text-xs leading-tight font-medium text-text-muted">
+          {selectedModel.planeLabel}
+        </p>
+      </div>
       <ColorPlaneCanvas
         coordinate={coordinate}
         plane={plane}
         className="w-[24cqw] max-w-full justify-self-end shadow-none"
-        onChange={setCoordinate}
+        onChange={changeCoordinate}
       />
-      <HsvHueRail coordinate={coordinate} onChange={setCoordinate} />
-      <div className="col-span-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-[1cqw]">
+      <HsvHueRail coordinate={coordinate} onChange={changeCoordinate} />
+      <div className="col-span-2 grid grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] items-center gap-[1cqw]">
         <ColorPreviewPanel coordinate={coordinate} compact />
-        <div className="grid content-center gap-[0.6cqh] rounded-md border border-border bg-background-primary/84 p-[1cqw]">
-          <span className="font-mono text-[clamp(0.62rem,1cqw,0.9rem)] leading-none font-bold text-text-muted">
-            CSS output
-          </span>
-          <code className="text-[clamp(0.78rem,1.45cqw,1.2rem)] leading-tight font-bold break-all">
-            {formatCoordinateCssOutput(coordinate)}
-          </code>
-        </div>
+        <ColorNotationInput
+          label="CSS color"
+          inputAriaLabel={`${selectedModel.label} picker CSS color`}
+          value={colorInputValue}
+          onChange={changeColorInputValue}
+        />
       </div>
     </div>
   )
+}
+
+function getColorPickerModelOption(modelId: ColorPickerModelId) {
+  return COLOR_PICKER_MODEL_OPTIONS.find((option) => option.id === modelId) ??
+    COLOR_PICKER_MODEL_OPTIONS[0]
+}
+
+function isColorPickerModelId(value: string): value is ColorPickerModelId {
+  return COLOR_PICKER_MODEL_OPTIONS.some((option) => option.id === value)
 }
 
 type ColorPreviewPanelProps = {

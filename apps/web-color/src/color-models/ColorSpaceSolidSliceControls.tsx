@@ -1,6 +1,4 @@
-import { useEffect, useRef } from "react"
-
-import { Slider } from "@hyunsdev/ui/components/slider"
+import { ColorAxisBarCanvas } from "@/color-models/ColorAxisBarCanvas"
 import {
   getSolidSliceAxes,
   getSolidSliceAxis,
@@ -11,7 +9,17 @@ import type {
   SolidSliceModelId,
   SolidSliceState,
 } from "@/color-models/color-space-solid-slice"
+import {
+  createSolidSliceCoordinate,
+  getSolidSliceCoordinateModelId,
+  toSolidSliceValue,
+} from "@/color-models/color-space-solid-slice-coordinate"
 import type { ColorSpaceModelId } from "@/color-models/color-space-models"
+import { readColorCoordinateAxis } from "@/color-models/color-coordinate-utils"
+import type {
+  ColorCoordinate,
+  ColorCoordinateModelId,
+} from "@/color-models/color-coordinate-utils"
 import { cn } from "@hyunsdev/ui/lib/utils"
 
 type ColorSpaceSolidSliceControlsProps = {
@@ -39,104 +47,80 @@ export function ColorSpaceSolidSliceControls({
       modelId={modelId}
       axisId={slice.axisId}
       value={slice.value}
+      sliceEnabled={sliceEnabled}
       onSliceChange={onSliceChange}
     />
   )
 }
 
-function AxisSliceSlider({
+function AxisSliceBar({
   axis,
+  coordinate,
+  coordinateModelId,
+  disabled,
   isActive,
   onSliceChange,
   value,
 }: {
   readonly axis: ReturnType<typeof getSolidSliceAxes>[number]
+  readonly coordinate: ColorCoordinate
+  readonly coordinateModelId: ColorCoordinateModelId
+  readonly disabled: boolean
   readonly isActive: boolean
   readonly onSliceChange: (slice: SolidSliceState) => void
   readonly value: number
 }) {
-  const sliderLabel = `${axis.label} slice value`
-
   return (
     <div
       className={cn(
-        "grid grid-cols-[6.25rem_minmax(0,1fr)] items-center gap-2 text-xs",
-        !isActive && "opacity-70"
+        "grid grid-cols-[8rem_minmax(0,1fr)] items-center gap-2 text-xs",
+        !disabled && !isActive && "opacity-70"
       )}
     >
       <span
         className={cn(
-          "min-w-0 truncate font-medium",
+          "flex min-w-0 items-center gap-1.5 truncate font-medium",
           isActive ? "text-text-normal" : "text-text-muted"
         )}
+        style={{ color: axis.color }}
       >
-        {axis.label}
+        <span
+          className="size-1.5 shrink-0 rounded-full bg-current"
+          aria-hidden="true"
+        />
+        <span className="min-w-0 truncate">
+          {axis.coordinateLabel}: {axis.label}
+        </span>
       </span>
       <div className="grid min-w-0 grid-cols-[minmax(5rem,1fr)_3.75rem] items-center gap-2">
-        <LabeledSlider
-          min={axis.min}
-          max={axis.max}
-          step={axis.step}
-          value={[value]}
-          ariaLabel={sliderLabel}
-          onValueChange={(values) => {
-            const nextValue = values[0]
+        <div
+          aria-disabled={disabled}
+          className={cn(disabled && "pointer-events-none")}
+        >
+          <ColorAxisBarCanvas
+            axisId={axis.id}
+            coordinate={coordinate}
+            modelId={coordinateModelId}
+            className="h-7 shadow-none"
+            onChange={(nextCoordinate) => {
+              if (disabled) {
+                return
+              }
 
-            if (nextValue !== undefined) {
-              onSliceChange({ axisId: axis.id, value: nextValue })
-            }
-          }}
-        />
+              onSliceChange({
+                axisId: axis.id,
+                value: toSolidSliceValue(
+                  axis,
+                  readColorCoordinateAxis(nextCoordinate, axis.id)
+                ),
+              })
+            }}
+          />
+        </div>
         <code className="justify-self-end text-[0.68rem] leading-none text-text-muted">
           {formatSliceValue(value, axis.unit)}
         </code>
       </div>
-    </div>
-  )
-}
-
-function LabeledSlider({
-  ariaLabel,
-  max,
-  min,
-  onValueChange,
-  step,
-  value,
-}: {
-  readonly ariaLabel: string
-  readonly max: number
-  readonly min: number
-  readonly onValueChange: (value: readonly number[]) => void
-  readonly step: number
-  readonly value: number[]
-}) {
-  const sliderHostRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    const sliderHost = sliderHostRef.current
-
-    if (!sliderHost) {
-      return
-    }
-
-    const sliderThumb = sliderHost.querySelector('[role="slider"]')
-
-    if (!sliderThumb) {
-      return
-    }
-
-    sliderThumb.setAttribute("aria-label", ariaLabel)
-  }, [ariaLabel])
-
-  return (
-    <div ref={sliderHostRef}>
-      <Slider
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onValueChange={onValueChange}
-      />
     </div>
   )
 }
@@ -146,12 +130,14 @@ function SupportedSliceControls({
   axisId,
   modelId,
   onSliceChange,
+  sliceEnabled,
   value,
 }: {
   readonly className?: string
   readonly axisId: SolidSliceAxisId
   readonly modelId: SolidSliceModelId
   readonly onSliceChange: (slice: SolidSliceState) => void
+  readonly sliceEnabled: boolean
   readonly value: number
 }) {
   const axes = getSolidSliceAxes(modelId)
@@ -161,13 +147,23 @@ function SupportedSliceControls({
     return null
   }
 
+  const coordinateModelId = getSolidSliceCoordinateModelId(modelId)
+  const coordinate = createSolidSliceCoordinate({
+    axisId: activeAxis.id,
+    modelId,
+    value,
+  })
+
   return (
     <div className={cn("grid gap-1.5", className)}>
       {axes.map((axis) => (
-        <AxisSliceSlider
+        <AxisSliceBar
           key={axis.id}
           axis={axis}
-          isActive={axis.id === activeAxis.id}
+          coordinate={coordinate}
+          coordinateModelId={coordinateModelId}
+          disabled={!sliceEnabled}
+          isActive={sliceEnabled && axis.id === activeAxis.id}
           value={axis.id === activeAxis.id ? value : axis.defaultValue}
           onSliceChange={onSliceChange}
         />

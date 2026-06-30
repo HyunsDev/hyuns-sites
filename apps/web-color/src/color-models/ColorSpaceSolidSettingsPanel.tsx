@@ -1,4 +1,6 @@
 import { Switch } from "@hyunsdev/ui/components/switch"
+import { ColorSpaceSolidCubeSwitch } from "@/color-models/ColorSpaceSolidCubeSwitch"
+import { ColorSpaceSolidTargetInput } from "@/color-models/ColorSpaceSolidTargetInput"
 import {
   GamutModeSelect,
   SolidBaseModelSelect,
@@ -14,6 +16,7 @@ import type {
   BaseColorSpaceModelId,
   ColorSpaceModelId,
 } from "@/color-models/color-space-models"
+import type { SolidColorSpaceHighlightResult } from "@/color-models/color-space-solid-highlight"
 import { cn } from "@hyunsdev/ui/lib/utils"
 
 type ColorSpaceSolidSettingsPanelProps = {
@@ -28,6 +31,8 @@ type ColorSpaceSolidSettingsPanelProps = {
   readonly onModelSelect: (modelId: BaseColorSpaceModelId) => void
   readonly onSliceChange: (slice: SolidSliceState) => void
   readonly onSliceEnabledChange: (enabled: boolean) => void
+  readonly onTargetEnabledChange: (enabled: boolean) => void
+  readonly onTargetInputChange: (value: string) => void
   readonly onWireframeChange: (enabled: boolean) => void
   readonly selectedBaseModelId: BaseColorSpaceModelId
   readonly selectedGamutId: ColorGamutModeId
@@ -36,6 +41,9 @@ type ColorSpaceSolidSettingsPanelProps = {
   readonly showSlice: boolean
   readonly showWireframe: boolean
   readonly slice: SolidSliceState
+  readonly targetEnabled: boolean
+  readonly targetInput: string
+  readonly targetResult: SolidColorSpaceHighlightResult
 }
 
 export function ColorSpaceSolidSettingsPanel({
@@ -50,6 +58,8 @@ export function ColorSpaceSolidSettingsPanel({
   onModelSelect,
   onSliceChange,
   onSliceEnabledChange,
+  onTargetEnabledChange,
+  onTargetInputChange,
   onWireframeChange,
   selectedBaseModelId,
   selectedGamutId,
@@ -58,6 +68,9 @@ export function ColorSpaceSolidSettingsPanel({
   showSlice,
   showWireframe,
   slice,
+  targetEnabled,
+  targetInput,
+  targetResult,
 }: ColorSpaceSolidSettingsPanelProps) {
   const sliceSupported = isSolidSliceModel(selectedModelId)
 
@@ -79,12 +92,18 @@ export function ColorSpaceSolidSettingsPanel({
         selectedBaseModelId={selectedBaseModelId}
         onSelect={onModelSelect}
       />
-      <SettingsSwitchRow
-        label="Cube로 표시"
-        ariaLabel="Toggle cube coordinate model"
+      <ColorSpaceSolidCubeSwitch
         checked={cubeEnabled}
         disabled={!cubeSupported}
         onCheckedChange={onCubeEnabledChange}
+      />
+      <ColorSpaceSolidTargetInput
+        enabled={targetEnabled}
+        modelId={selectedModelId}
+        value={targetInput}
+        result={targetResult}
+        onEnabledChange={onTargetEnabledChange}
+        onChange={onTargetInputChange}
       />
       <SettingsSwitchRow
         label="Wireframe"

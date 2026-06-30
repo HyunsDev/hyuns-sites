@@ -2,7 +2,9 @@ export const COLOR_COORDINATE_MODEL_IDS = [
   "rgb",
   "hsl",
   "hsv",
+  "lab",
   "lch",
+  "oklab",
   "oklch",
 ] as const
 
@@ -10,6 +12,7 @@ export type ColorCoordinateModelId = (typeof COLOR_COORDINATE_MODEL_IDS)[number]
 
 export type ColorCoordinateUnit = "degree" | "number" | "percent"
 export type ColorCoordinateAxisId =
+  | "a"
   | "b"
   | "c"
   | "g"
@@ -52,11 +55,25 @@ export type HsvCoordinate = {
   readonly v: number
 }
 
+export type LabCoordinate = {
+  readonly a: number
+  readonly b: number
+  readonly l: number
+  readonly modelId: "lab"
+}
+
 export type LchCoordinate = {
   readonly c: number
   readonly h: number
   readonly l: number
   readonly modelId: "lch"
+}
+
+export type OklabCoordinate = {
+  readonly a: number
+  readonly b: number
+  readonly l: number
+  readonly modelId: "oklab"
 }
 
 export type OklchCoordinate = {
@@ -69,7 +86,9 @@ export type OklchCoordinate = {
 export type ColorCoordinate =
   | HslCoordinate
   | HsvCoordinate
+  | LabCoordinate
   | LchCoordinate
+  | OklabCoordinate
   | OklchCoordinate
   | RgbCoordinate
 

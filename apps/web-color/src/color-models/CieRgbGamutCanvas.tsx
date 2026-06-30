@@ -24,6 +24,7 @@ import type { CieXyzSceneTheme } from "@/color-models/three-cie-xyz-palette"
 import { createCieXyzReferenceObject } from "@/color-models/three-cie-xyz-reference-scene"
 import { disposeObjectTree } from "@/color-models/three-scene"
 import type { CieRgbGamutPoint } from "@/color-models/cie-rgb-gamut-models"
+import type { CieXyzGamutId } from "@/color-models/cie-xyz-gamut-data"
 import { useTheme } from "@hyunsdev/ui/components/theme-provider"
 import { cn } from "@hyunsdev/ui/lib/utils"
 
@@ -33,6 +34,11 @@ const LABEL_OFFSETS = [
   { x: -0.22, y: 0.16 },
   { x: 0.23, y: -0.18 },
 ] as const
+const GAMUT_BADGE_LABELS = {
+  "display-p3": "P3",
+  bt2020: "BT.2020",
+  srgb: "sRGB",
+} as const satisfies Record<CieXyzGamutId, string>
 
 function createLineSegments(positions: Float32Array, color: string) {
   const geometry = new BufferGeometry()
@@ -127,15 +133,19 @@ function createPointGroup({
 }
 
 function createSceneObject({
+  gamutIds,
   points,
   theme,
 }: {
+  readonly gamutIds?: readonly CieXyzGamutId[]
   readonly points: readonly CieRgbGamutPoint[]
   readonly theme: CieXyzSceneTheme
 }) {
   const group = new Group()
   const reference = buildCieXyzReferenceMesh()
-  const gamutMeshes = buildCieXyzGamutMeshes()
+  const gamutMeshes = buildCieXyzGamutMeshes().filter(
+    (mesh) => !gamutIds || gamutIds.some((gamutId) => gamutId === mesh.id)
+  )
 
   group.add(
     createCieXyzReferenceObject({
@@ -174,16 +184,25 @@ function resizeCamera({
   camera.updateProjectionMatrix()
 }
 
+function formatGamutBadgeLabel(gamutIds?: readonly CieXyzGamutId[]) {
+  return gamutIds
+    ? gamutIds.map((gamutId) => GAMUT_BADGE_LABELS[gamutId]).join(" / ")
+    : "sRGB / P3 / BT.2020"
+}
+
 export function CieRgbGamutCanvas({
   className,
+  gamutIds,
   points,
 }: {
   readonly className?: string
+  readonly gamutIds?: readonly CieXyzGamutId[]
   readonly points: readonly CieRgbGamutPoint[]
 }) {
   const { resolvedTheme } = useTheme()
   const hostRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const gamutBadgeLabel = formatGamutBadgeLabel(gamutIds)
 
   useEffect(() => {
     const host = hostRef.current
@@ -204,7 +223,11 @@ export function CieRgbGamutCanvas({
 
     const scene = new Scene()
     const camera = new OrthographicCamera(-2.45, 2.45, 2.25, -2.25, 0.1, 100)
-    const sceneObject = createSceneObject({ points, theme: resolvedTheme })
+    const sceneObject = createSceneObject({
+      gamutIds,
+      points,
+      theme: resolvedTheme,
+    })
     camera.position.set(-0.45, 0, 5)
     camera.lookAt(-0.45, 0, 0)
     scene.add(sceneObject)
@@ -238,7 +261,7 @@ export function CieRgbGamutCanvas({
       disposeObjectTree(sceneObject)
       renderer.dispose()
     }
-  }, [points, resolvedTheme])
+  }, [gamutIds, points, resolvedTheme])
 
   return (
     <div
@@ -255,7 +278,7 @@ export function CieRgbGamutCanvas({
           CIE 1931 xy
         </span>
         <span className="rounded-md border border-border bg-background-primary/85 px-2 py-1 font-mono text-[0.65rem] text-text-muted shadow-sm backdrop-blur">
-          sRGB / P3 / BT.2020
+          {gamutBadgeLabel}
         </span>
       </div>
     </div>

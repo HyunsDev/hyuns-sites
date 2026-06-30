@@ -46,6 +46,12 @@ test("createDefaultColorCoordinate returns model-shaped defaults", () => {
     c: 0.18,
     h: 32,
   })
+  assert.deepEqual(createDefaultColorCoordinate("lab"), {
+    modelId: "lab",
+    l: 62,
+    a: 42,
+    b: 58,
+  })
 })
 
 test("formatCssColorSet exposes core CSS notations", () => {
@@ -96,6 +102,19 @@ test("setColorCoordinateAxis updates only valid channels for the model", () => {
     l: 58,
   })
   assert.equal(readColorCoordinateAxis(coordinate, "r"), 0)
+})
+
+test("Lab and OKLab coordinates round-trip through axis helpers", () => {
+  assert.deepEqual(setColorCoordinateAxis(createDefaultColorCoordinate("lab"), "a", -12), {
+    modelId: "lab",
+    l: 62,
+    a: -12,
+    b: 58,
+  })
+  assert.equal(
+    readColorCoordinateAxis(createDefaultColorCoordinate("oklab"), "b"),
+    0.14
+  )
 })
 
 test("setPlaneCoordinate maps pointer ratios onto selected axes", () => {

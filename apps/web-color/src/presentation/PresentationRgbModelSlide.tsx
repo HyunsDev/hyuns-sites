@@ -13,13 +13,11 @@ import {
   SlideKeyword,
   SlideKeywords,
   SlideTwoColumn,
-  SlideVisualStage,
 } from "@/presentation/PresentationSlideLayout"
 import {
   formatRgbHex,
   getReadablePreviewTextColor,
   getRgbDerivedMetrics,
-  INITIAL_RGB_COORDINATE,
   readRgbAxisValue,
   RGB_AXES,
   RGB_LIMITS_BASE_COORDINATE,
@@ -28,56 +26,75 @@ import {
   type RgbAxisId,
   type RgbDerivedMetrics,
 } from "@/presentation/presentation-rgb-models"
+import { PresentationSolidModelSlide } from "@/presentation/PresentationSolidModelSlide"
+
+const SAMSUNG_DISPLAY_EYE_SPECTRUM_IMAGE_URL = new URL(
+  "./assets/samsung-display-rgb-eye-spectrum.png",
+  import.meta.url
+).href
+const SAMSUNG_DISPLAY_RGB_PIXELS_IMAGE_URL = new URL(
+  "./assets/samsung-display-rgb-pixels.png",
+  import.meta.url
+).href
 
 export function RgbModelSlide() {
-  const [coordinate, setCoordinate] = useState<RgbCoordinate>(
-    INITIAL_RGB_COORDINATE
-  )
-  const hexColor = useMemo(() => formatRgbHex(coordinate), [coordinate])
-
   return (
-    <PresentationSlideShell
+    <PresentationSolidModelSlide
       ariaLabel="RGB: 기계가 좋아하는 색 모델"
+      baseModelId="rgb"
+      showCubeSwitch={false}
       title="RGB: 기계가 좋아하는 색 모델"
-    >
-      <SlideTwoColumn variant="visualWide">
-        <SlideVisualStage className="grid place-items-center">
-          <RgbColorPreview
-            className="aspect-square w-[min(24cqw,37cqh)]"
-            coordinate={coordinate}
-            hexColor={hexColor}
-          />
-        </SlideVisualStage>
-        <div className="grid gap-[4cqh]">
-          <div className="grid gap-[1cqh]">
-            <p className="font-mono text-[clamp(0.92rem,1.65cqw,1.35rem)] leading-none font-bold text-text-muted">
-              #RRGGBB
-            </p>
-            <p className="text-[clamp(0.9rem,1.7cqw,1.4rem)] leading-[1.25] font-semibold text-text-muted">
-              R / G / B
-            </p>
-          </div>
-          <RgbAxisControlPanel
-            coordinate={coordinate}
-            onCoordinateChange={setCoordinate}
-          />
-        </div>
-      </SlideTwoColumn>
-    </PresentationSlideShell>
+    />
   )
 }
 
 export function RgbStrengthsSlide() {
   return (
     <PresentationSlideShell ariaLabel="RGB의 장점" title="RGB의 장점">
-      <SlideTwoColumn variant="visualWide">
-        <SlideKeywords>
-          <SlideKeyword>표시 장치에 가깝다</SlideKeyword>
-          <SlideKeyword>저장과 출력이 편리하다</SlideKeyword>
-        </SlideKeywords>
-        <RgbChannelStack />
-      </SlideTwoColumn>
+      <RgbStrengthImages />
     </PresentationSlideShell>
+  )
+}
+
+function RgbStrengthImages() {
+  return (
+    <div className="relative grid min-h-0 content-center justify-items-center gap-[1.2cqh] pb-[2.6cqh]">
+      <div className="grid min-h-0 grid-cols-[minmax(0,0.98fr)_minmax(0,1fr)] items-center gap-[1.3cqw]">
+        <RgbStrengthImage
+          alt="Visible light spectrum and RGB cone response ranges"
+          src={SAMSUNG_DISPLAY_EYE_SPECTRUM_IMAGE_URL}
+        />
+        <RgbStrengthImage
+          alt="Samsung diamond pixel layout and traditional square pixel layout"
+          src={SAMSUNG_DISPLAY_RGB_PIXELS_IMAGE_URL}
+        />
+      </div>
+      <p className="max-w-[72cqw] text-center text-[clamp(0.78rem,1.28cqw,1.08rem)] leading-snug font-bold text-text-normal text-balance">
+        디스플레이는 RGB 빛을 섞어 색을 만들고, 눈은 세 종류의 원추세포 반응으로 그 빛을 받아들인다.
+      </p>
+      <span className="absolute right-0 bottom-0 font-mono text-[clamp(0.48rem,0.72cqw,0.62rem)] leading-none text-text-muted">
+        출처: 삼성디스플레이 뉴스룸
+      </span>
+    </div>
+  )
+}
+
+function RgbStrengthImage({
+  alt,
+  src,
+}: {
+  readonly alt: string
+  readonly src: string
+}) {
+  return (
+    <div className="grid min-h-0 place-items-center overflow-hidden rounded-md border border-border bg-background-primary/84">
+      <img
+        alt={alt}
+        className="block max-h-[42cqh] w-full object-contain"
+        draggable={false}
+        src={src}
+      />
+    </div>
   )
 }
 
@@ -236,67 +253,6 @@ function RgbAxisControlRow({
         }}
       />
     </label>
-  )
-}
-
-type RgbChannelStackProps = {
-  readonly className?: string
-}
-
-function RgbChannelStack({ className }: RgbChannelStackProps) {
-  return (
-    <div
-      className={cn(
-        "grid min-h-0 grid-cols-[minmax(0,0.95fr)_2.8rem_minmax(0,1fr)] items-center gap-[1.7cqw]",
-        className
-      )}
-    >
-      <div className="grid min-h-0 gap-[1.7cqh]">
-        <RgbChannelLayer label="R" value="255" className="bg-[#ff2d55]" />
-        <RgbChannelLayer label="G" value="96" className="bg-[#34c759]" />
-        <RgbChannelLayer label="B" value="64" className="bg-[#0a84ff]" />
-      </div>
-      <div className="relative grid items-center justify-items-center">
-        <div className="h-px w-full bg-border" />
-        <div className="absolute size-2.5 rotate-45 border-t border-r border-border bg-background-secondary" />
-      </div>
-      <div className="grid min-h-0 gap-[1.7cqh]">
-        <div className="relative isolate h-[30cqh] overflow-hidden rounded-sm border border-border bg-[#101010]">
-          <div className="absolute top-[10%] left-[13%] h-[52%] w-[58%] rounded-[0.2rem] bg-[#ff2d55] opacity-80 mix-blend-screen" />
-          <div className="absolute top-[23%] left-[25%] h-[52%] w-[58%] rounded-[0.2rem] bg-[#34c759] opacity-80 mix-blend-screen" />
-          <div className="absolute top-[36%] left-[37%] h-[52%] w-[58%] rounded-[0.2rem] bg-[#0a84ff] opacity-80 mix-blend-screen" />
-        </div>
-        <div className="grid h-[9cqh] content-center rounded-sm bg-[#ff6040] px-[1.15cqw] text-left text-[#111111]">
-          <span className="font-mono text-[clamp(0.7rem,1.6cqw,1.3rem)] leading-none font-bold tracking-normal">
-            rgb(255 96 64)
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-type RgbChannelLayerProps = {
-  readonly className?: string
-  readonly label: string
-  readonly value: string
-}
-
-function RgbChannelLayer({ className, label, value }: RgbChannelLayerProps) {
-  return (
-    <div
-      className={cn(
-        "grid h-[10.2cqh] grid-cols-[auto_1fr] items-center gap-[1cqw] rounded-sm p-[1cqw] text-white",
-        className
-      )}
-    >
-      <span className="grid size-[3.4cqw] min-h-10 min-w-10 place-items-center rounded-[0.2rem] bg-black/22 text-[clamp(0.85rem,1.8cqw,1.45rem)] leading-none font-bold">
-        {label}
-      </span>
-      <span className="font-mono text-[clamp(0.72rem,1.45cqw,1.16rem)] leading-none font-bold">
-        {value}
-      </span>
-    </div>
   )
 }
 

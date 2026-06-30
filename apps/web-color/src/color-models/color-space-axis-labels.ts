@@ -213,19 +213,21 @@ const HWB_CUBE_AXIS_LABELS = createHueCubeAxisLabels({
 })
 
 const LCH_CUBE_AXIS_LABELS = createHueCubeAxisLabels({
-  depthAxisColor: CHROMA_AXIS,
-  depthLabel: "Chroma",
-  depthMaxLabel: "C 144",
-  heightLabel: "Light",
-  heightMaxLabel: "L 100",
+  depthAxisColor: HEIGHT_AXIS,
+  depthLabel: "Light",
+  depthMaxLabel: "L 100",
+  heightAxisColor: CHROMA_AXIS,
+  heightLabel: "Chroma",
+  heightMaxLabel: "C 144",
 })
 
 const OKLCH_CUBE_AXIS_LABELS = createHueCubeAxisLabels({
-  depthAxisColor: OK_CHROMA_AXIS,
-  depthLabel: "Chroma",
-  depthMaxLabel: "C .315",
-  heightLabel: "OKL",
-  heightMaxLabel: "OKL 1",
+  depthAxisColor: HEIGHT_AXIS,
+  depthLabel: "OKL",
+  depthMaxLabel: "OKL 1",
+  heightAxisColor: OK_CHROMA_AXIS,
+  heightLabel: "Chroma",
+  heightMaxLabel: "C .315",
 })
 
 export function getColorSpaceAxisLabels(modelId: ColorSpaceModelId) {

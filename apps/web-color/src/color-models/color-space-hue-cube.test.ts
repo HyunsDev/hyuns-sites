@@ -1,7 +1,10 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
-import { hueCubeToPoint } from "./color-space-hue-cube.ts"
+import {
+  hueChromaCubeToPoint,
+  hueCubeToPoint,
+} from "./color-space-hue-cube.ts"
 import {
   COLOR_SPACE_MODELS,
   getBaseColorSpaceModelId,
@@ -12,6 +15,11 @@ import { isSolidSliceModel } from "./color-space-solid-slice-models.ts"
 test("hueCubeToPoint unfolds hue, height, and depth onto cube axes", () => {
   assert.deepEqual(hueCubeToPoint(0, 0.5, 1), { x: -1, y: 0, z: 1 })
   assert.deepEqual(hueCubeToPoint(360, 1, 0), { x: 1, y: 1, z: -1 })
+})
+
+test("hueChromaCubeToPoint unfolds chroma onto the vertical axis", () => {
+  assert.deepEqual(hueChromaCubeToPoint(0, 0.5, 1), { x: -1, y: 0, z: 1 })
+  assert.deepEqual(hueChromaCubeToPoint(360, 1, 0), { x: 1, y: 1, z: -1 })
 })
 
 test("cube model helpers map cube ids back to their base color spaces", () => {

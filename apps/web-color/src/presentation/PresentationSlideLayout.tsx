@@ -23,8 +23,8 @@ export function PresentationSlideShell({
       )}
       aria-label={ariaLabel}
     >
-      <div className="grid h-full grid-rows-[auto_minmax(0,1fr)] gap-[5.2cqh] px-[6.8cqw] py-[7.2cqh]">
-        <h1 className="max-w-[24ch] text-[clamp(1.35rem,3cqw,2.65rem)] leading-[1.12] font-bold tracking-normal text-balance">
+      <div className="grid h-full grid-rows-[auto_minmax(0,1fr)] gap-[3.6cqh] px-[6.8cqw] py-[5.6cqh] sm:gap-[5.2cqh] sm:py-[7.2cqh]">
+        <h1 className="max-w-[24ch] text-[clamp(1.12rem,3cqw,2.65rem)] leading-[1.12] font-bold tracking-normal text-balance">
           {title}
         </h1>
         {children}
@@ -47,10 +47,10 @@ export function SlideTwoColumn({
   return (
     <div
       className={cn(
-        "grid min-h-0 items-center gap-[4.8cqw]",
+        "grid min-h-0 items-center gap-[2.8cqw] sm:gap-[4.8cqw]",
         variant === "visualWide"
-          ? "grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)]"
-          : "grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
+          ? "grid-cols-1 sm:grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)]"
+          : "grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
         className
       )}
     >

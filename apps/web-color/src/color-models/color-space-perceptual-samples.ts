@@ -2,7 +2,7 @@ import type { Color } from "culori"
 
 import type { ColorSampleRenderOptions } from "@/color-models/color-sample-rendering"
 import { toColorSampleRenderColor } from "@/color-models/color-sample-rendering"
-import { hueCubeToPoint } from "@/color-models/color-space-hue-cube"
+import { hueChromaCubeToPoint } from "@/color-models/color-space-hue-cube"
 import type {
   ColorSpaceSample,
   Vector3Point,
@@ -196,7 +196,7 @@ function buildPolarPerceptualCubeSamples({
       for (const hue of HUE_STEPS) {
         appendSample(
           samples,
-          hueCubeToPoint(hue, lightnessUnit, chromaUnit),
+          hueChromaCubeToPoint(hue, chromaUnit, lightnessUnit),
           createPolarPerceptualColor(modelId, lightness, chroma, hue),
           options
         )

@@ -504,14 +504,14 @@ OKLCH를 최신 문법이 아니라 실무 문제 해결 도구로 설득한다.
 - title: `Lab에서 Oklab으로`
 - purpose: Lab의 실무적 한계와 Oklab의 개선 방향을 한 장으로 연결한다.
 - on-slide:
-  - `Lab: perceptual, but not perfect`
-  - `Blue hue shift`
-  - `Oklab: better hue / lightness / gradients`
+  - `같은 두 색도 경로가 달라진다`
+  - `Lab: muted middle`
+  - `OKLCH: clearer chroma path`
 - speaker:
-  - Lab과 LCH는 RGB/HSL보다 지각에 가까워졌지만 완벽하지는 않다. 특히 파란색 영역의 hue 예측 문제처럼 실무에서 어색한 결과가 생길 수 있고, Oklab은 이런 문제를 더 실용적으로 개선하려는 모델이다.
+  - Lab과 LCH는 RGB/HSL보다 지각에 가까워졌지만, 보간 공간으로 사용할 때 항상 같은 인상을 주지는 않는다. 같은 시작색과 끝색이라도 Lab에서는 중간색이 조금 탁하게 느껴질 수 있고, OKLCH에서는 chroma와 hue의 흐름이 더 선명하게 이어질 수 있다.
 - visual:
-  - Lab과 Oklab gradient 또는 hue path 비교
-  - blue hue shift를 작은 곡선 도식으로 보조 표시
+  - muted blue-violet에서 orange로 이어지는 Lab과 OKLCH gradient 비교
+  - 중간색의 채도와 hue 경로 차이를 강조 표시
 - components:
   - `LabToOklabComparison`
   - `OklabImprovementComparison`
